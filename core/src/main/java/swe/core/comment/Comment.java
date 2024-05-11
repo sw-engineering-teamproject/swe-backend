@@ -14,10 +14,10 @@ import swe.core.user.User;
 public class Comment {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = LAZY)
   private Issue issue;
 
   @ManyToOne

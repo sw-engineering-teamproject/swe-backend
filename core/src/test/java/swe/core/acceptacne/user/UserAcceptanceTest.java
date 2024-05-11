@@ -1,9 +1,9 @@
-package swe.acceptacne.user;
+package swe.core.acceptacne.user;
 
-import static swe.acceptacne.support.AcceptanceSupport.post;
+import static swe.core.acceptacne.support.AcceptanceSupport.post;
 
 import org.junit.jupiter.api.Test;
-import swe.acceptacne.support.AcceptanceTest;
+import swe.core.acceptacne.support.AcceptanceTest;
 
 public class UserAcceptanceTest extends AcceptanceTest {
 

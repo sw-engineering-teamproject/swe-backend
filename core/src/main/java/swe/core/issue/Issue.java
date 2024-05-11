@@ -1,10 +1,10 @@
 package swe.core.issue;
 
-import static jakarta.persistence.CascadeType.PERSIST;
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -17,7 +17,7 @@ import swe.core.project.Project;
 public class Issue {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
   private String title;

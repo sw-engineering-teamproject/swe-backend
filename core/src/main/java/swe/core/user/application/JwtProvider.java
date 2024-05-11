@@ -1,8 +1,7 @@
 package swe.core.user.application;
 
-import static io.jsonwebtoken.io.Decoders.BASE64;
-
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.time.Duration;
 import java.util.Date;

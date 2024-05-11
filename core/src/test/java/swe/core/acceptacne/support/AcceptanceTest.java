@@ -1,4 +1,4 @@
-package swe.acceptacne.support;
+package swe.core.acceptacne.support;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
