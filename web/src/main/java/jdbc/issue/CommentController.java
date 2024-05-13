@@ -2,6 +2,8 @@ package jdbc.issue;
 
 import jdbc.issue.comment.dto.CommentList;
 import jdbc.issue.comment.service.CommentService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,12 +17,14 @@ public class CommentController {
     }
 
     //comment 등록 api
-    public boolean enrollComment(int issueKey, int userKey, String comment) {
+    @GetMapping("/comment/enroll")
+    public boolean enrollComment(@RequestParam int issueKey, @RequestParam int userKey, @RequestParam String comment) {
         return commentService.enrollComment(issueKey, userKey, comment);
     }
 
     //이전 comment들 확인 api
-    public List<CommentList> getComments(int issueKey) {
+    @GetMapping("/comment/list")
+    public List<CommentList> getComments(@RequestParam int issueKey) {
         return commentService.getComments(issueKey);
     }
 }
