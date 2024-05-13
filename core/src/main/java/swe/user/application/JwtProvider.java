@@ -1,4 +1,4 @@
-package swe.core.user.application;
+package swe.user.application;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -14,7 +14,7 @@ public class JwtProvider {
   private static final String TOKEN_ISSUER = "cau-swe";
   private static final int DURATION_DAY = 90;
   private static final String encodedSecretKey = "RQYjotA4VyWLZHmvtwMNzM7LTs1JIo3PNBmPKrPyxlw=";
-  public static final String MEMBER_ID_IDENTIFIER = "memberId";
+  private static final String MEMBER_ID_IDENTIFIER = "memberId";
 
   public String createAccessTokenWith(final Long memberId) {
     final Date now = new Date();

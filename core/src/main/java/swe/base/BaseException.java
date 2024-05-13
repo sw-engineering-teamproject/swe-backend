@@ -1,4 +1,4 @@
-package swe.core.base;
+package swe.base;
 
 public class BaseException extends RuntimeException {
 

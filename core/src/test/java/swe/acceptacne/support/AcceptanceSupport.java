@@ -1,4 +1,4 @@
-package swe.core.acceptacne.support;
+package swe.acceptacne.support;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThan;

@@ -1,4 +1,4 @@
-package swe.core.user;
+package swe.user;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 

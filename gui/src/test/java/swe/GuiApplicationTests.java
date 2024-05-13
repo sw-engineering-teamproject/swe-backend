@@ -1,4 +1,4 @@
-package swe.gui;
+package swe;
 
 class GuiApplicationTests {
 

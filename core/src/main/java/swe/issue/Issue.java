@@ -1,4 +1,4 @@
-package swe.core.issue;
+package swe.issue;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -10,8 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
-import swe.core.comment.Comment;
-import swe.core.project.Project;
+import swe.comment.Comment;
+import swe.project.Project;
 
 @Entity
 public class Issue {

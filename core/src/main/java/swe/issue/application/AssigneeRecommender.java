@@ -1,9 +1,9 @@
-package swe.core.issue.application;
+package swe.issue.application;
 
 import java.util.List;
-import swe.core.issue.Issue;
-import swe.core.project.Project;
-import swe.core.user.User;
+import swe.issue.Issue;
+import swe.project.Project;
+import swe.user.User;
 
 public interface AssigneeRecommender {
 

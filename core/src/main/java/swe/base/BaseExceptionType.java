@@ -1,4 +1,4 @@
-package swe.core.base;
+package swe.base;
 
 import org.springframework.http.HttpStatus;
 

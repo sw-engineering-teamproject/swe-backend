@@ -1,8 +1,4 @@
-package swe.core.project;
-
-import static jakarta.persistence.CascadeType.PERSIST;
-import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
+package swe.project;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -13,8 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.List;
-import swe.core.issue.Issue;
-import swe.core.user.User;
+import swe.issue.Issue;
+import swe.user.User;
 
 @Entity
 public class Project {
