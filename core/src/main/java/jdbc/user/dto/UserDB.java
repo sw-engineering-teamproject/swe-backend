@@ -5,5 +5,5 @@ public class UserDB {
     String nickname;
     String id;
     String pw;
-    String authority;
+    String role;
 }

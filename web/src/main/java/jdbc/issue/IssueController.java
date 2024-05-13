@@ -43,21 +43,19 @@ public class IssueController {
     }
 
     //assignee 추천 api
-    public AssigneeInfo recommendAssignee(int issueKey) {
-        return issueService.recommendAssignee(issueKey);
-    }
+//    public AssigneeInfo recommendAssignee(int issueKey) {
+//        return issueService.recommendAssignee(issueKey);
+//    }
 
-    //assignee 지정 api
-    public boolean setAssignee(int issueKey, int userKey) {
-        return issueService.setAssignee(issueKey, userKey);
-    }
 
     //이슈 우선순위 변경 api
+    @PostMapping("/issue/priority")
     public boolean setPriority(int issueKey, String priority) {
         return issueService.setPriority(issueKey, priority);
     }
 
     //이슈 상태변경 api
+    @PostMapping("/issue/status")
     public boolean setStatus(int issueKey, int userKey, String status) {
         return issueService.setStatus(issueKey, userKey, status);
     }
