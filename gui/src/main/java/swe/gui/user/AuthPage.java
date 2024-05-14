@@ -14,9 +14,15 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import swe.user.User;
+import swe.user.application.UserService;
+
 public class AuthPage {
 
     private JFrame authFrame;
+
+    private UserService userService;
+
     public AuthPage(){
         authFrame = new JFrame("login / sign up");
         authFrame.setSize(400, 200);
@@ -68,7 +74,7 @@ public class AuthPage {
             public void actionPerformed(ActionEvent e) {
                 String inputUserId = userId.getText();
                 String inputPassword = new String(password.getPassword());
-                //로그인 서비스
+                //userService.login(inputUserId, inputPassword);
             }
         });
         return loginPanel;
@@ -81,6 +87,14 @@ public class AuthPage {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
+        signupPanel.add(new JLabel("닉네입"), gbc);
+
+        gbc.gridx = 1;
+        JTextField nickname = new JTextField(15);
+        signupPanel.add(nickname, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         signupPanel.add(new JLabel("아이디"), gbc);
 
         gbc.gridx = 1;
@@ -88,7 +102,7 @@ public class AuthPage {
         signupPanel.add(userId, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         signupPanel.add(new JLabel("비밀번호"), gbc);
 
         gbc.gridx = 1;
@@ -96,12 +110,11 @@ public class AuthPage {
         signupPanel.add(password, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
 
         signupPanel.add(new JLabel("authority"), gbc);
 
         gbc.gridx = 1;
-        gbc.gridy = 2;
         String[] authority = { "admin", "PL", "dev", "tester" };
         JComboBox<String> role = new JComboBox<>(authority);
         role.setPreferredSize(new Dimension(150, 25));
@@ -109,7 +122,7 @@ public class AuthPage {
         signupPanel.add(role, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
@@ -121,7 +134,10 @@ public class AuthPage {
             public void actionPerformed(ActionEvent e) {
                 String inputUserId = userId.getText();
                 String inputPassword = new String(password.getPassword());
-                //회원가입 서비스
+                String inputNickname = nickname.getText();
+                String inputRole = role.getSelectedItem().toString();
+//                User user = new User(inputUserId, inputPassword, inputNickname, inputRole);
+                //userService.enroll(user);
             }
         });
         return signupPanel;
