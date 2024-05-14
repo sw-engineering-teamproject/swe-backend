@@ -55,12 +55,23 @@ public class ProjectPage {
 
         // 초기 결과 표시
         updateResultsPanel(projects);
+        JButton createBtn = new JButton();
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(createBtn, gbc);
 
+        createBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new CreateProjectPage();
+            }
+        });
     }
 
     private void updateResultsPanel(JPanel projects) {
-//        projects.removeAll(); // 기존 결과를 지웁니다.
-//
+        projects.removeAll(); // 기존 결과를 지웁니다.
+
 //        List<Project> results = projectService.getProjectList();
 //
 //        if (results.isEmpty()) {
@@ -69,19 +80,19 @@ public class ProjectPage {
 //        } else {
 //            for (Project project : results) {
 //                JButton issueButton = new JButton(project.getName());
-//                issueButton.setSize(1000, 100);
-//                issueButton.addActionListener(new ActionListener() {
+//                projectButton.setSize(1000, 100);
+//                projectButton.addActionListener(new ActionListener() {
 //                    @Override
 //                    public void actionPerformed(ActionEvent e) {
-//                        //프로젝트 페이지 이동
+//                        new IssuePage
 //                    }
 //                });
-//                projects.add(issueButton);
+//                projects.add(projectButton);
 //            }
 //        }
-//
-//        projects.revalidate(); // UI를 업데이트합니다.
-//        projects.repaint();   // UI를 다시 그립니다.
+
+        projects.revalidate(); // UI를 업데이트합니다.
+        projects.repaint();   // UI를 다시 그립니다.
     }
 
 }
