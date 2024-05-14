@@ -3,9 +3,12 @@ package jdbc.user.service;
 import jdbc.user.dto.User;
 import jdbc.user.repository.LoginRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class LoginService {
@@ -21,6 +24,20 @@ public class LoginService {
     public boolean enroll(User user) {
         user.setPw(makeHashcode(user.getPw()));
         return loginRepository.enroll(user);
+    }
+
+    public boolean checkNicknameDuplicate(String nickname) {
+        return loginRepository.checkNicknameDuplicate(nickname);
+    }
+
+    public List<String> getRoles() {
+        List<String> roles = new ArrayList<>();
+        roles.add("admin");
+        roles.add("PL");
+        roles.add("dev");
+        roles.add("tester");
+
+        return roles;
     }
     public String makeHashcode(String str) {
         try {

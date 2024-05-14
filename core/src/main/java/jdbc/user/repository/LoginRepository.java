@@ -26,6 +26,16 @@ public class LoginRepository {
             return key.get(0);
     }
 
+    public boolean checkNicknameDuplicate(String nickname) {
+        String checkSql = "select nickname from user where nickname = ?;";
+        List<String> nicks = jdbcTemplate.query(checkSql, (rs, rowNum) -> {
+            return new String(rs.getString("nickname"));
+        }, nickname);
+
+        return nicks.isEmpty();
+    }
+
+
     public boolean enroll(User user) {
         String enrollSql = "insert into user(nickname, id, pw, role) values(?, ?, ?, ?);";
         try {

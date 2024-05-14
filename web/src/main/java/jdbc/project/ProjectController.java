@@ -19,13 +19,13 @@ public class ProjectController {
     }
 
     //프로젝트 생성 api
-    @PostMapping("/project/enroll")
+    @PostMapping("/projects/create")
     public boolean projectEnroll(@RequestBody Project project) {
         return projectService.projectEnroll(project);
     }
 
     //프로젝트 목록 api
-    @GetMapping("/project/list")
+    @GetMapping("/projects/list")
     public List<ProjectList> getProjectList() {
         return projectService.getProjectList();
     }
