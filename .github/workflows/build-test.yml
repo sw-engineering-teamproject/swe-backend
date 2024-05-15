@@ -27,8 +27,11 @@ jobs:
       - name: Give permission for Gradle
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew clean build
+      - name: Build core module with Gradle
+        run: ./gradlew clean :core:build
+
+      - name: Build web module with Gradle
+        run: ./gradlew clean :web:build
 
       - name: 테스트 결과를 PR 코멘트에 등록
         uses: EnricoMi/publish-unit-test-result-action@v1
