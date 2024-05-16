@@ -1,0 +1,37 @@
+create table user(
+    key int(10) NOT NULL AUTO_INCREMENT,
+    nickname varchar(30) NOT NULL,
+    id varchar(60) NOT NULL,
+    pw varchar(200) NOT NULL,
+    role varchar(20) NOT NULL,
+    primary key(key)
+);
+
+create table project(
+    key int(10) NOT NULL AUTO_INCREMENT,
+    name varchar(40) NOT NULL,
+    reporter varchar(30) NOT NULL,
+    primary key(key)
+);
+
+create table issue(
+    key int(10) NOT NULL AUTO_INCREMENT,
+    title varchar(40) NOT NULL,
+    description text,
+    reporter varchar(30),
+    time timestamp default CURRENT_TIMESTAMP,
+    fixer varchar(30),
+    assignee varchar(30),
+    priority varchar(30),
+    status varchar(30),
+    primary key(key)
+);
+
+create table comment(
+    key int(10) NOT NULL AUTO_INCREMENT,
+    issue_key int(10) NOT NULL,
+    commenter varchar(30) NOT NULL,
+    content text,
+    time timestamp default CURRENT_TIMESTAMP,
+    primary key(key)
+);
