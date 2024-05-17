@@ -2,13 +2,20 @@ package swe.user.domain;
 
 import static swe.user.exception.UserExceptionType.USER_NOT_FOUND;
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import swe.user.User;
 import swe.user.exception.UserException;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-  default User readBy(final Long userId) {
+  Optional<User> findByAccountId(final String accountId);
+
+  default User readById(final Long userId) {
     return findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
+  }
+
+  default User readByAccountId(final String accountId) {
+    return findByAccountId(accountId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
   }
 }
