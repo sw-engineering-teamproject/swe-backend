@@ -12,14 +12,11 @@ import swe.user.dto.UserRegisterRequest;
 public class UserService {
 
   private final UserRepository userRepository;
-  private final JwtProvider jwtProvider;
 
   @Transactional
-  public String register(final UserRegisterRequest request) {
+  public void register(final UserRegisterRequest request) {
     final User user = request.toUser();
-    final User savedUser = userRepository.save(user);
-
-    return jwtProvider.createAccessTokenWith(savedUser.getId());
+    userRepository.save(user);
   }
 
   @Transactional(readOnly = true)

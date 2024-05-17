@@ -29,11 +29,10 @@ class UserServiceTest extends ServiceTest {
     final User expected = registerRequest.toUser();
 
     //when
-    final String accessToken = userService.register(registerRequest);
+    userService.register(registerRequest);
 
     //then
-    final Long userId = jwtProvider.parseMemberId(accessToken);
-    final User savedUser = userRepository.readById(userId);
+    final User savedUser = userRepository.readByAccountId("hong");
 
     assertThat(savedUser)
         .usingRecursiveComparison()
