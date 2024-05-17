@@ -23,7 +23,9 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
-  public void login() {
-
+  public User login(final String accountId, final String password) {
+    final User user = userRepository.readByAccountId(accountId);
+    user.validateUserPassword(password);
+    return user;
   }
 }

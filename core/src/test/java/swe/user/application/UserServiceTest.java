@@ -1,6 +1,7 @@
 package swe.user.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static swe.fixture.UserFixture.unsavedUser;
 import static swe.user.domain.UserRole.TESTER;
 
 import org.junit.jupiter.api.Test;
@@ -33,11 +34,25 @@ class UserServiceTest {
 
     //then
     final Long userId = jwtProvider.parseMemberId(accessToken);
-    final User savedUser = userRepository.readBy(userId);
+    final User savedUser = userRepository.readById(userId);
 
     assertThat(savedUser)
         .usingRecursiveComparison()
         .ignoringFields("id")
         .isEqualTo(expected);
+  }
+
+  @Test
+  void 유저가_로그인한다() {
+    //given
+    final User savedUser = userRepository.save(unsavedUser());
+
+    //when
+    final User loginUser = userService.login(savedUser.getAccountId(), savedUser.getPassword());
+
+    //then
+    assertThat(loginUser)
+        .usingRecursiveComparison()
+        .isEqualTo(savedUser);
   }
 }
