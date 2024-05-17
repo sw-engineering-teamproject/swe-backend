@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import swe.issue.Issue;
-import swe.user.User;
+import swe.user.domain.User;
 
 @Entity
 public class Comment {

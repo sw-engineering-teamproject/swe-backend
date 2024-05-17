@@ -3,7 +3,7 @@ package swe.user.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import swe.user.User;
+import swe.user.domain.User;
 import swe.user.domain.UserRepository;
 import swe.user.dto.UserRegisterRequest;
 

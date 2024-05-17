@@ -1,6 +1,6 @@
 package swe.fixture;
 
-import swe.user.User;
+import swe.user.domain.User;
 import swe.user.domain.UserRole;
 
 public class UserFixture {

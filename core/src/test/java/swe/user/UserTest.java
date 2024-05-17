@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import swe.user.domain.User;
 import swe.user.exception.UserException;
 import swe.user.exception.UserExceptionType;
 

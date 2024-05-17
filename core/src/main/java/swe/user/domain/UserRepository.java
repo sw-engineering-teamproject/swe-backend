@@ -4,7 +4,6 @@ import static swe.user.exception.UserExceptionType.USER_NOT_FOUND;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import swe.user.User;
 import swe.user.exception.UserException;
 
 public interface UserRepository extends JpaRepository<User, Long> {

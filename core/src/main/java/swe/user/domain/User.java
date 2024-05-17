@@ -1,4 +1,4 @@
-package swe.user;
+package swe.user.domain;
 
 import static lombok.AccessLevel.PROTECTED;
 import static swe.user.exception.UserExceptionType.USER_PASSWORD_NOT_EQUAL;
@@ -16,7 +16,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import swe.user.domain.UserRole;
 import swe.user.exception.UserException;
 
 @Entity
