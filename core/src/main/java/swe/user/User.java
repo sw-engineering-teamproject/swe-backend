@@ -3,6 +3,7 @@ package swe.user;
 import static lombok.AccessLevel.PROTECTED;
 import static swe.user.exception.UserExceptionType.USER_PASSWORD_NOT_EQUAL;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,6 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,13 +29,20 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true, nullable = false)
+  @NotBlank
   private String accountId;
 
+  @Column(nullable = false)
+  @NotBlank
   private String password;
 
+  @Column(unique = true, nullable = false)
+  @NotBlank
   private String nickName;
 
   @Enumerated(value = EnumType.STRING)
+  @NotNull
   private UserRole userRole;
 
   @Builder
