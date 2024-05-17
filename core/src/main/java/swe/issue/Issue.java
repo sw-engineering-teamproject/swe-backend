@@ -7,7 +7,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import swe.project.Project;
+import swe.project.domain.Project;
 
 @Entity
 public class Issue {
