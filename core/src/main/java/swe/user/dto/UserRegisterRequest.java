@@ -1,13 +1,13 @@
 package swe.user.dto;
 
-import swe.user.User;
+import swe.user.domain.User;
 import swe.user.domain.UserRole;
 
-public record UserRegisterRequest(String id, UserRole role, String nickName, String password) {
+public record UserRegisterRequest(String accountId, UserRole role, String nickName, String password) {
 
   public User toUser(){
     return User.builder()
-        .accountId(id)
+        .accountId(accountId)
         .userRole(role)
         .nickName(nickName)
         .password(password)
