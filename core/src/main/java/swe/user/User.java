@@ -1,6 +1,7 @@
 package swe.user;
 
 import static lombok.AccessLevel.PROTECTED;
+import static swe.user.exception.UserExceptionType.USER_PASSWORD_NOT_EQUAL;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,6 +14,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import swe.user.domain.UserRole;
+import swe.user.exception.UserException;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
@@ -41,5 +43,11 @@ public class User {
     this.password = password;
     this.nickName = nickName;
     this.userRole = userRole;
+  }
+
+  public void validateUserPassword(final String password) {
+    if (!this.password.equals(password)) {
+      throw new UserException(USER_PASSWORD_NOT_EQUAL);
+    }
   }
 }
