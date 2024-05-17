@@ -6,13 +6,12 @@ import static swe.user.domain.UserRole.TESTER;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import swe.support.ServiceTest;
 import swe.user.User;
 import swe.user.domain.UserRepository;
 import swe.user.dto.UserRegisterRequest;
 
-@SpringBootTest
-class UserServiceTest {
+class UserServiceTest extends ServiceTest {
 
   @Autowired
   private UserService userService;
