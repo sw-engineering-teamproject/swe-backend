@@ -7,6 +7,7 @@ import static lombok.AccessLevel.PROTECTED;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class Comment {
   private Long id;
 
   @ManyToOne(fetch = LAZY)
+  @JoinColumn
   @NotNull
   private Issue issue;
 

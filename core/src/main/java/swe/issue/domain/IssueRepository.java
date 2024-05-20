@@ -2,6 +2,7 @@ package swe.issue.domain;
 
 import static swe.issue.exception.IssueExceptionType.ISSUE_NOT_FOUND;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,13 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
   default Issue readByIdWithComments(final Long id) {
     return findByIdWithComments(id).orElseThrow(() -> new IssueException(ISSUE_NOT_FOUND));
   }
+
+  @Query("""
+      select i
+      from Issue i
+      join fetch i.reporter
+      left join fetch i.assignee
+      where i.projectId = :projectId
+      """)
+  List<Issue> findByProjectIdWithReporterAssignee(final Long projectId);
 }

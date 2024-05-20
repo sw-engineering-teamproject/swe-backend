@@ -20,7 +20,7 @@ class IssueTest {
     final Issue actual = Issue.createIssue("title", "description", 10L, reporter);
 
     //then
-    final Issue expected = new Issue("title", "description", 10L, reporter.getId());
+    final Issue expected = new Issue("title", "description", 10L, reporter);
     final Comment expectedComment
         = createInitialProjectComment(expected, reporter.getId(), reporter.getNickname());
 
