@@ -1,0 +1,4 @@
+FROM openjdk:17 as build
+ARG JAR_FILE=build/libs/web.jar
+COPY ${JAR_FILE} web.jar
+ENTRYPOINT ["java","-Dspring.profiles.active=prod","-jar","/web.jar"]
