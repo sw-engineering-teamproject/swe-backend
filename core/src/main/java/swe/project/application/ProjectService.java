@@ -31,6 +31,7 @@ public class ProjectService {
     return projectRepository.save(project).getId();
   }
 
+  @Transactional(readOnly = true)
   public List<ProjectOverviewResponse> readAllProject() {
     final List<Project> projects = projectRepository.findAll();
     final Set<Long> reporterIds = projects.stream()
