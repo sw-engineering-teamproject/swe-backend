@@ -23,6 +23,12 @@ public class Project {
 
   private Long reporterId;
 
+  public Project(final Long id, final String title, final Long reporterId) {
+    this.id = id;
+    this.title = title;
+    this.reporterId = reporterId;
+  }
+
   @Builder
   public Project(final String title, final Long reporterId) {
     this.title = title;

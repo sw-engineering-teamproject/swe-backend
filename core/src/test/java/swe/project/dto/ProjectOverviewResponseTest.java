@@ -15,14 +15,14 @@ class ProjectOverviewResponseTest {
     final User user1 = new User(10L, "account", "password", "user1", UserRole.ADMIN);
     final User user2 = new User(11L, "account", "password", "user2", UserRole.ADMIN);
 
-    final Project project1 = new Project("project1", user1.getId());
-    final Project project2 = new Project("project2", user1.getId());
-    final Project project3 = new Project("project3", user2.getId());
+    final Project project1 = new Project(1L, "project1", user1.getId());
+    final Project project2 = new Project(2L, "project2", user1.getId());
+    final Project project3 = new Project(3L, "project3", user2.getId());
 
     final List<ProjectOverviewResponse> expected = List.of(
-        new ProjectOverviewResponse("project1", "user1"),
-        new ProjectOverviewResponse("project2", "user1"),
-        new ProjectOverviewResponse("project3", "user2")
+        new ProjectOverviewResponse(1L, "project1", "user1"),
+        new ProjectOverviewResponse(2L, "project2", "user1"),
+        new ProjectOverviewResponse(3L, "project3", "user2")
     );
 
     final List<ProjectOverviewResponse> actual = ProjectOverviewResponse.createList(
