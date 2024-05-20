@@ -1,7 +1,7 @@
 package swe.issue.application;
 
 import java.util.List;
-import swe.issue.Issue;
+import swe.issue.domain.Issue;
 import swe.project.domain.Project;
 import swe.user.domain.User;
 
