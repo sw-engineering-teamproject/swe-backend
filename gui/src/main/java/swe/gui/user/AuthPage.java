@@ -14,16 +14,15 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import swe.user.User;
+import lombok.RequiredArgsConstructor;
 import swe.user.application.UserService;
+import swe.user.domain.UserRole;
+import swe.user.dto.UserRegisterRequest;
 
 public class AuthPage {
 
-    private JFrame authFrame;
-
-    private UserService userService;
-
-    public AuthPage(){
+    private final JFrame authFrame;
+    public AuthPage(UserService userService) {
         authFrame = new JFrame("login / sign up");
         authFrame.setSize(400, 200);
         authFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -136,8 +135,14 @@ public class AuthPage {
                 String inputPassword = new String(password.getPassword());
                 String inputNickname = nickname.getText();
                 String inputRole = role.getSelectedItem().toString();
-//                User user = new User(inputUserId, inputPassword, inputNickname, inputRole);
-                //userService.enroll(user);
+                UserRole userRole = switch (inputRole) {
+                    case "admin" -> UserRole.ADMIN;
+                    case "PL" -> UserRole.PL;
+                    case "tester" -> UserRole.TESTER;
+                    default -> UserRole.DEV;
+                };
+                UserRegisterRequest userRegisterRequest = new UserRegisterRequest(inputUserId, userRole, inputNickname, inputPassword);
+                userService.register(userRegisterRequest);
             }
         });
         return signupPanel;
