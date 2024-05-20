@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import swe.project.domain.Project;
 import swe.user.domain.User;
 
-public record ProjectOverviewResponse(String title, String reporter) {
+public record ProjectOverviewResponse(String title, String reporterName) {
 
   public static List<ProjectOverviewResponse> createList(
       final List<Project> projects, final List<User> users
