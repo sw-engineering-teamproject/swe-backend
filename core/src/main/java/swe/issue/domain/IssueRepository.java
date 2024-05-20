@@ -22,5 +22,12 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     return findByIdWithComments(id).orElseThrow(() -> new IssueException(ISSUE_NOT_FOUND));
   }
 
-  List<Issue> findByProjectId(final Long projectId);
+  @Query("""
+      select i
+      from Issue i
+      join fetch i.reporter
+      left join fetch i.assignee
+      where i.projectId = :projectId
+      """)
+  List<Issue> findByProjectIdWithReporterAssignee(final Long projectId);
 }
