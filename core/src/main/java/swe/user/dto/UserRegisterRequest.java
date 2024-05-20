@@ -9,7 +9,7 @@ public record UserRegisterRequest(String accountId, UserRole role, String nickNa
     return User.builder()
         .accountId(accountId)
         .userRole(role)
-        .nickName(nickName)
+        .nickname(nickName)
         .password(password)
         .build();
   }

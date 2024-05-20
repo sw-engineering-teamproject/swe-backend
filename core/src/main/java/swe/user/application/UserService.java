@@ -28,6 +28,6 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public Boolean checkDuplicateNickname(final String nickName) {
-    return userRepository.existsByNickName(nickName);
+    return userRepository.existsByNickname(nickName);
   }
 }

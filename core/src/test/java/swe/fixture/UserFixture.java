@@ -10,7 +10,7 @@ public class UserFixture {
 
   public static User unsavedUser() {
     return User.builder()
-        .nickName("닉네임")
+        .nickname("닉네임")
         .userRole(UserRole.PL)
         .accountId(USER_ACCOUNT_ID)
         .password(PASSWORD)
