@@ -29,6 +29,6 @@ public class IssueService {
 
   @Transactional(readOnly = true)
   public List<Issue> findIssues(final Long projectId) {
-    return issueRepository.findByProjectId(projectId);
+    return issueRepository.findByProjectIdWithReporterAssignee(projectId);
   }
 }
