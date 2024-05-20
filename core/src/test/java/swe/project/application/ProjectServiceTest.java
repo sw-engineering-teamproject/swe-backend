@@ -47,7 +47,7 @@ class ProjectServiceTest extends ServiceTest {
     final User user = userRepository.save(unsavedUser());
     final Project project = projectRepository.save(new Project("title", user.getId()));
     final List<ProjectOverviewResponse> expected = List.of(
-        new ProjectOverviewResponse(project.getTitle(), user.getNickName())
+        new ProjectOverviewResponse(project.getTitle(), user.getNickname())
     );
 
     //when

@@ -64,7 +64,7 @@ class UserServiceTest extends ServiceTest {
       final User savedUser = userRepository.save(unsavedUser());
 
       //when
-      final Boolean actual = userService.checkDuplicateNickname(savedUser.getNickName());
+      final Boolean actual = userService.checkDuplicateNickname(savedUser.getNickname());
 
       //then
       assertThat(actual)

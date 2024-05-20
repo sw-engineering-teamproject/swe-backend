@@ -5,8 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import swe.dto.DuplicateNickNameRequest;
-import swe.dto.DuplicateNickNameResponse;
+import swe.dto.DuplicateNicknameRequest;
+import swe.dto.DuplicateNicknameResponse;
 import swe.dto.LoginResponse;
 import swe.dto.UserLoginRequest;
 import swe.user.application.JwtProvider;
@@ -34,10 +34,10 @@ public class UserController {
   }
 
   @PostMapping("/users/nickname/check")
-  public ResponseEntity<DuplicateNickNameResponse> checkDuplicateNickName(
-      @RequestBody final DuplicateNickNameRequest request
+  public ResponseEntity<DuplicateNicknameResponse> checkDuplicateNickName(
+      @RequestBody final DuplicateNicknameRequest request
   ) {
-    final Boolean isDuplicated = userService.checkDuplicateNickname(request.nickName());
-    return ResponseEntity.ok(new DuplicateNickNameResponse(isDuplicated));
+    final Boolean isDuplicated = userService.checkDuplicateNickname(request.nickname());
+    return ResponseEntity.ok(new DuplicateNicknameResponse(isDuplicated));
   }
 }

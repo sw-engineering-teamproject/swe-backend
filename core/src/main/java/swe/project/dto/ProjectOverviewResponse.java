@@ -12,7 +12,7 @@ public record ProjectOverviewResponse(String title, String reporterName) {
       final List<Project> projects, final List<User> users
   ) {
     final Map<Long, String> idUserNameMap = users.stream()
-        .collect(Collectors.toMap(User::getId, User::getNickName));
+        .collect(Collectors.toMap(User::getId, User::getNickname));
 
     return projects.stream()
         .map(project -> new ProjectOverviewResponse(
