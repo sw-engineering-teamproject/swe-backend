@@ -22,7 +22,8 @@ import swe.user.dto.UserRegisterRequest;
 public class AuthPage {
 
     private final JFrame authFrame;
-    public AuthPage(UserService userService) {
+    //private final UserService userService;
+    public AuthPage() {
         authFrame = new JFrame("login / sign up");
         authFrame.setSize(400, 200);
         authFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -142,7 +143,7 @@ public class AuthPage {
                     default -> UserRole.DEV;
                 };
                 UserRegisterRequest userRegisterRequest = new UserRegisterRequest(inputUserId, userRole, inputNickname, inputPassword);
-                userService.register(userRegisterRequest);
+                //userService.register(userRegisterRequest);
             }
         });
         return signupPanel;

@@ -9,7 +9,7 @@ import swe.user.application.UserService;
 public class GuiApplication {
 
   public static void main(String[] args) {
-    new AuthPage(userService);
+    new AuthPage();
     SpringApplication.run(GuiApplication.class, args);
   }
 
