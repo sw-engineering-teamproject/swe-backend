@@ -2,6 +2,7 @@ package swe.dto;
 
 import java.util.List;
 import swe.issue.domain.Issue;
+import swe.user.domain.User;
 
 public record IssueResponse(
     Long id, String title, String reporterName, String assigneeName, String issueStatus
@@ -12,7 +13,7 @@ public record IssueResponse(
         issue.getId(),
         issue.getTitle(),
         issue.getReporter().getNickname(),
-        issue.getAssignee().getNickname(),
+        issue.getAssignee().map(User::getNickname).orElse(null),
         issue.getStatus().name()
     );
   }
