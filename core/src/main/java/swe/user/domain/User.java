@@ -44,6 +44,17 @@ public class User {
   @NotNull
   private UserRole userRole;
 
+  public User(
+      final Long id, final String accountId, final String password, final String nickName,
+      final UserRole userRole
+  ) {
+    this.id = id;
+    this.accountId = accountId;
+    this.password = password;
+    this.nickName = nickName;
+    this.userRole = userRole;
+  }
+
   @Builder
   public User(
       final String accountId, final String password, final String nickName, final UserRole userRole
