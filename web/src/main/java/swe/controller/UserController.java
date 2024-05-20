@@ -44,9 +44,7 @@ public class UserController {
   }
 
   @GetMapping("/users/role")
-  public ResponseEntity<UserRoleResponse> readAllUserRoles(
-      @RequestBody final DuplicateNicknameRequest request
-  ) {
+  public ResponseEntity<UserRoleResponse> readAllUserRoles() {
     final var allUserRoles = userService.getAllUserRoles();
     return ResponseEntity.ok(UserRoleResponse.from(allUserRoles));
   }
