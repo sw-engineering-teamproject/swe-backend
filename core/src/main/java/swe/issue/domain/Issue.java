@@ -3,6 +3,7 @@ package swe.issue.domain;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
+import static swe.issue.domain.Comment.createInitialProjectComment;
 import static swe.issue.domain.IssuePriority.MAJOR;
 import static swe.issue.domain.IssueStatus.NEW;
 
@@ -14,12 +15,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import swe.user.domain.User;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = PROTECTED)
 public class Issue {
 
@@ -37,10 +43,8 @@ public class Issue {
   @NotNull
   private Long reporterId;
 
-  @NotNull
   private Long fixerId;
 
-  @NotNull
   private Long assigneeId;
 
   private LocalDateTime reportedDate;
@@ -55,11 +59,27 @@ public class Issue {
   private List<Comment> comments = new ArrayList<>();
 
   @Builder
-  public Issue(final String title, final String description, final Long projectId) {
+  public Issue(
+      final String title, final String description, final Long projectId, final Long reporterId
+  ) {
     this.title = title;
     this.description = description;
     this.projectId = projectId;
+    this.reporterId = reporterId;
     this.status = NEW;
     this.priority = MAJOR;
+    this.reportedDate = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.SECONDS);
+  }
+
+  public static Issue createIssue(
+      final String title, final String description, final Long projectId, final User reporter
+  ) {
+    final Issue issue = new Issue(title, description, projectId, reporter.getId());
+    issue.addComment(createInitialProjectComment(issue, reporter.getId(), reporter.getNickname()));
+    return issue;
+  }
+
+  public void addComment(final Comment comment) {
+    comments.add(comment);
   }
 }
