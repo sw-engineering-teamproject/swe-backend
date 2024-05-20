@@ -2,6 +2,7 @@ package swe.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import swe.dto.DuplicateNicknameRequest;
 import swe.dto.DuplicateNicknameResponse;
 import swe.dto.LoginResponse;
 import swe.dto.UserLoginRequest;
+import swe.dto.UserRoleResponse;
 import swe.user.application.JwtProvider;
 import swe.user.application.UserService;
 import swe.user.dto.UserRegisterRequest;
@@ -39,5 +41,13 @@ public class UserController {
   ) {
     final Boolean isDuplicated = userService.checkDuplicateNickname(request.nickname());
     return ResponseEntity.ok(new DuplicateNicknameResponse(isDuplicated));
+  }
+
+  @GetMapping("/users/role")
+  public ResponseEntity<UserRoleResponse> readAllUserRoles(
+      @RequestBody final DuplicateNicknameRequest request
+  ) {
+    final var allUserRoles = userService.getAllUserRoles();
+    return ResponseEntity.ok(UserRoleResponse.from(allUserRoles));
   }
 }
