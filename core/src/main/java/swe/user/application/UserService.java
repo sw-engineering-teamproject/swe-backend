@@ -25,4 +25,9 @@ public class UserService {
     user.validateUserPassword(password);
     return user;
   }
+
+  @Transactional(readOnly = true)
+  public Boolean checkDuplicateNickname(final String nickName) {
+    return userRepository.existsByNickName(nickName);
+  }
 }
