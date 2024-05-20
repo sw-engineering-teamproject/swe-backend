@@ -1,6 +1,7 @@
 package swe.issue.domain;
 
 import static jakarta.persistence.CascadeType.PERSIST;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 import static swe.issue.domain.Comment.createInitialProjectComment;
@@ -12,6 +13,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -40,12 +42,14 @@ public class Issue {
   @NotNull
   private Long projectId;
 
+  @ManyToOne(fetch = LAZY)
   @NotNull
-  private Long reporterId;
+  private User reporter;
 
   private Long fixerId;
 
-  private Long assigneeId;
+  @ManyToOne(fetch = LAZY)
+  private User assignee;
 
   private LocalDateTime reportedDate;
 
@@ -60,12 +64,12 @@ public class Issue {
 
   @Builder
   public Issue(
-      final String title, final String description, final Long projectId, final Long reporterId
+      final String title, final String description, final Long projectId, final User reporter
   ) {
     this.title = title;
     this.description = description;
     this.projectId = projectId;
-    this.reporterId = reporterId;
+    this.reporter = reporter;
     this.status = NEW;
     this.priority = MAJOR;
     this.reportedDate = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.SECONDS);
@@ -74,7 +78,7 @@ public class Issue {
   public static Issue createIssue(
       final String title, final String description, final Long projectId, final User reporter
   ) {
-    final Issue issue = new Issue(title, description, projectId, reporter.getId());
+    final Issue issue = new Issue(title, description, projectId, reporter);
     issue.addComment(createInitialProjectComment(issue, reporter.getId(), reporter.getNickname()));
     return issue;
   }
