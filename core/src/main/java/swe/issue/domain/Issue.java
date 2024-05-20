@@ -21,6 +21,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -85,5 +86,9 @@ public class Issue {
 
   public void addComment(final Comment comment) {
     comments.add(comment);
+  }
+
+  public Optional<User> getAssignee() {
+    return Optional.ofNullable(assignee);
   }
 }
