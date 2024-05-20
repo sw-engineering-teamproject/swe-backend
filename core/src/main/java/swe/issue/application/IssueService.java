@@ -1,5 +1,6 @@
 package swe.issue.application;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +25,10 @@ public class IssueService {
     projectRepository.validateProjectExists(request.projectId());
     final Issue newIssue = request.toIssue(reporter);
     return issueRepository.save(newIssue).getId();
+  }
+
+  @Transactional(readOnly = true)
+  public List<Issue> findIssues(final Long projectId) {
+    return issueRepository.findByProjectId(projectId);
   }
 }

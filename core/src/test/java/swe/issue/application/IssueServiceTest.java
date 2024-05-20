@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static swe.fixture.ProjectFixture.unsavedProject;
 import static swe.fixture.UserFixture.unsavedUser;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import swe.issue.domain.Issue;
@@ -53,5 +54,28 @@ class IssueServiceTest extends ServiceTest {
         .isEqualTo(expected);
     assertThat(actual.getComments().size())
         .isEqualTo(1);
+  }
+
+  @Test
+  void 이슈를_조회한다() {
+    //given
+    final User user = userRepository.save(unsavedUser());
+    final Project project = projectRepository.save(unsavedProject(user.getId()));
+    final IssueCreateRequest request
+        = new IssueCreateRequest("issue title", "new issue", project.getId());
+    issueService.createIssue(user.getId(), request);
+    issueService.createIssue(user.getId(), request);
+
+    //when
+    final List<Issue> actual = issueService.findIssues(project.getId());
+
+    //then
+    final List<Issue> expected = List.of(
+        new Issue(request.title(), request.description(), request.projectId(), user.getId()),
+        new Issue(request.title(), request.description(), request.projectId(), user.getId())
+    );
+    assertThat(actual)
+        .usingRecursiveFieldByFieldElementComparatorIgnoringFields("reportedDate", "id", "comments")
+        .containsExactlyInAnyOrderElementsOf(expected);
   }
 }
