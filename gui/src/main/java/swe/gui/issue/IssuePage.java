@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import swe.issue.Issue;
+import swe.issue.domain.Issue;
 
 public class IssuePage {
     private JPanel resultsPanel;

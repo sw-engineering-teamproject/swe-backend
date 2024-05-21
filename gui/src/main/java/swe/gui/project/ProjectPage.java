@@ -15,10 +15,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import swe.project.Project;
+import org.springframework.context.ApplicationContext;
+import swe.gui.issue.IssuePage;
+import swe.project.application.ProjectService;
+import swe.project.domain.Project;
+import swe.project.dto.ProjectOverviewResponse;
 
 public class ProjectPage {
-    public ProjectPage() {
+    private final ProjectService projectService;
+    private final ApplicationContext applicationContext;
+    public ProjectPage(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        this.projectService = applicationContext.getBean(ProjectService.class);
 
         JFrame frame = new JFrame("Project Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -54,7 +62,7 @@ public class ProjectPage {
         panel.add(scrollPane, gbc);
 
         // 초기 결과 표시
-        updateResultsPanel(projects);
+        updateResultsPanel(projects, frame);
         JButton createBtn = new JButton();
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -64,35 +72,36 @@ public class ProjectPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new CreateProjectPage();
+                new CreateProjectPage(applicationContext);
             }
         });
     }
 
-    private void updateResultsPanel(JPanel projects) {
-        projects.removeAll(); // 기존 결과를 지웁니다.
+    private void updateResultsPanel(JPanel projects, JFrame frame) {
+        projects.removeAll(); // 기존 결과를 지움.
 
-//        List<Project> results = projectService.getProjectList();
-//
-//        if (results.isEmpty()) {
-//            JLabel noResultsLabel = new JLabel("No results found.");
-//            projects.add(noResultsLabel);
-//        } else {
-//            for (Project project : results) {
-//                JButton issueButton = new JButton(project.getName());
-//                projectButton.setSize(1000, 100);
-//                projectButton.addActionListener(new ActionListener() {
-//                    @Override
-//                    public void actionPerformed(ActionEvent e) {
-//                        new IssuePage
-//                    }
-//                });
-//                projects.add(projectButton);
-//            }
-//        }
+        List<ProjectOverviewResponse> results = projectService.readAllProject();
 
-        projects.revalidate(); // UI를 업데이트합니다.
-        projects.repaint();   // UI를 다시 그립니다.
+        if (results.isEmpty()) {
+            JLabel noResultsLabel = new JLabel("No results found.");
+            projects.add(noResultsLabel);
+        } else {
+            for (ProjectOverviewResponse project : results) {
+                JButton projectButton = new JButton(project.title());
+                projectButton.setSize(1000, 100);
+                projectButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        frame.dispose();
+                        new IssuePage();
+                    }
+                });
+                projects.add(projectButton);
+            }
+        }
+
+        projects.revalidate(); // UI를 업데이트.
+        projects.repaint();   // UI를 다시 그림.
     }
 
 }

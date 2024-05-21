@@ -11,10 +11,17 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import org.springframework.context.ApplicationContext;
+import swe.project.application.ProjectService;
+import swe.project.domain.Project;
 
 public class CreateProjectPage {
+    private final ApplicationContext applicationContext;
+    private final ProjectService projectService;
 
-    public CreateProjectPage() {
+    public CreateProjectPage(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        this.projectService = applicationContext.getBean(ProjectService.class);
         // 폼 구성
         JFrame frame = new JFrame("New Project");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -76,10 +83,8 @@ public class CreateProjectPage {
                         JOptionPane.ERROR_MESSAGE
                     );
                 } else {
-                    // Issue 저장
-                    //Project project = new Project(title, reporter);
-
-                    //projectService.projectEnroll(project);
+                    //수정 예정
+                    projectService.createProject(title, 1L);
                     JOptionPane.showMessageDialog(
                         frame,
                         "Project created successfully!",
@@ -87,7 +92,7 @@ public class CreateProjectPage {
                         JOptionPane.INFORMATION_MESSAGE
                     );
                     frame.dispose(); // 폼 닫기
-                    new ProjectPage();
+                    new ProjectPage(applicationContext);
                 }
             }
         });

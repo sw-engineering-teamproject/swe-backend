@@ -19,7 +19,9 @@ public class UserService {
   @Transactional
   public void register(final UserRegisterRequest request) {
     final User user = request.toUser();
-    userRepository.save(user);
+    System.out.println("12");
+    System.out.println(userRepository.save(user).getNickname());
+
   }
 
   @Transactional(readOnly = true)

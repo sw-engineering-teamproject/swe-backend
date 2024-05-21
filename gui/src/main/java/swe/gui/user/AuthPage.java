@@ -15,15 +15,21 @@ import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
+import swe.gui.project.ProjectPage;
 import swe.user.application.UserService;
+import swe.user.domain.User;
 import swe.user.domain.UserRole;
 import swe.user.dto.UserRegisterRequest;
 
 public class AuthPage {
 
     private final JFrame authFrame;
-    //private final UserService userService;
-    public AuthPage() {
+    private final UserService userService;
+    private final ApplicationContext applicationContext;
+    public AuthPage(ApplicationContext applicationContext){
+        this.applicationContext = applicationContext;
+        this.userService = applicationContext.getBean(UserService.class);
         authFrame = new JFrame("login / sign up");
         authFrame.setSize(400, 200);
         authFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,7 +46,6 @@ public class AuthPage {
         authFrame.add(tabbedPane);
         authFrame.setVisible(true);
     }
-
     private JPanel createLoginPanel() {
         JPanel loginPanel = new JPanel();
         loginPanel.setLayout(new GridBagLayout());
@@ -74,7 +79,11 @@ public class AuthPage {
             public void actionPerformed(ActionEvent e) {
                 String inputUserId = userId.getText();
                 String inputPassword = new String(password.getPassword());
-                //userService.login(inputUserId, inputPassword);
+                userService.login(inputUserId, inputPassword);
+
+                //서비스가 success라면
+                authFrame.dispose();
+                new ProjectPage(applicationContext);
             }
         });
         return loginPanel;
@@ -143,7 +152,8 @@ public class AuthPage {
                     default -> UserRole.DEV;
                 };
                 UserRegisterRequest userRegisterRequest = new UserRegisterRequest(inputUserId, userRole, inputNickname, inputPassword);
-                //userService.register(userRegisterRequest);
+                userService.register(userRegisterRequest);
+                System.out.println(userRegisterRequest.toUser().getId()+" "+userRegisterRequest.toUser().getAccountId()+" "+userRegisterRequest.toUser().getPassword()+" "+userRegisterRequest.toUser().getNickname()+" "+userRegisterRequest.toUser().getUserRole());
             }
         });
         return signupPanel;
