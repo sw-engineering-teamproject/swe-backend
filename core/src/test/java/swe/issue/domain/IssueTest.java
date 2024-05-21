@@ -2,20 +2,20 @@ package swe.issue.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static swe.fixture.IssueFixture.id가_없는_Issue;
+import static swe.fixture.UserFixture.id가_있는_유저;
 import static swe.issue.domain.Comment.createInitialProjectComment;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import swe.user.domain.User;
-import swe.user.domain.UserRole;
 
 class IssueTest {
 
   @Test
   void 이슈를_생성하면_comment도_등록된다() {
     //given
-    final User reporter
-        = new User(1L, "accountId", "password", "nickName", UserRole.PL);
+    final User reporter = id가_있는_유저();
 
     //when
     final Issue actual = Issue.createIssue("title", "description", 10L, reporter);
@@ -39,15 +39,14 @@ class IssueTest {
   @Test
   void 이슈의_reporter의_Id가_동일한지_파악한다() {
     //given
-    final User reporter
-        = new User(1L, "accountId", "password", "nickName", UserRole.PL);
-    final Issue actual = Issue.createIssue("title", "description", 10L, reporter);
+    final User reporter = id가_있는_유저();
+    final Issue actual = id가_없는_Issue(reporter, 10L);
 
     //when, then
     assertAll(
-        () -> assertThat(actual.isEqualReporterId(1L))
+        () -> assertThat(actual.isEqualReporterId(reporter.getId()))
             .isTrue(),
-        () -> assertThat(actual.isEqualAssigneeId(3L))
+        () -> assertThat(actual.isEqualAssigneeId(reporter.getId() + 1))
             .isFalse()
     );
   }
@@ -58,16 +57,15 @@ class IssueTest {
     @Test
     void 이슈의_assignee가_있는경우_id를_비교한다() {
       //given
-      final User reporter
-          = new User(1L, "accountId", "password", "nickName", UserRole.PL);
-      final Issue actual = Issue.createIssue("title", "description", 10L, reporter);
+      final User reporter = id가_있는_유저();
+      final Issue actual = id가_없는_Issue(reporter, 10L);
       actual.assignAssignee(reporter);
 
       //when, then
       assertAll(
-          () -> assertThat(actual.isEqualAssigneeId(1L))
+          () -> assertThat(actual.isEqualAssigneeId(reporter.getId()))
               .isTrue(),
-          () -> assertThat(actual.isEqualAssigneeId(3L))
+          () -> assertThat(actual.isEqualAssigneeId(reporter.getId() + 1))
               .isFalse()
       );
     }
@@ -75,15 +73,14 @@ class IssueTest {
     @Test
     void 이슈의_assignee가_없는경우_false를_반환한다() {
       //given
-      final User reporter
-          = new User(1L, "accountId", "password", "nickName", UserRole.PL);
-      final Issue actual = Issue.createIssue("title", "description", 10L, reporter);
+      final User reporter = id가_있는_유저();
+      final Issue actual = id가_없는_Issue(reporter, 10L);
 
       //when, then
       assertAll(
-          () -> assertThat(actual.isEqualAssigneeId(1L))
+          () -> assertThat(actual.isEqualAssigneeId(reporter.getId()))
               .isFalse(),
-          () -> assertThat(actual.isEqualAssigneeId(3L))
+          () -> assertThat(actual.isEqualAssigneeId(reporter.getId() + 1))
               .isFalse()
       );
     }
@@ -92,9 +89,8 @@ class IssueTest {
   @Test
   void 이슈의_상태가_동일한지_파악한다() {
     //given
-    final User reporter
-        = new User(1L, "accountId", "password", "nickName", UserRole.PL);
-    final Issue actual = Issue.createIssue("title", "description", 10L, reporter);
+    final User reporter = id가_있는_유저();
+    final Issue actual = id가_없는_Issue(reporter, 10L);
 
     //when, then
     assertAll(
