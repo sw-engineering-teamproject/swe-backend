@@ -1,7 +1,7 @@
 package swe.project.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static swe.fixture.UserFixture.unsavedUser;
+import static swe.fixture.UserFixture.id가_없는_유저;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ class ProjectServiceTest extends ServiceTest {
   @Test
   void 정상적으로_프로젝트를_생성한다() {
     //given
-    final User user = userRepository.save(unsavedUser());
+    final User user = userRepository.save(id가_없는_유저());
 
     //when
     final Long projectId = projectService.createProject("title", user.getId());
@@ -44,7 +44,7 @@ class ProjectServiceTest extends ServiceTest {
   @Test
   void 정상적으로_프로젝트를_조회한다() {
     //given
-    final User user = userRepository.save(unsavedUser());
+    final User user = userRepository.save(id가_없는_유저());
     final Project project = projectRepository.save(new Project("title", user.getId()));
     final List<ProjectOverviewResponse> expected = List.of(
         new ProjectOverviewResponse(project.getId(), project.getTitle(), user.getNickname())
