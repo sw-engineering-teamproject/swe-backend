@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import swe.gui.issue.IssuePage;
+import swe.gui.project.ProjectPage;
 import swe.gui.user.AuthPage;
 import swe.user.application.UserService;
 

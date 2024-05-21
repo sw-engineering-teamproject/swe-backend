@@ -12,11 +12,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import org.springframework.context.ApplicationContext;
+import swe.issue.application.IssueService;
+import swe.issue.domain.Issue;
+import swe.issue.dto.IssueCreateRequest;
 
 public class CreateIssuePage {
+    private final ApplicationContext applicationContext;
 
-    //IssueService issueService;
-    public CreateIssuePage() {
+    private final IssueService issueService;
+    public CreateIssuePage(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        this.issueService = applicationContext.getBean(IssueService.class);
         JFrame frame = new JFrame("New Issue");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(500, 400);
@@ -64,8 +71,8 @@ public class CreateIssuePage {
                         frame, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE
                     );
                 } else {
-                    //Issue issue = new Issue(title, description);
-                    //issueService.issueEnroll(issue);
+                    IssueCreateRequest issueCreateRequest = new IssueCreateRequest(title, description, 1L);
+                    issueService.createIssue(1L, issueCreateRequest);
                     JOptionPane.showMessageDialog(
                         frame,
                         "Issue created successfully!",
@@ -73,7 +80,7 @@ public class CreateIssuePage {
                         JOptionPane.INFORMATION_MESSAGE
                     );
                     frame.dispose();
-                    new IssuePage();
+                    new IssuePage(applicationContext);
                 }
             }
         });

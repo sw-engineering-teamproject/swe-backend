@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,14 +16,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import org.springframework.context.ApplicationContext;
+import swe.issue.application.IssueService;
 import swe.issue.domain.Issue;
 
 public class IssuePage {
     private JPanel resultsPanel;
     private JComboBox<String> searchCriteriaComboBox; // 검색 기준 선택용
     private JTextField searchField; // 검색 텍스트 필드
+    private final ApplicationContext applicationContext;
+    private final IssueService issueService;
 
-    public IssuePage() {
+    public IssuePage(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        this.issueService = applicationContext.getBean(IssueService.class);
         JFrame frame = new JFrame("Issue Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
@@ -53,9 +60,10 @@ public class IssuePage {
         c.gridy = 0;
         panel.add(searchLabel, c);
 
-        searchField = new JTextField(20);
+        searchField = new JTextField(30);
         c.gridx = 2;
         c.gridy = 0;
+        c.insets = new Insets(5, 0, 5, 0);
         panel.add(searchField, c);
 
         // 검색 버튼
@@ -93,7 +101,7 @@ public class IssuePage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new CreateIssuePage();
+                new CreateIssuePage(applicationContext);
             }
         });
     }
@@ -104,8 +112,28 @@ public class IssuePage {
         String searchText = searchField.getText();
         String selectedCriterion = (String) searchCriteriaComboBox.getSelectedItem();
 
-        List<Issue> results;
+        if(Objects.equals(selectedCriterion, "Home")) {
+            List<Issue> results = issueService.findIssues(1L);
+            if (results.isEmpty()) {
+                JLabel noResultsLabel = new JLabel("No results found.");
+                resultsPanel.add(noResultsLabel);
 
+            } else {
+                for (Issue issue : results) {
+                    JButton issueButton = new JButton(issue.getTitle());
+                    issueButton.setSize(1000, 100);
+                    issueButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            showIssueDetails(issue);
+                        }
+                    });
+                    resultsPanel.add(issueButton);
+                }
+            }
+        }
+//        List<Issue> results;
+//
 //        results = issueService.getIssueBySearch(selectedCriterion, searchText);
 //
 //        if (results.isEmpty()) {
@@ -130,6 +158,6 @@ public class IssuePage {
     }
 
     private void showIssueDetails(Issue issue) {
-        new IssueForm();
+        new IssueForm(applicationContext);
     }
 }

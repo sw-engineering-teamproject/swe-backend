@@ -1,5 +1,6 @@
 package swe.gui.project;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -47,8 +48,14 @@ public class ProjectPage {
         JLabel title = new JLabel("Project");
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.insets = new Insets(5, 3, 5, 30);
         panel.add(title, gbc);
+        JButton createBtn = new JButton("new");
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        panel.add(createBtn, gbc);
 
+        gbc.insets = new Insets(0, 3, 0, 3);
         // 결과 표시 영역 (JPanel)
         JPanel projects = new JPanel();
         projects.setLayout(new BoxLayout(projects, BoxLayout.Y_AXIS));
@@ -63,11 +70,6 @@ public class ProjectPage {
 
         // 초기 결과 표시
         updateResultsPanel(projects, frame);
-        JButton createBtn = new JButton();
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panel.add(createBtn, gbc);
-
         createBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,8 +81,10 @@ public class ProjectPage {
 
     private void updateResultsPanel(JPanel projects, JFrame frame) {
         projects.removeAll(); // 기존 결과를 지움.
-
         List<ProjectOverviewResponse> results = projectService.readAllProject();
+        GridBagConstraints gcb = new GridBagConstraints();
+        gcb.fill = GridBagConstraints.HORIZONTAL;
+        gcb.insets = new Insets(5, 5, 5, 5);
 
         if (results.isEmpty()) {
             JLabel noResultsLabel = new JLabel("No results found.");
@@ -88,15 +92,17 @@ public class ProjectPage {
         } else {
             for (ProjectOverviewResponse project : results) {
                 JButton projectButton = new JButton(project.title());
-                projectButton.setSize(1000, 100);
+                //projectButton.setPreferredSize(new Dimension(1000, 50));
+                //projectButton.setSize(1000, 100);
+                gcb.fill = GridBagConstraints.HORIZONTAL;
                 projectButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         frame.dispose();
-                        new IssuePage();
+                        new IssuePage(applicationContext);
                     }
                 });
-                projects.add(projectButton);
+                projects.add(projectButton, gcb);
             }
         }
 

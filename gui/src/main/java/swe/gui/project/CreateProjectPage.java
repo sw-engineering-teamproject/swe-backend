@@ -25,7 +25,7 @@ public class CreateProjectPage {
         // 폼 구성
         JFrame frame = new JFrame("New Project");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(400, 300);
+        frame.setSize(300, 200);
 
         JPanel panel = new JPanel();
         frame.add(panel);
@@ -43,6 +43,7 @@ public class CreateProjectPage {
         JLabel titleLabel = new JLabel("Title");
         c.gridx = 0;
         c.gridy = 1;
+        c.insets = new Insets(0, 0, 5, 5);
         panel.add(titleLabel, c);
 
         JTextField titleField = new JTextField(15);
