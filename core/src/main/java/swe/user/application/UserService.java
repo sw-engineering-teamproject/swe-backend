@@ -1,10 +1,13 @@
 package swe.user.application;
 
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import swe.user.domain.User;
 import swe.user.domain.UserRepository;
+import swe.user.domain.UserRole;
 import swe.user.dto.UserRegisterRequest;
 
 @Service
@@ -24,5 +27,15 @@ public class UserService {
     final User user = userRepository.readByAccountId(accountId);
     user.validateUserPassword(password);
     return user;
+  }
+
+  @Transactional(readOnly = true)
+  public Boolean checkDuplicateNickname(final String nickName) {
+    return userRepository.existsByNickname(nickName);
+  }
+
+  public List<UserRole> getAllUserRoles() {
+    return Arrays.stream(UserRole.values())
+        .toList();
   }
 }

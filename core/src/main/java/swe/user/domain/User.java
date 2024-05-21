@@ -38,19 +38,30 @@ public class User {
 
   @Column(unique = true, nullable = false)
   @NotBlank
-  private String nickName;
+  private String nickname;
 
   @Enumerated(value = EnumType.STRING)
   @NotNull
   private UserRole userRole;
 
+  public User(
+      final Long id, final String accountId, final String password, final String nickname,
+      final UserRole userRole
+  ) {
+    this.id = id;
+    this.accountId = accountId;
+    this.password = password;
+    this.nickname = nickname;
+    this.userRole = userRole;
+  }
+
   @Builder
   public User(
-      final String accountId, final String password, final String nickName, final UserRole userRole
+      final String accountId, final String password, final String nickname, final UserRole userRole
   ) {
     this.accountId = accountId;
     this.password = password;
-    this.nickName = nickName;
+    this.nickname = nickname;
     this.userRole = userRole;
   }
 

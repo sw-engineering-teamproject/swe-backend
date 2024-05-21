@@ -10,6 +10,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   Optional<User> findByAccountId(final String accountId);
 
+  boolean existsByNickname(final String nickName);
+
   default User readById(final Long userId) {
     return findById(userId).orElseThrow(() -> new UserException(USER_NOT_FOUND));
   }

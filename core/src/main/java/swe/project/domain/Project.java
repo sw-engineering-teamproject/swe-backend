@@ -1,17 +1,14 @@
 package swe.project.domain;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import swe.user.domain.User;
 
 @Entity
 @Getter
@@ -24,11 +21,17 @@ public class Project {
 
   private String title;
 
-  private Long creatorId;
+  private Long reporterId;
+
+  public Project(final Long id, final String title, final Long reporterId) {
+    this.id = id;
+    this.title = title;
+    this.reporterId = reporterId;
+  }
 
   @Builder
-  public Project(final String title, final Long creatorId) {
+  public Project(final String title, final Long reporterId) {
     this.title = title;
-    this.creatorId = creatorId;
+    this.reporterId = reporterId;
   }
 }

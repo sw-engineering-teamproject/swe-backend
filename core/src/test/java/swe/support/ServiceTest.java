@@ -6,7 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import swe.config.DatabaseClearExtension;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.config.name=" +
+    "application-core"
+)
 @DisplayNameGeneration(ReplaceUnderscores.class)
 @ExtendWith(DatabaseClearExtension.class)
 public abstract class ServiceTest {
