@@ -36,4 +36,14 @@ public class IssueController {
     final List<IssueResponse> responses = IssueResponse.createList(issues);
     return ResponseEntity.ok(responses);
   }
+
+  @GetMapping("/issues/filter")
+  public ResponseEntity<List<IssueResponse>> filterProjectIssue(
+      @RequestParam final Long projectId, @RequestParam final String condition,
+      @RequestParam final String conditionValue
+  ) {
+    final var issues = issueService.filterIssues(projectId, condition, conditionValue);
+    final List<IssueResponse> responses = IssueResponse.createList(issues);
+    return ResponseEntity.ok(responses);
+  }
 }
