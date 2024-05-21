@@ -84,11 +84,28 @@ public class Issue {
     return issue;
   }
 
+  public boolean isEqualAssigneeId(final Long id) {
+    return getAssignee().map(user -> user.getId().equals(id))
+        .orElse(false);
+  }
+
+  public boolean isEqualReporterId(final Long id) {
+    return reporter.getId().equals(id);
+  }
+
+  public boolean isEqualStatus(final IssueStatus status) {
+    return this.status == status;
+  }
+
   public void addComment(final Comment comment) {
     comments.add(comment);
   }
 
   public Optional<User> getAssignee() {
     return Optional.ofNullable(assignee);
+  }
+
+  public void assignAssignee(final User assignee) {
+    this.assignee = assignee;
   }
 }
