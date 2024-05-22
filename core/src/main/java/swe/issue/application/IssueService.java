@@ -42,4 +42,10 @@ public class IssueService {
         .filter(issue -> filterCondition.filterIssue(issue, value))
         .toList();
   }
+
+  @Transactional
+  public void commentContent(final Long memberId, final Long issueId, final String content) {
+    final Issue issue = issueRepository.readByIdWithComments(issueId);
+    issue.addComment(memberId, content);
+  }
 }

@@ -2,14 +2,17 @@ package swe.issue.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static swe.fixture.IssueFixture.id가_없는_Issue;
 import static swe.fixture.ProjectFixture.unsavedProject;
 import static swe.fixture.UserFixture.id가_없는_유저;
+import static swe.fixture.UserFixture.id가_없는_유저2;
 import static swe.user.domain.UserRole.TESTER;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionTemplate;
+import swe.issue.domain.Comment;
 import swe.issue.domain.Issue;
 import swe.issue.domain.IssueRepository;
 import swe.issue.dto.IssueCreateRequest;
@@ -110,5 +113,24 @@ class IssueServiceTest extends ServiceTest {
     assertThat(actual)
         .usingRecursiveFieldByFieldElementComparatorIgnoringFields("reportedDate", "comments", "id")
         .containsExactlyInAnyOrderElementsOf(expected);
+  }
+
+  @Test
+  void 이슈에_댓글을_추가한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final User commenter = userRepository.save(id가_없는_유저2());
+    final Project project = projectRepository.save(unsavedProject(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+
+    //when
+    issueService.commentContent(commenter.getId(), issue.getId(), "새로운 댓글");
+
+    //then
+    final Issue actual = issueRepository.readByIdWithComments(issue.getId());
+    final Comment expected = new Comment(actual, commenter.getId(), "새로운 댓글");
+    assertThat(actual.getComments())
+        .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+        .contains(expected);
   }
 }
