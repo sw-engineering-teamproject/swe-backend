@@ -14,9 +14,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
+@ToString
 public class Comment {
 
   private static final String INITIAL_PROJECT_COMMENT = "%s created a new issue.";
@@ -37,12 +39,12 @@ public class Comment {
   private LocalDateTime createdAt;
 
   @NotNull
-  private String detail;
+  private String content;
 
-  public Comment(final Issue issue, final Long commenterId, final String detail) {
+  public Comment(final Issue issue, final Long commenterId, final String content) {
     this.issue = issue;
     this.commenterId = commenterId;
-    this.detail = detail;
+    this.content = content;
     this.createdAt = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.SECONDS);
   }
 
