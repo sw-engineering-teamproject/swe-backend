@@ -100,4 +100,23 @@ class IssueTest {
             .isFalse()
     );
   }
+
+  @Test
+  void 이슈에_댓글을_추가한다() {
+    //given
+    final User reporter = id가_있는_유저();
+    final Issue issue = id가_없는_Issue(reporter, 10L);
+
+    final String content = "댓글 내용";
+    final long reporterId = 10L;
+
+    //when
+    issue.addComment(reporterId, content);
+
+    //then
+    final Comment expcetedComment = new Comment(issue, reporterId, content);
+    assertThat(issue.getComments())
+        .usingRecursiveFieldByFieldElementComparator()
+        .contains(expcetedComment);
+  }
 }
