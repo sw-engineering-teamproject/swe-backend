@@ -14,9 +14,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
+@ToString
 public class Comment {
 
   private static final String INITIAL_PROJECT_COMMENT = "%s created a new issue.";
