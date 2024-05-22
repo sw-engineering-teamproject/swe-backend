@@ -13,7 +13,7 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
   @Query("""
       select i
       from Issue i
-      join fetch i.comments
+      left join fetch i.comments
       where i.id = :id
       """)
   Optional<Issue> findByIdWithComments(final Long id);
