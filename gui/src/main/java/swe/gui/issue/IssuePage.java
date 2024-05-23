@@ -5,6 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.swing.BoxLayout;
@@ -111,25 +112,29 @@ public class IssuePage {
 
         String searchText = searchField.getText();
         String selectedCriterion = (String) searchCriteriaComboBox.getSelectedItem();
-
+        List<Issue> results = new ArrayList<>();
         if(Objects.equals(selectedCriterion, "Home")) {
-            List<Issue> results = issueService.findIssues(1L);
-            if (results.isEmpty()) {
-                JLabel noResultsLabel = new JLabel("No results found.");
-                resultsPanel.add(noResultsLabel);
+            results = issueService.findIssues(1L);
 
-            } else {
-                for (Issue issue : results) {
-                    JButton issueButton = new JButton(issue.getTitle());
-                    issueButton.setSize(1000, 100);
-                    issueButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            showIssueDetails(issue);
-                        }
-                    });
-                    resultsPanel.add(issueButton);
-                }
+        }
+        else {
+            results = issueService.filterIssues(1L, selectedCriterion, searchText);
+        }
+        if (results.isEmpty()) {
+            JLabel noResultsLabel = new JLabel("No results found.");
+            resultsPanel.add(noResultsLabel);
+
+        } else {
+            for (Issue issue : results) {
+                JButton issueButton = new JButton(issue.getTitle());
+                issueButton.setSize(1000, 100);
+                issueButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        showIssueDetails(issue);
+                    }
+                });
+                resultsPanel.add(issueButton);
             }
         }
 //        List<Issue> results;
