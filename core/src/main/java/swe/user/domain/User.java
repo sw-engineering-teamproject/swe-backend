@@ -36,7 +36,7 @@ public class User {
   @NotBlank
   private String password;
 
-  @Column(unique = true, nullable = false)
+  @Column(nullable = false)
   @NotBlank
   private String nickname;
 

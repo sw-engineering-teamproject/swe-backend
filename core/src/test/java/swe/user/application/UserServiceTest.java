@@ -1,7 +1,7 @@
 package swe.user.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static swe.fixture.UserFixture.unsavedUser;
+import static swe.fixture.UserFixture.id가_없는_유저;
 import static swe.user.domain.UserRole.TESTER;
 
 import org.junit.jupiter.api.Nested;
@@ -44,7 +44,7 @@ class UserServiceTest extends ServiceTest {
   @Test
   void 유저가_로그인한다() {
     //given
-    final User savedUser = userRepository.save(unsavedUser());
+    final User savedUser = userRepository.save(id가_없는_유저());
 
     //when
     final User loginUser = userService.login(savedUser.getAccountId(), savedUser.getPassword());
@@ -61,7 +61,7 @@ class UserServiceTest extends ServiceTest {
     @Test
     void 중복인_경우() {
       //given
-      final User savedUser = userRepository.save(unsavedUser());
+      final User savedUser = userRepository.save(id가_없는_유저());
 
       //when
       final Boolean actual = userService.checkDuplicateNickname(savedUser.getNickname());

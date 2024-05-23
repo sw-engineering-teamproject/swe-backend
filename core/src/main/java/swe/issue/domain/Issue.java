@@ -80,15 +80,35 @@ public class Issue {
       final String title, final String description, final Long projectId, final User reporter
   ) {
     final Issue issue = new Issue(title, description, projectId, reporter);
-    issue.addComment(createInitialProjectComment(issue, reporter.getId(), reporter.getNickname()));
+    issue.comments.add(
+        createInitialProjectComment(issue, reporter.getId(), reporter.getNickname())
+    );
     return issue;
   }
 
-  public void addComment(final Comment comment) {
-    comments.add(comment);
+  public boolean isEqualAssigneeId(final Long id) {
+    return getAssignee().map(user -> user.getId().equals(id))
+        .orElse(false);
+  }
+
+  public boolean isEqualReporterId(final Long id) {
+    return reporter.getId().equals(id);
+  }
+
+  public boolean isEqualStatus(final IssueStatus status) {
+    return this.status == status;
   }
 
   public Optional<User> getAssignee() {
     return Optional.ofNullable(assignee);
+  }
+
+  public void assignAssignee(final User assignee) {
+    this.assignee = assignee;
+  }
+
+  public void addComment(final Long commenterId, final String content) {
+    final Comment comment = new Comment(this, commenterId, content);
+    comments.add(comment);
   }
 }
