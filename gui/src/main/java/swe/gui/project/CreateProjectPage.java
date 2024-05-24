@@ -51,16 +51,6 @@ public class CreateProjectPage {
         c.gridy = 1;
         panel.add(titleField, c);
 
-        // reporter 필드
-        JLabel reporterLabel = new JLabel("Content");
-        c.gridx = 0;
-        c.gridy = 2;
-        panel.add(reporterLabel, c);
-
-        JTextField reporterField = new JTextField(15);
-        c.gridx = 1;
-        c.gridy = 2;
-        panel.add(reporterField, c);
 
         // 제출 버튼
         JButton submitButton = new JButton("Submit");
@@ -74,9 +64,8 @@ public class CreateProjectPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String title = titleField.getText();
-                String reporter = reporterField.getText();
 
-                if (title.isEmpty() || reporter.isEmpty()) {
+                if (title.isEmpty()) {
                     JOptionPane.showMessageDialog(
                         frame,
                         "All fields are required",
@@ -84,7 +73,6 @@ public class CreateProjectPage {
                         JOptionPane.ERROR_MESSAGE
                     );
                 } else {
-                    //수정 예정
                     projectService.createProject(title, SessionStorage.loginUser.getId());
                     JOptionPane.showMessageDialog(
                         frame,

@@ -77,7 +77,7 @@ public class ProjectPage {
     }
 
     private void updateResultsPanel(JPanel projects, JFrame frame) {
-        projects.removeAll(); // 기존 결과를 지움.
+        projects.removeAll(); // 기존 결과를 지움
         List<ProjectOverviewResponse> results = projectService.readAllProject();
         GridBagConstraints gcb = new GridBagConstraints();
         gcb.fill = GridBagConstraints.HORIZONTAL;
