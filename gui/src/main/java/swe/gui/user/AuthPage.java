@@ -10,12 +10,15 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
+import swe.gui.SessionStorage;
+import swe.gui.issue.IssuePage;
 import swe.gui.project.ProjectPage;
 import swe.user.application.UserService;
 import swe.user.domain.User;
@@ -27,11 +30,14 @@ public class AuthPage {
     private final JFrame authFrame;
     private final UserService userService;
     private final ApplicationContext applicationContext;
+    public static User currentUser;
+    private Boolean isDuplicate = Boolean.TRUE;
+
     public AuthPage(ApplicationContext applicationContext){
         this.applicationContext = applicationContext;
         this.userService = applicationContext.getBean(UserService.class);
         authFrame = new JFrame("login / sign up");
-        authFrame.setSize(400, 200);
+        authFrame.setSize(400, 300);
         authFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         authFrame.setLocationRelativeTo(null);
 
@@ -79,9 +85,7 @@ public class AuthPage {
             public void actionPerformed(ActionEvent e) {
                 String inputUserId = userId.getText();
                 String inputPassword = new String(password.getPassword());
-                userService.login(inputUserId, inputPassword);
-
-                //서비스가 success라면
+                SessionStorage.loginUser = userService.login(inputUserId, inputPassword);
                 authFrame.dispose();
                 new ProjectPage(applicationContext);
             }
@@ -96,11 +100,17 @@ public class AuthPage {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        signupPanel.add(new JLabel("닉네입"), gbc);
+        signupPanel.add(new JLabel("닉네임"), gbc);
 
         gbc.gridx = 1;
         JTextField nickname = new JTextField(15);
         signupPanel.add(nickname, gbc);
+
+        JButton isDuplicateNickname = new JButton("중복확인");
+        gbc.gridx = 2;
+        gbc.insets = new Insets(0, 5, 0, 0);
+        signupPanel.add(isDuplicateNickname, gbc);
+        gbc.insets = new Insets(0, 0, 0, 0);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -138,6 +148,28 @@ public class AuthPage {
         JButton signupBtn = new JButton("회원가입");
         signupPanel.add(signupBtn, gbc);
 
+        isDuplicateNickname.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String inputNickname = nickname.getText();
+                if (userService.checkDuplicateNickname(inputNickname)) {
+                    JOptionPane.showMessageDialog(
+                        authFrame,
+                        "이미 있는 사용자 입니다.",
+                        "False",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                } else{
+                    JOptionPane.showMessageDialog(
+                        authFrame,
+                        "사용 가능한 nickname 입니다.",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                    isDuplicate = Boolean.FALSE;
+                }
+            }
+        });
         signupBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -152,8 +184,25 @@ public class AuthPage {
                     default -> UserRole.DEV;
                 };
                 UserRegisterRequest userRegisterRequest = new UserRegisterRequest(inputUserId, userRole, inputNickname, inputPassword);
-                userService.register(userRegisterRequest);
-                System.out.println(userRegisterRequest.toUser().getId()+" "+userRegisterRequest.toUser().getAccountId()+" "+userRegisterRequest.toUser().getPassword()+" "+userRegisterRequest.toUser().getNickname()+" "+userRegisterRequest.toUser().getUserRole());
+                if(!isDuplicate) {
+                    userService.register(userRegisterRequest);
+                    JOptionPane.showMessageDialog(
+                        authFrame,
+                        "회원 가입 성공",
+                        "Success",
+                        JOptionPane.INFORMATION_MESSAGE
+                    );
+                    authFrame.dispose();
+                    new AuthPage(applicationContext);
+                }
+                else {
+                    JOptionPane.showMessageDialog(
+                        authFrame,
+                        "중복 확인 요청",
+                        "False",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                }
             }
         });
         return signupPanel;

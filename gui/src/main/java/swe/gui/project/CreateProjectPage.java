@@ -12,8 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.springframework.context.ApplicationContext;
+import swe.gui.SessionStorage;
 import swe.project.application.ProjectService;
-import swe.project.domain.Project;
 
 public class CreateProjectPage {
     private final ApplicationContext applicationContext;
@@ -85,10 +85,10 @@ public class CreateProjectPage {
                     );
                 } else {
                     //수정 예정
-                    projectService.createProject(title, 1L);
+                    projectService.createProject(title, SessionStorage.loginUser.getId());
                     JOptionPane.showMessageDialog(
                         frame,
-                        "Project created successfully!",
+                        "프로젝트 생성 성공",
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE
                     );

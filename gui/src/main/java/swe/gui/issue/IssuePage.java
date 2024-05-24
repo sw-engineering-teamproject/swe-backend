@@ -13,11 +13,11 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import org.springframework.context.ApplicationContext;
+import swe.gui.SessionStorage;
 import swe.issue.application.IssueService;
 import swe.issue.domain.Issue;
 
@@ -114,11 +114,11 @@ public class IssuePage {
         String selectedCriterion = (String) searchCriteriaComboBox.getSelectedItem();
         List<Issue> results = new ArrayList<>();
         if(Objects.equals(selectedCriterion, "Home")) {
-            results = issueService.findIssues(1L);
+            results = issueService.findIssues(SessionStorage.currentProject.id());
 
         }
         else {
-            results = issueService.filterIssues(1L, selectedCriterion, searchText);
+            results = issueService.filterIssues(SessionStorage.currentProject.id(), selectedCriterion, searchText);
         }
         if (results.isEmpty()) {
             JLabel noResultsLabel = new JLabel("No results found.");
@@ -131,38 +131,16 @@ public class IssuePage {
                 issueButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        showIssueDetails(issue);
+                        SessionStorage.currentIssue = issue;
+                        new IssueDetail(applicationContext);
                     }
                 });
                 resultsPanel.add(issueButton);
             }
         }
-//        List<Issue> results;
-//
-//        results = issueService.getIssueBySearch(selectedCriterion, searchText);
-//
-//        if (results.isEmpty()) {
-//            JLabel noResultsLabel = new JLabel("No results found.");
-//            resultsPanel.add(noResultsLabel);
-//        } else {
-//            for (Issue issue : results) {
-//                JButton issueButton = new JButton(issue.getTitle());
-//                issueButton.setSize(1000, 100);
-//                issueButton.addActionListener(new ActionListener() {
-//                    @Override
-//                    public void actionPerformed(ActionEvent e) {
-//                        showIssueDetails(issue);
-//                    }
-//                });
-//                resultsPanel.add(issueButton);
-//            }
-//        }
 
         resultsPanel.revalidate(); // UI를 업데이트합니다.
         resultsPanel.repaint();   // UI를 다시 그립니다.
     }
 
-    private void showIssueDetails(Issue issue) {
-        new IssueForm(applicationContext);
-    }
 }

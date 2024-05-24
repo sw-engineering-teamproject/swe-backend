@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import org.springframework.context.ApplicationContext;
+import swe.gui.SessionStorage;
 import swe.issue.application.IssueService;
-import swe.issue.domain.Issue;
 import swe.issue.dto.IssueCreateRequest;
 
 public class CreateIssuePage {
@@ -71,11 +71,11 @@ public class CreateIssuePage {
                         frame, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE
                     );
                 } else {
-                    IssueCreateRequest issueCreateRequest = new IssueCreateRequest(title, description, 1L);
-                    issueService.createIssue(1L, issueCreateRequest);
+                    IssueCreateRequest issueCreateRequest = new IssueCreateRequest(title, description, SessionStorage.currentProject.id());
+                    issueService.createIssue(SessionStorage.loginUser.getId(), issueCreateRequest);
                     JOptionPane.showMessageDialog(
                         frame,
-                        "Issue created successfully!",
+                        "이슈 생성 성공",
                         "Success",
                         JOptionPane.INFORMATION_MESSAGE
                     );

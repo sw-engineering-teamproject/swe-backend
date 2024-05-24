@@ -11,13 +11,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import org.springframework.context.ApplicationContext;
+import swe.gui.SessionStorage;
 import swe.issue.application.IssueService;
 
-public class IssueForm {
+public class IssueDetail {
 
     private final ApplicationContext applicationContext;
     private final IssueService issueService;
-    public IssueForm(ApplicationContext applicationContext){
+    public IssueDetail(ApplicationContext applicationContext){
         this.applicationContext = applicationContext;
         this.issueService = applicationContext.getBean(IssueService.class);
         JFrame frame = new JFrame("Issue");
@@ -32,6 +33,7 @@ public class IssueForm {
 
 
     private void setupForm(JPanel panel, JFrame frame){
+
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -39,6 +41,7 @@ public class IssueForm {
         c.gridx = 0;
         c.gridy = 0;
         panel.add(titleLabel, c);
+
 
         JLabel descriptionLabel = new JLabel("Description");
         c.gridx = 0;
@@ -55,7 +58,8 @@ public class IssueForm {
         panel.add(commentArea, c);
         JButton commentBtn = new JButton("등록");
         c.gridx = 1;
-        panel.add(commentArea, c);
+        panel.add(commentBtn, c);
+
 
         commentBtn.addActionListener(new ActionListener() {
             @Override
@@ -66,7 +70,9 @@ public class IssueForm {
                         frame, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE
                     );
                 } else {
-                    System.out.println("곧 제작");
+                    issueService.commentContent(SessionStorage.loginUser.getId(), SessionStorage.currentIssue.getId(), comment);
+                    frame.dispose();
+                    new IssueDetail(applicationContext);
                 }
             }
         });

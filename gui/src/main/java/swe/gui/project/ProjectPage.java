@@ -1,6 +1,5 @@
 package swe.gui.project;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,17 +8,15 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.context.ApplicationContext;
+import swe.gui.SessionStorage;
 import swe.gui.issue.IssuePage;
 import swe.project.application.ProjectService;
-import swe.project.domain.Project;
 import swe.project.dto.ProjectOverviewResponse;
 
 public class ProjectPage {
@@ -92,12 +89,11 @@ public class ProjectPage {
         } else {
             for (ProjectOverviewResponse project : results) {
                 JButton projectButton = new JButton(project.title());
-                //projectButton.setPreferredSize(new Dimension(1000, 50));
-                //projectButton.setSize(1000, 100);
                 gcb.fill = GridBagConstraints.HORIZONTAL;
                 projectButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                        SessionStorage.currentProject = project;
                         frame.dispose();
                         new IssuePage(applicationContext);
                     }
