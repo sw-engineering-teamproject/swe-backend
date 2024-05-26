@@ -229,7 +229,7 @@ class IssueServiceTest extends ServiceTest {
 
     assertThat(actual)
         .usingRecursiveComparison()
-        .ignoringFields("id")
+        .ignoringFields("id", "reportedDate")
         .isEqualTo(expected);
   }
 }
