@@ -36,8 +36,10 @@ public class Issue {
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
+  @NotNull
   private String title;
 
+  @NotNull
   private String description;
 
   @NotNull
@@ -105,6 +107,10 @@ public class Issue {
 
   public Optional<User> getAssignee() {
     return Optional.ofNullable(assignee);
+  }
+
+  public Optional<User> getFixer() {
+    return Optional.ofNullable(fixer);
   }
 
   public void assignAssignee(final User assignee) {
