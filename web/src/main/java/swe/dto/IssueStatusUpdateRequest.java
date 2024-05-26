@@ -1,5 +1,5 @@
 package swe.dto;
 
-public record IssueStatusUpdateRequest(String statusName) {
+public record IssueStatusUpdateRequest(String status) {
 
 }

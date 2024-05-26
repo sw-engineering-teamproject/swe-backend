@@ -76,7 +76,7 @@ public class IssueController {
       @PathVariable final Long issueId,
       @RequestBody final IssueStatusUpdateRequest issueStatusUpdateRequest
   ) {
-    issueService.updateStatus(issueId, issueStatusUpdateRequest.statusName());
+    issueService.updateStatus(issueId, issueStatusUpdateRequest.status());
     return ResponseEntity.ok().build();
   }
 
