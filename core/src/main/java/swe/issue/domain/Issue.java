@@ -36,8 +36,10 @@ public class Issue {
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
+  @NotNull
   private String title;
 
+  @NotNull
   private String description;
 
   @NotNull
@@ -85,7 +87,7 @@ public class Issue {
   ) {
     final Issue issue = new Issue(title, description, projectId, reporter);
     issue.comments.add(
-        createInitialProjectComment(issue, reporter.getId(), reporter.getNickname())
+        createInitialProjectComment(issue, reporter, reporter.getNickname())
     );
     return issue;
   }
@@ -107,12 +109,16 @@ public class Issue {
     return Optional.ofNullable(assignee);
   }
 
+  public Optional<User> getFixer() {
+    return Optional.ofNullable(fixer);
+  }
+
   public void assignAssignee(final User assignee) {
     this.assignee = assignee;
   }
 
-  public void addComment(final Long commenterId, final String content) {
-    final Comment comment = new Comment(this, commenterId, content);
+  public void addComment(final User commenter, final String content) {
+    final Comment comment = new Comment(this, commenter, content);
     comments.add(comment);
   }
 

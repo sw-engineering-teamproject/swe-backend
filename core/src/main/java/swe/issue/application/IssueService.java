@@ -47,9 +47,10 @@ public class IssueService {
   }
 
   @Transactional
-  public void commentContent(final Long memberId, final Long issueId, final String content) {
+  public void commentContent(final Long userId, final Long issueId, final String content) {
     final Issue issue = issueRepository.readByIdWithComments(issueId);
-    issue.addComment(memberId, content);
+    final User commenter = userRepository.readById(userId);
+    issue.addComment(commenter, content);
   }
 
   @Transactional
@@ -87,5 +88,10 @@ public class IssueService {
     final User newAssignee = userRepository.readById(assigneeId);
     final Issue issue = issueRepository.readById(issueId);
     issue.assignAssignee(newAssignee);
+  }
+
+  @Transactional(readOnly = true)
+  public Issue findIssueDetail(final Long issueId) {
+    return issueRepository.readByIdWithAll(issueId);
   }
 }
