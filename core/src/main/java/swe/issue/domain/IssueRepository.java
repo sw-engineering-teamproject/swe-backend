@@ -18,13 +18,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
       """)
   Optional<Issue> findByIdWithComments(final Long id);
 
-  default Issue readByIdWithComments(final Long id) {
-    return findByIdWithComments(id).orElseThrow(() -> new IssueException(ISSUE_NOT_FOUND));
-  }
-
-  default Issue readById(final Long id) {
-    return findById(id).orElseThrow(() -> new IssueException(ISSUE_NOT_FOUND));
-  }
 
   @Query("""
       select i
@@ -34,4 +27,12 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
       where i.projectId = :projectId
       """)
   List<Issue> findByProjectIdWithReporterAssignee(final Long projectId);
+
+  default Issue readByIdWithComments(final Long id) {
+    return findByIdWithComments(id).orElseThrow(() -> new IssueException(ISSUE_NOT_FOUND));
+  }
+
+  default Issue readById(final Long id) {
+    return findById(id).orElseThrow(() -> new IssueException(ISSUE_NOT_FOUND));
+  }
 }
