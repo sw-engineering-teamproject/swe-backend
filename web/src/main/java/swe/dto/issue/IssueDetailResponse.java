@@ -4,7 +4,9 @@ import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Builder;
+import swe.issue.domain.Comment;
 import swe.issue.domain.Issue;
 import swe.user.domain.User;
 
@@ -19,7 +21,8 @@ public record IssueDetailResponse(
     @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     LocalDateTime reportedTime,
     String status,
-    String priority
+    String priority,
+    List<CommentResponse> comments
 ) {
 
   public static IssueDetailResponse from(final Issue issue) {
@@ -36,10 +39,35 @@ public record IssueDetailResponse(
         .build();
   }
 
-  public record UserResponse(Long id, String name) {
+  record UserResponse(Long id, String name) {
 
     public static UserResponse from(final User user) {
       return new UserResponse(user.getId(), user.getNickname());
+    }
+  }
+
+  @Builder
+  record CommentResponse(
+      Long id,
+      UserResponse commenter,
+      String content,
+      @JsonFormat(shape = STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+      LocalDateTime createdAt
+  ) {
+
+    public static List<CommentResponse> createList(final List<Comment> comments) {
+      return comments.stream()
+          .map(CommentResponse::from)
+          .toList();
+    }
+
+    public static CommentResponse from(final Comment comment) {
+      return CommentResponse.builder()
+          .id(comment.getId())
+          .content(comment.getContent())
+          .createdAt(comment.getCreatedAt())
+          .commenter(UserResponse.from(comment.getCommenter()))
+          .build();
     }
   }
 }
