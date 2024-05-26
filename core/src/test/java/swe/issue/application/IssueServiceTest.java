@@ -6,6 +6,7 @@ import static swe.fixture.IssueFixture.id가_없는_Issue;
 import static swe.fixture.ProjectFixture.unsavedProject;
 import static swe.fixture.UserFixture.id가_없는_유저;
 import static swe.fixture.UserFixture.id가_없는_유저2;
+import static swe.issue.domain.IssueStatus.ASSIGNED;
 import static swe.user.domain.UserRole.TESTER;
 
 import java.util.List;
@@ -150,5 +151,23 @@ class IssueServiceTest extends ServiceTest {
 
     assertThat(updatedIssue.getDescription())
         .isEqualTo(description);
+  }
+
+  @Test
+  void 이슈의_상태를_업데이트한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(unsavedProject(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+    final String newStatusName = ASSIGNED.getValue();
+
+    //when
+    issueService.updateStatus(issue.getId(), newStatusName);
+
+    //then
+    final Issue updatedIssue = issueRepository.readById(issue.getId());
+
+    assertThat(updatedIssue.getStatus())
+        .isEqualTo(ASSIGNED);
   }
 }

@@ -22,8 +22,12 @@ public enum IssueStatus {
 
   public static IssueStatus from(final String value) {
     return Arrays.stream(values())
-        .filter(condition -> Objects.equals(condition.value, value))
+        .filter(status -> Objects.equals(status.value, value))
         .findAny()
         .orElseThrow(() -> new IssueException(ISSUE_STATUS_NOT_FOUND));
+  }
+
+  public String getValue(){
+    return value;
   }
 }

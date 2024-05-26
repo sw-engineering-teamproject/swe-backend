@@ -118,4 +118,8 @@ public class Issue {
   public void updateDescription(final String newDescription) {
     this.description = newDescription;
   }
+
+  public void updateStatus(final IssueStatus newIssueStatus) {
+    this.status = newIssueStatus;
+  }
 }
