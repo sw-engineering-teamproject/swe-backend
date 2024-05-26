@@ -4,8 +4,10 @@ import static swe.issue.exception.IssueExceptionType.ISSUE_STATUS_NOT_FOUND;
 
 import java.util.Arrays;
 import java.util.Objects;
+import lombok.Getter;
 import swe.issue.exception.IssueException;
 
+@Getter
 public enum IssueStatus {
 
   NEW("new"),
@@ -14,20 +16,16 @@ public enum IssueStatus {
   CLOSED("closed"),
   REOPENED("reopened");
 
-  private final String value;
+  private final String name;
 
-  IssueStatus(final String value) {
-    this.value = value;
+  IssueStatus(final String name) {
+    this.name = name;
   }
 
-  public static IssueStatus from(final String value) {
+  public static IssueStatus from(final String issueStatusName) {
     return Arrays.stream(values())
-        .filter(status -> Objects.equals(status.value, value))
+        .filter(status -> Objects.equals(status.name, issueStatusName))
         .findAny()
         .orElseThrow(() -> new IssueException(ISSUE_STATUS_NOT_FOUND));
-  }
-
-  public String getValue(){
-    return value;
   }
 }

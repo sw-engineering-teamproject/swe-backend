@@ -2,9 +2,11 @@ package swe.issue.domain;
 
 import java.util.Arrays;
 import java.util.Objects;
+import lombok.Getter;
 import swe.issue.exception.IssueException;
 import swe.issue.exception.IssueExceptionType;
 
+@Getter
 public enum IssuePriority {
 
   BLOCKER("blocker"),
@@ -24,9 +26,5 @@ public enum IssuePriority {
         .filter(priority -> Objects.equals(priority.name, priorityName))
         .findAny()
         .orElseThrow(() -> new IssueException(IssueExceptionType.ISSUE_PRIORITY_NOT_FOUND));
-  }
-
-  public String getName() {
-    return name;
   }
 }
