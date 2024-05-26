@@ -81,4 +81,11 @@ public class IssueService {
     return Arrays.stream(IssuePriority.values())
         .toList();
   }
+
+  @Transactional
+  public void assignUser(final Long issueId, final Long assigneeId) {
+    final User newAssignee = userRepository.readById(assigneeId);
+    final Issue issue = issueRepository.readById(issueId);
+    issue.assignAssignee(newAssignee);
+  }
 }

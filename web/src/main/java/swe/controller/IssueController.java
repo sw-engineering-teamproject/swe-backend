@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import swe.dto.IssueAssignRequest;
 import swe.dto.issue.CommentAddRequest;
 import swe.dto.issue.IssueDescriptionUpdateRequest;
 import swe.dto.issue.IssuePriorityNameResponse;
@@ -101,5 +102,13 @@ public class IssueController {
   public ResponseEntity<List<IssueStatusNameResponse>> getStatusList() {
     final var issueStatuses = issueService.getIssueStatuses();
     return ResponseEntity.ok(IssueStatusNameResponse.createList(issueStatuses));
+  }
+
+  @PostMapping("/issues/{issueId}/assignee")
+  public ResponseEntity<Void> assignUser(
+      @PathVariable final Long issueId, @RequestBody final IssueAssignRequest issueAssignRequest
+  ) {
+    issueService.assignUser(issueId, issueAssignRequest.assigneeId());
+    return ResponseEntity.ok().build();
   }
 }
