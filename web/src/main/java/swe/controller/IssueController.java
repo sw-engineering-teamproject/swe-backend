@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import swe.dto.CommentAddRequest;
+import swe.dto.IssueDescriptionUpdateRequest;
 import swe.dto.IssueResponse;
 import swe.issue.application.IssueService;
 import swe.issue.dto.IssueCreateRequest;
@@ -57,5 +58,14 @@ public class IssueController {
   ) {
     issueService.commentContent(jwtMemberId.memberId(), issueId, commentAddRequest.content());
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @PostMapping("/issues/{issueId}/description")
+  public ResponseEntity<Void> updateDescription(
+      @PathVariable final Long issueId,
+      @RequestBody final IssueDescriptionUpdateRequest issueDescriptionUpdateRequest
+  ) {
+    issueService.updateDescription(issueId, issueDescriptionUpdateRequest.newDescription());
+    return ResponseEntity.ok().build();
   }
 }
