@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import swe.dto.ProjectCreateRequest;
+import swe.dto.project.ProjectCreateRequest;
 import swe.project.application.ProjectService;
 import swe.project.dto.ProjectOverviewResponse;
 import swe.user.dto.JwtMemberId;

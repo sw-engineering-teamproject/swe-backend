@@ -1,4 +1,4 @@
-package swe.dto;
+package swe.dto.issue;
 
 import java.util.List;
 import swe.issue.domain.IssueStatus;
