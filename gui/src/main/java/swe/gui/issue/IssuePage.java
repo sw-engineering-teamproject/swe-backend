@@ -8,7 +8,7 @@ import swe.gui.issue.view.IssuePageView;
 public class IssuePage {
     IssuePageView issuePageView = new IssuePageView();
 
-    public IssuePage(ApplicationContext applicationContext) {
+    public IssuePage() {
 
         JFrame frame = new JFrame("Issue Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -17,7 +17,7 @@ public class IssuePage {
         JPanel panel = new JPanel();
         frame.add(panel);
 
-        issuePageView.settingView(panel, frame, applicationContext);
+        issuePageView.settingView(panel, frame);
 
         frame.setVisible(true);
     }

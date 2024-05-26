@@ -1,5 +1,6 @@
 package swe.gui.user;
 
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -27,13 +28,11 @@ public class AuthPage {
 
     private final JFrame authFrame;
     private final UserService userService;
-    private final ApplicationContext applicationContext;
     public static User currentUser;
     private Boolean isDuplicate = Boolean.TRUE;
 
-    public AuthPage(ApplicationContext applicationContext){
-        this.applicationContext = applicationContext;
-        this.userService = applicationContext.getBean(UserService.class);
+    public AuthPage(){
+        this.userService = SessionStorage.userService;
         authFrame = new JFrame("login / sign up");
         authFrame.setSize(400, 300);
         authFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,7 +84,7 @@ public class AuthPage {
                 String inputPassword = new String(password.getPassword());
                 SessionStorage.loginUser = userService.login(inputUserId, inputPassword);
                 authFrame.dispose();
-                new ProjectPage(applicationContext);
+                new ProjectPage();
             }
         });
         return loginPanel;
@@ -191,7 +190,7 @@ public class AuthPage {
                         JOptionPane.INFORMATION_MESSAGE
                     );
                     authFrame.dispose();
-                    new AuthPage(applicationContext);
+                    new AuthPage();
                 }
                 else {
                     JOptionPane.showMessageDialog(

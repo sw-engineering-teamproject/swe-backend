@@ -16,12 +16,10 @@ import swe.gui.SessionStorage;
 import swe.project.application.ProjectService;
 
 public class CreateProjectPage {
-    private final ApplicationContext applicationContext;
     private final ProjectService projectService;
 
-    public CreateProjectPage(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-        this.projectService = applicationContext.getBean(ProjectService.class);
+    public CreateProjectPage() {
+        this.projectService = SessionStorage.projectService;
         // 폼 구성
         JFrame frame = new JFrame("New Project");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -81,7 +79,7 @@ public class CreateProjectPage {
                         JOptionPane.INFORMATION_MESSAGE
                     );
                     frame.dispose(); // 폼 닫기
-                    new ProjectPage(applicationContext);
+                    new ProjectPage();
                 }
             }
         });

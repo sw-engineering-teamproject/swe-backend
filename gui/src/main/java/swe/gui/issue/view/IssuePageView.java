@@ -27,11 +27,9 @@ public class IssuePageView {
     private JPanel resultsPanel;
     private JComboBox<String> searchCriteriaComboBox; // 검색 기준 선택용
     private JTextField searchField; // 검색 텍스트 필드
-    private ApplicationContext applicationContext;
     private IssueService issueService;
-    public void settingView(JPanel panel, JFrame frame, ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-        this.issueService = applicationContext.getBean(IssueService.class);
+    public void settingView(JPanel panel, JFrame frame) {
+        this.issueService = SessionStorage.issueService;
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -90,7 +88,7 @@ public class IssuePageView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new CreateIssuePage(applicationContext);
+                new CreateIssuePage();
             }
         });
     }
@@ -120,7 +118,7 @@ public class IssuePageView {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         SessionStorage.currentIssue = issue;
-                        new IssueDetail(applicationContext);
+                        new IssueDetail();
                     }
                 });
                 resultsPanel.add(issueButton);

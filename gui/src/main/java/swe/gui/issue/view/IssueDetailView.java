@@ -17,8 +17,8 @@ import swe.issue.application.IssueService;
 
 public class IssueDetailView {
     private IssueService issueService;
-    public void settingView(JPanel panel, JFrame frame, ApplicationContext applicationContext){
-        this.issueService = applicationContext.getBean(IssueService.class);
+    public void settingView(JPanel panel, JFrame frame){
+        this.issueService = SessionStorage.issueService;
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -57,7 +57,7 @@ public class IssueDetailView {
                 } else {
                     issueService.commentContent(SessionStorage.loginUser.getId(), SessionStorage.currentIssue.getId(), comment);
                     frame.dispose();
-                    new IssueDetail(applicationContext);
+                    new IssueDetail();
                 }
             }
         });

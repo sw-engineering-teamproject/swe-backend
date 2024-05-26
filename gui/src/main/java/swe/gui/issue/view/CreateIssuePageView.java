@@ -21,8 +21,8 @@ import swe.issue.dto.IssueCreateRequest;
 public class CreateIssuePageView {
     private IssueService issueService;
 
-    public void settingView(JPanel panel, JFrame frame, ApplicationContext applicationContext) {
-        this.issueService = applicationContext.getBean(IssueService.class);
+    public void settingView(JPanel panel, JFrame frame) {
+        this.issueService = SessionStorage.issueService;
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -68,7 +68,7 @@ public class CreateIssuePageView {
                         JOptionPane.INFORMATION_MESSAGE
                     );
                     frame.dispose();
-                    new IssuePage(applicationContext);
+                    new IssuePage();
                 }
             }
         });

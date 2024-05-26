@@ -20,10 +20,8 @@ import swe.project.dto.ProjectOverviewResponse;
 
 public class ProjectPage {
     private final ProjectService projectService;
-    private final ApplicationContext applicationContext;
-    public ProjectPage(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-        this.projectService = applicationContext.getBean(ProjectService.class);
+    public ProjectPage() {
+        this.projectService = SessionStorage.projectService;
 
         JFrame frame = new JFrame("Project Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,7 +68,7 @@ public class ProjectPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new CreateProjectPage(applicationContext);
+                new CreateProjectPage();
             }
         });
     }
@@ -94,7 +92,7 @@ public class ProjectPage {
                     public void actionPerformed(ActionEvent e) {
                         SessionStorage.currentProject = project;
                         frame.dispose();
-                        new IssuePage(applicationContext);
+                        new IssuePage();
                     }
                 });
                 projects.add(projectButton, gcb);
