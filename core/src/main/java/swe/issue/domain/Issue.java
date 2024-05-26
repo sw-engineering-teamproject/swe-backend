@@ -47,7 +47,8 @@ public class Issue {
   @NotNull
   private User reporter;
 
-  private Long fixerId;
+  @ManyToOne(fetch = LAZY)
+  private User fixer;
 
   @ManyToOne(fetch = LAZY)
   private User assignee;
