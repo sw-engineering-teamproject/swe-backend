@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import swe.dto.IssueAssignRequest;
 import swe.dto.issue.CommentAddRequest;
 import swe.dto.issue.IssueDescriptionUpdateRequest;
+import swe.dto.issue.IssueDetailResponse;
 import swe.dto.issue.IssuePriorityNameResponse;
 import swe.dto.issue.IssuePriorityUpdateRequest;
 import swe.dto.issue.IssueResponse;
@@ -110,5 +111,11 @@ public class IssueController {
   ) {
     issueService.assignUser(issueId, issueAssignRequest.assigneeId());
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/issues/{issueId}")
+  public ResponseEntity<IssueDetailResponse> getIssueDetail(@PathVariable final Long issueId) {
+    final var issue = issueService.findIssueDetail(issueId);
+    return ResponseEntity.ok(IssueDetailResponse.from(issue));
   }
 }
