@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import swe.dto.CommentAddRequest;
 import swe.dto.IssueDescriptionUpdateRequest;
+import swe.dto.IssuePriorityUpdateRequest;
 import swe.dto.IssueResponse;
 import swe.dto.IssueStatusUpdateRequest;
 import swe.issue.application.IssueService;
@@ -76,6 +77,15 @@ public class IssueController {
       @RequestBody final IssueStatusUpdateRequest issueStatusUpdateRequest
   ) {
     issueService.updateStatus(issueId, issueStatusUpdateRequest.statusName());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/issues/{issueId}/priority")
+  public ResponseEntity<Void> updatePriority(
+      @PathVariable final Long issueId,
+      @RequestBody final IssuePriorityUpdateRequest issuePriorityUpdateRequest
+  ) {
+    issueService.updatePriority(issueId, issuePriorityUpdateRequest.priority());
     return ResponseEntity.ok().build();
   }
 }
