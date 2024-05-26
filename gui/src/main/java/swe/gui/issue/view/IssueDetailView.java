@@ -1,66 +1,84 @@
 package swe.gui.issue.view;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import org.springframework.context.ApplicationContext;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import swe.gui.SessionStorage;
-import swe.gui.issue.IssueDetail;
 import swe.issue.application.IssueService;
+import swe.issue.domain.Comment;
+import swe.issue.domain.Issue;
 
 public class IssueDetailView {
+    private JScrollPane scrollPane;
     private IssueService issueService;
-    public void settingView(JPanel panel, JFrame frame){
+
+    public void settingView(JPanel issuePanel, JFrame frame) {
         this.issueService = SessionStorage.issueService;
-        panel.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        issuePanel.setLayout(new GridLayout(0, 1));
+        Issue issue = issueService.findIssueDetail(SessionStorage.currentIssue.getId());
+        //issuePanel.setBorder(BorderFactory.createTitledBorder(issue.getTitle()));
+        JLabel titleLabel = new JLabel("title: " + issue.getTitle());
+        JLabel reporterLabel = new JLabel("reporter: " + issue.getReporter().getNickname());
+        JLabel contentLabel = new JLabel("<html><p style='width:200px;'>" + issue.getDescription() + "</p></html>");
+        issuePanel.add(titleLabel);
+        issuePanel.add(reporterLabel);
+        issuePanel.add(contentLabel);
 
-        JLabel titleLabel = new JLabel("Title");
-        c.gridx = 0;
-        c.gridy = 0;
-        panel.add(titleLabel, c);
+        // 댓글 입력 필드 및 버튼
+        JTextField commentField = new JTextField();
+        JButton commentButton = new JButton("Add Comment");
 
+        JPanel commentPanel = new JPanel();
+        commentPanel.setLayout(new GridLayout(0, 2));
+        commentPanel.add(commentField);
+        commentPanel.add(commentButton);
 
-        JLabel descriptionLabel = new JLabel("Description");
-        c.gridx = 0;
-        c.gridy = 1;
-        panel.add(descriptionLabel, c);
+        scrollPane = new JScrollPane(issuePanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        JLabel commentLabel = new JLabel("Comment");
-        c.gridx = 0;
-        c.gridy = 2;
-        panel.add(commentLabel, c);
+        issuePanel.add(commentPanel);
+        JPanel comments = new JPanel();
 
-        JTextArea commentArea = new JTextArea(4, 15);
-        c.gridy = 3;
-        panel.add(commentArea, c);
-        JButton commentBtn = new JButton("등록");
-        c.gridx = 1;
-        panel.add(commentBtn, c);
-
-
-        commentBtn.addActionListener(new ActionListener() {
+        // 댓글 모음
+        comments.setLayout(new GridLayout(0, 3));
+        issuePanel.add(comments);
+        for(Comment comment : issue.getComments()){
+            comments.add(new JLabel(comment.getContent()));
+            comments.add(new JLabel(comment.getCommenter().getNickname()));
+            comments.add(new JLabel(comment.getCreatedAt().toString()));
+        }
+        // 댓글 버튼 이벤트 핸들러
+        commentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String comment = commentArea.getText();
-                if(comment.isEmpty()){
-                    JOptionPane.showMessageDialog(
-                        frame, "All fields are required", "Error", JOptionPane.ERROR_MESSAGE
-                    );
-                } else {
+                String comment = commentField.getText();
+                if (!comment.isEmpty()) {
+                    JLabel commentLabel = new JLabel(comment);
                     issueService.commentContent(SessionStorage.loginUser.getId(), SessionStorage.currentIssue.getId(), comment);
-                    frame.dispose();
-                    new IssueDetail();
+                    comments.add(commentLabel);
+                    comments.add(new JLabel(SessionStorage.loginUser.getNickname()));
+                    comments.add(new JLabel(LocalDateTime.now().toString()));
+                    comments.revalidate();
+                    comments.repaint();
+                    commentField.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(
+                        frame,
+                        "Comment cannot be empty",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
                 }
             }
         });
-    }
 
+        frame.add(scrollPane);
+    }
 }

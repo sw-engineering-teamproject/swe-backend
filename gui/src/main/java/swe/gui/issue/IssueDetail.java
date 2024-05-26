@@ -2,7 +2,6 @@ package swe.gui.issue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import org.springframework.context.ApplicationContext;
 import swe.gui.issue.view.IssueDetailView;
 
 public class IssueDetail {
