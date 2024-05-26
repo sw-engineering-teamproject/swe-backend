@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import swe.issue.domain.Issue;
 import swe.issue.domain.IssueFilterCondition;
+import swe.issue.domain.IssuePriority;
 import swe.issue.domain.IssueRepository;
+import swe.issue.domain.IssueStatus;
 import swe.issue.dto.IssueCreateRequest;
 import swe.project.domain.ProjectRepository;
 import swe.user.domain.User;
@@ -53,5 +55,19 @@ public class IssueService {
   public void updateDescription(final Long issueId, final String newDescription) {
     final Issue issue = issueRepository.readById(issueId);
     issue.updateDescription(newDescription);
+  }
+
+  @Transactional
+  public void updateStatus(final Long issueId, final String statusName) {
+    final Issue issue = issueRepository.readById(issueId);
+    final IssueStatus newStatus = IssueStatus.from(statusName);
+    issue.updateStatus(newStatus);
+  }
+
+  @Transactional
+  public void updatePriority(final Long issueId, final String priorityName) {
+    final Issue issue = issueRepository.readById(issueId);
+    final IssuePriority newPriority = IssuePriority.from(priorityName);
+    issue.updatePriority(newPriority);
   }
 }
