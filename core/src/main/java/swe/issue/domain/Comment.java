@@ -13,12 +13,15 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import swe.user.domain.User;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 @ToString
+@Getter
 public class Comment {
 
   private static final String INITIAL_PROJECT_COMMENT = "%s created a new issue.";
@@ -32,8 +35,9 @@ public class Comment {
   @NotNull
   private Issue issue;
 
+  @ManyToOne(fetch = LAZY)
   @NotNull
-  private Long commenterId;
+  private User commenter;
 
   @NotNull
   private LocalDateTime createdAt;
@@ -41,16 +45,16 @@ public class Comment {
   @NotNull
   private String content;
 
-  public Comment(final Issue issue, final Long commenterId, final String content) {
+  public Comment(final Issue issue, final User commenter, final String content) {
     this.issue = issue;
-    this.commenterId = commenterId;
+    this.commenter = commenter;
     this.content = content;
     this.createdAt = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.SECONDS);
   }
 
   static Comment createInitialProjectComment(
-      final Issue issue, final Long commenterId, final String reporterName
+      final Issue issue, final User commenter, final String reporterName
   ) {
-    return new Comment(issue, commenterId, String.format(INITIAL_PROJECT_COMMENT, reporterName));
+    return new Comment(issue, commenter, String.format(INITIAL_PROJECT_COMMENT, reporterName));
   }
 }

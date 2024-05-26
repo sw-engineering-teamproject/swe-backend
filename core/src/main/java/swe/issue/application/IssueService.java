@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import swe.issue.domain.Comment;
 import swe.issue.domain.Issue;
 import swe.issue.domain.IssueFilterCondition;
 import swe.issue.domain.IssuePriority;
@@ -47,9 +48,10 @@ public class IssueService {
   }
 
   @Transactional
-  public void commentContent(final Long memberId, final Long issueId, final String content) {
+  public void commentContent(final Long userId, final Long issueId, final String content) {
     final Issue issue = issueRepository.readByIdWithComments(issueId);
-    issue.addComment(memberId, content);
+    final User commenter = userRepository.readById(userId);
+    issue.addComment(commenter, content);
   }
 
   @Transactional
@@ -91,6 +93,6 @@ public class IssueService {
 
   @Transactional(readOnly = true)
   public Issue findIssueDetail(final Long issueId) {
-    return issueRepository.readByIdWithAll(issueId);
+    return issueRepository.readByIdWithRelatedUsers(issueId);
   }
 }

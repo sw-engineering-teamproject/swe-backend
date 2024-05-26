@@ -130,9 +130,9 @@ class IssueServiceTest extends ServiceTest {
 
     //then
     final Issue actual = issueRepository.readByIdWithComments(issue.getId());
-    final Comment expected = new Comment(actual, commenter.getId(), "새로운 댓글");
+    final Comment expected = new Comment(actual, commenter, "새로운 댓글");
     assertThat(actual.getComments())
-        .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+        .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "commenter")
         .contains(expected);
   }
 

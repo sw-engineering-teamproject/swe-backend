@@ -87,7 +87,7 @@ public class Issue {
   ) {
     final Issue issue = new Issue(title, description, projectId, reporter);
     issue.comments.add(
-        createInitialProjectComment(issue, reporter.getId(), reporter.getNickname())
+        createInitialProjectComment(issue, reporter, reporter.getNickname())
     );
     return issue;
   }
@@ -117,8 +117,8 @@ public class Issue {
     this.assignee = assignee;
   }
 
-  public void addComment(final Long commenterId, final String content) {
-    final Comment comment = new Comment(this, commenterId, content);
+  public void addComment(final User commenter, final String content) {
+    final Comment comment = new Comment(this, commenter, content);
     comments.add(comment);
   }
 
