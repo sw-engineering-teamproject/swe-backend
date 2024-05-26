@@ -21,10 +21,11 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
   @Query("""
       select i
       from Issue i
-      left join fetch i.comments
+      left join fetch i.comments c
       join fetch i.reporter
       left join fetch i.fixer
       left join fetch i.assignee
+      join fetch c.commenter
       where i.id = :id
       """)
   Optional<Issue> findByIdWithAll(final Long id);
