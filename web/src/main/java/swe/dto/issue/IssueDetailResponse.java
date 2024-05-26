@@ -36,6 +36,7 @@ public record IssueDetailResponse(
         .reportedTime(issue.getReportedDate())
         .status(issue.getStatus().getName())
         .priority(issue.getPriority().getName())
+        .comments(CommentResponse.createList(issue.getComments()))
         .build();
   }
 
