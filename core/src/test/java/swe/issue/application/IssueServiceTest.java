@@ -3,9 +3,11 @@ package swe.issue.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static swe.fixture.IssueFixture.id가_없는_Issue;
-import static swe.fixture.ProjectFixture.unsavedProject;
+import static swe.fixture.ProjectFixture.id가_없는_Project;
 import static swe.fixture.UserFixture.id가_없는_유저;
 import static swe.fixture.UserFixture.id가_없는_유저2;
+import static swe.issue.domain.IssuePriority.CRITICAL;
+import static swe.issue.domain.IssueStatus.ASSIGNED;
 import static swe.user.domain.UserRole.TESTER;
 
 import java.util.List;
@@ -40,7 +42,7 @@ class IssueServiceTest extends ServiceTest {
   void 이슈를_생성한다() {
     //given
     final User user = userRepository.save(id가_없는_유저());
-    final Project project = projectRepository.save(unsavedProject(user.getId()));
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
     final IssueCreateRequest request
         = new IssueCreateRequest("issue title", "new issue", project.getId());
 
@@ -66,7 +68,7 @@ class IssueServiceTest extends ServiceTest {
   void 이슈를_조회한다() {
     //given
     final User user = userRepository.save(id가_없는_유저());
-    final Project project = projectRepository.save(unsavedProject(user.getId()));
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
     final IssueCreateRequest request
         = new IssueCreateRequest("issue title", "new issue", project.getId());
     issueService.createIssue(user.getId(), request);
@@ -93,7 +95,7 @@ class IssueServiceTest extends ServiceTest {
     final User user2 = userRepository.save(
         new User("accountId2", "password2", "nickName2", TESTER)
     );
-    final Project project = projectRepository.save(unsavedProject(user1.getId()));
+    final Project project = projectRepository.save(id가_없는_Project(user1.getId()));
 
     final IssueCreateRequest request
         = new IssueCreateRequest("issue title", "new issue", project.getId());
@@ -120,7 +122,7 @@ class IssueServiceTest extends ServiceTest {
     //given
     final User user = userRepository.save(id가_없는_유저());
     final User commenter = userRepository.save(id가_없는_유저2());
-    final Project project = projectRepository.save(unsavedProject(user.getId()));
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
     final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
 
     //when
@@ -128,9 +130,106 @@ class IssueServiceTest extends ServiceTest {
 
     //then
     final Issue actual = issueRepository.readByIdWithComments(issue.getId());
-    final Comment expected = new Comment(actual, commenter.getId(), "새로운 댓글");
+    final Comment expected = new Comment(actual, commenter, "새로운 댓글");
     assertThat(actual.getComments())
-        .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+        .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id", "commenter")
         .contains(expected);
+  }
+
+  @Test
+  void 이슈의_설명을_업데이트한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+    final String description = "새로운 설명";
+
+    //when
+    issueService.updateDescription(issue.getId(), description);
+
+    //then
+    final Issue updatedIssue = issueRepository.readById(issue.getId());
+
+    assertThat(updatedIssue.getDescription())
+        .isEqualTo(description);
+  }
+
+  @Test
+  void 이슈의_상태를_업데이트한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+    final String newStatusName = ASSIGNED.getName();
+
+    //when
+    issueService.updateStatus(issue.getId(), newStatusName);
+
+    //then
+    final Issue updatedIssue = issueRepository.readById(issue.getId());
+
+    assertThat(updatedIssue.getStatus())
+        .isEqualTo(ASSIGNED);
+  }
+
+  @Test
+  void 이슈의_우선순위를_업데이트한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+    final String newPriorityName = CRITICAL.getName();
+
+    //when
+    issueService.updatePriority(issue.getId(), newPriorityName);
+
+    //then
+    final Issue updatedIssue = issueRepository.readById(issue.getId());
+
+    assertThat(updatedIssue.getPriority())
+        .isEqualTo(CRITICAL);
+  }
+
+  @Test
+  void 이슈의_assignee를_업데이트_한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+    final User newAssignee = userRepository.save(id가_없는_유저2());
+
+    //when
+    issueService.assignUser(issue.getId(), newAssignee.getId());
+
+    //then
+    final Issue updatedIssue = issueRepository.readById(issue.getId());
+    final Long newAssigneeId = updatedIssue.getAssignee().map(User::getId).orElseThrow();
+
+    assertThat(newAssigneeId)
+        .isEqualTo(newAssignee.getId());
+  }
+
+  @Test
+  void 이슈를_상세조회_한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+
+    final User assignee = userRepository.save(id가_없는_유저2());
+    issueService.assignUser(issue.getId(), assignee.getId());
+
+    //when
+    final Issue actual = issueService.findIssueDetail(issue.getId());
+
+    //then
+    final Issue expected = new Issue(issue.getTitle(), issue.getDescription(), issue.getProjectId(),
+        user);
+    expected.assignAssignee(assignee);
+
+    assertThat(actual)
+        .usingRecursiveComparison()
+        .ignoringFields("id", "reportedDate")
+        .isEqualTo(expected);
   }
 }

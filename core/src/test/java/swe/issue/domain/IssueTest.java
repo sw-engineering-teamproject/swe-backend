@@ -23,7 +23,7 @@ class IssueTest {
     //then
     final Issue expected = new Issue("title", "description", 10L, reporter);
     final Comment expectedComment
-        = createInitialProjectComment(expected, reporter.getId(), reporter.getNickname());
+        = createInitialProjectComment(expected, reporter, reporter.getNickname());
 
     assertAll(
         () -> assertThat(actual)
@@ -108,13 +108,12 @@ class IssueTest {
     final Issue issue = id가_없는_Issue(reporter, 10L);
 
     final String content = "댓글 내용";
-    final long reporterId = 10L;
 
     //when
-    issue.addComment(reporterId, content);
+    issue.addComment(reporter, content);
 
     //then
-    final Comment expcetedComment = new Comment(issue, reporterId, content);
+    final Comment expcetedComment = new Comment(issue, reporter, content);
     assertThat(issue.getComments())
         .usingRecursiveFieldByFieldElementComparator()
         .contains(expcetedComment);

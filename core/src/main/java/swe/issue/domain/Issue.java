@@ -36,8 +36,10 @@ public class Issue {
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
+  @NotNull
   private String title;
 
+  @NotNull
   private String description;
 
   @NotNull
@@ -47,17 +49,21 @@ public class Issue {
   @NotNull
   private User reporter;
 
-  private Long fixerId;
+  @ManyToOne(fetch = LAZY)
+  private User fixer;
 
   @ManyToOne(fetch = LAZY)
   private User assignee;
 
+  @NotNull
   private LocalDateTime reportedDate;
 
   @Enumerated(value = EnumType.STRING)
+  @NotNull
   private IssueStatus status;
 
   @Enumerated(value = EnumType.STRING)
+  @NotNull
   private IssuePriority priority;
 
   @OneToMany(mappedBy = "issue", orphanRemoval = true, cascade = PERSIST)
@@ -81,7 +87,7 @@ public class Issue {
   ) {
     final Issue issue = new Issue(title, description, projectId, reporter);
     issue.comments.add(
-        createInitialProjectComment(issue, reporter.getId(), reporter.getNickname())
+        createInitialProjectComment(issue, reporter, reporter.getNickname())
     );
     return issue;
   }
@@ -103,12 +109,28 @@ public class Issue {
     return Optional.ofNullable(assignee);
   }
 
+  public Optional<User> getFixer() {
+    return Optional.ofNullable(fixer);
+  }
+
   public void assignAssignee(final User assignee) {
     this.assignee = assignee;
   }
 
-  public void addComment(final Long commenterId, final String content) {
-    final Comment comment = new Comment(this, commenterId, content);
+  public void addComment(final User commenter, final String content) {
+    final Comment comment = new Comment(this, commenter, content);
     comments.add(comment);
+  }
+
+  public void updateDescription(final String newDescription) {
+    this.description = newDescription;
+  }
+
+  public void updateStatus(final IssueStatus newIssueStatus) {
+    this.status = newIssueStatus;
+  }
+
+  public void updatePriority(final IssuePriority newIssuePriority) {
+    this.priority = newIssuePriority;
   }
 }

@@ -11,8 +11,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import swe.dto.CommentAddRequest;
-import swe.dto.IssueResponse;
+import swe.dto.IssueAssignRequest;
+import swe.dto.issue.CommentAddRequest;
+import swe.dto.issue.IssueDescriptionUpdateRequest;
+import swe.dto.issue.IssueDetailResponse;
+import swe.dto.issue.IssuePriorityNameResponse;
+import swe.dto.issue.IssuePriorityUpdateRequest;
+import swe.dto.issue.IssueResponse;
+import swe.dto.issue.IssueStatusNameResponse;
+import swe.dto.issue.IssueStatusUpdateRequest;
 import swe.issue.application.IssueService;
 import swe.issue.dto.IssueCreateRequest;
 import swe.user.dto.JwtMemberId;
@@ -57,5 +64,58 @@ public class IssueController {
   ) {
     issueService.commentContent(jwtMemberId.memberId(), issueId, commentAddRequest.content());
     return ResponseEntity.status(HttpStatus.CREATED).build();
+  }
+
+  @PostMapping("/issues/{issueId}/description")
+  public ResponseEntity<Void> updateDescription(
+      @PathVariable final Long issueId,
+      @RequestBody final IssueDescriptionUpdateRequest issueDescriptionUpdateRequest
+  ) {
+    issueService.updateDescription(issueId, issueDescriptionUpdateRequest.newDescription());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/issues/{issueId}/status")
+  public ResponseEntity<Void> updateStatus(
+      @PathVariable final Long issueId,
+      @RequestBody final IssueStatusUpdateRequest issueStatusUpdateRequest
+  ) {
+    issueService.updateStatus(issueId, issueStatusUpdateRequest.status());
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/issues/{issueId}/priority")
+  public ResponseEntity<Void> updatePriority(
+      @PathVariable final Long issueId,
+      @RequestBody final IssuePriorityUpdateRequest issuePriorityUpdateRequest
+  ) {
+    issueService.updatePriority(issueId, issuePriorityUpdateRequest.priority());
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/issues/priority")
+  public ResponseEntity<List<IssuePriorityNameResponse>> getPriorityList() {
+    final var issuePriorities = issueService.getIssuePriority();
+    return ResponseEntity.ok(IssuePriorityNameResponse.createList(issuePriorities));
+  }
+
+  @GetMapping("/issues/status")
+  public ResponseEntity<List<IssueStatusNameResponse>> getStatusList() {
+    final var issueStatuses = issueService.getIssueStatuses();
+    return ResponseEntity.ok(IssueStatusNameResponse.createList(issueStatuses));
+  }
+
+  @PostMapping("/issues/{issueId}/assignee")
+  public ResponseEntity<Void> assignUser(
+      @PathVariable final Long issueId, @RequestBody final IssueAssignRequest issueAssignRequest
+  ) {
+    issueService.assignUser(issueId, issueAssignRequest.assigneeId());
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/issues/{issueId}")
+  public ResponseEntity<IssueDetailResponse> getIssueDetail(@PathVariable final Long issueId) {
+    final var issue = issueService.findIssueDetail(issueId);
+    return ResponseEntity.ok(IssueDetailResponse.from(issue));
   }
 }

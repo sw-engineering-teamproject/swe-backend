@@ -1,4 +1,4 @@
-package swe.dto;
+package swe.dto.user;
 
 import java.util.List;
 import swe.user.domain.UserRole;
