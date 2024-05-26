@@ -6,6 +6,7 @@ import static swe.fixture.IssueFixture.id가_없는_Issue;
 import static swe.fixture.ProjectFixture.unsavedProject;
 import static swe.fixture.UserFixture.id가_없는_유저;
 import static swe.fixture.UserFixture.id가_없는_유저2;
+import static swe.issue.domain.IssuePriority.CRITICAL;
 import static swe.issue.domain.IssueStatus.ASSIGNED;
 import static swe.user.domain.UserRole.TESTER;
 
@@ -169,5 +170,23 @@ class IssueServiceTest extends ServiceTest {
 
     assertThat(updatedIssue.getStatus())
         .isEqualTo(ASSIGNED);
+  }
+
+  @Test
+  void 이슈의_우선순위를_업데이트한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(unsavedProject(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+    final String newPriorityName = CRITICAL.getName();
+
+    //when
+    issueService.updatePriority(issue.getId(), newPriorityName);
+
+    //then
+    final Issue updatedIssue = issueRepository.readById(issue.getId());
+
+    assertThat(updatedIssue.getPriority())
+        .isEqualTo(CRITICAL);
   }
 }

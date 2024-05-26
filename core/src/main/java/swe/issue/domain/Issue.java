@@ -122,4 +122,8 @@ public class Issue {
   public void updateStatus(final IssueStatus newIssueStatus) {
     this.status = newIssueStatus;
   }
+
+  public void updatePriority(final IssuePriority newIssuePriority) {
+    this.priority = newIssuePriority;
+  }
 }
