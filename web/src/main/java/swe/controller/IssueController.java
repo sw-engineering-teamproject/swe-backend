@@ -1,6 +1,5 @@
 package swe.controller;
 
-import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import swe.dto.IssueAssignRequest;
 import swe.dto.issue.CommentAddRequest;
+import swe.dto.issue.IssueCreateResponse;
 import swe.dto.issue.IssueDescriptionUpdateRequest;
 import swe.dto.issue.IssueDetailResponse;
 import swe.dto.issue.IssuePriorityNameResponse;
@@ -31,11 +31,11 @@ public class IssueController {
   private final IssueService issueService;
 
   @PostMapping("/issues")
-  public ResponseEntity<Void> createIssue(
+  public ResponseEntity<IssueCreateResponse> createIssue(
       final JwtMemberId jwtMemberId, @RequestBody final IssueCreateRequest request
   ) {
     final Long issueId = issueService.createIssue(jwtMemberId.memberId(), request);
-    return ResponseEntity.created(URI.create("/issues/" + issueId)).build();
+    return ResponseEntity.status(HttpStatus.CREATED).body(new IssueCreateResponse(issueId));
   }
 
   @GetMapping("/issues")
