@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import swe.dto.CommentAddRequest;
 import swe.dto.IssueDescriptionUpdateRequest;
+import swe.dto.IssuePriorityNameResponse;
 import swe.dto.IssuePriorityUpdateRequest;
 import swe.dto.IssueResponse;
+import swe.dto.IssueStatusNameResponse;
 import swe.dto.IssueStatusUpdateRequest;
 import swe.issue.application.IssueService;
 import swe.issue.dto.IssueCreateRequest;
@@ -87,5 +89,17 @@ public class IssueController {
   ) {
     issueService.updatePriority(issueId, issuePriorityUpdateRequest.priority());
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/issues/priority")
+  public ResponseEntity<List<IssuePriorityNameResponse>> getPriorityList() {
+    final var issuePriorities = issueService.getIssuePriority();
+    return ResponseEntity.ok(IssuePriorityNameResponse.createList(issuePriorities));
+  }
+
+  @GetMapping("/issues/status")
+  public ResponseEntity<List<IssueStatusNameResponse>> getStatusList() {
+    final var issueStatuses = issueService.getIssueStatuses();
+    return ResponseEntity.ok(IssueStatusNameResponse.createList(issueStatuses));
   }
 }
