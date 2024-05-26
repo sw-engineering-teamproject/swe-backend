@@ -39,7 +39,6 @@ public class Issue {
   @NotNull
   private String title;
 
-  @NotNull
   private String description;
 
   @NotNull
