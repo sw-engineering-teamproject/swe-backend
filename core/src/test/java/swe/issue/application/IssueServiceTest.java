@@ -208,4 +208,28 @@ class IssueServiceTest extends ServiceTest {
     assertThat(newAssigneeId)
         .isEqualTo(newAssignee.getId());
   }
+
+  @Test
+  void 이슈를_상세조회_한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+
+    final User assignee = userRepository.save(id가_없는_유저2());
+    issueService.assignUser(issue.getId(), assignee.getId());
+
+    //when
+    final Issue actual = issueService.findIssueDetail(issue.getId());
+
+    //then
+    final Issue expected = new Issue(issue.getTitle(), issue.getDescription(), issue.getProjectId(),
+        user);
+    expected.assignAssignee(assignee);
+
+    assertThat(actual)
+        .usingRecursiveComparison()
+        .ignoringFields("id")
+        .isEqualTo(expected);
+  }
 }

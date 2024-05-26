@@ -88,4 +88,9 @@ public class IssueService {
     final Issue issue = issueRepository.readById(issueId);
     issue.assignAssignee(newAssignee);
   }
+
+  @Transactional(readOnly = true)
+  public Issue findIssueDetail(final Long issueId) {
+    return issueRepository.readByIdWithAll(issueId);
+  }
 }
