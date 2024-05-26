@@ -160,7 +160,7 @@ class IssueServiceTest extends ServiceTest {
     final User user = userRepository.save(id가_없는_유저());
     final Project project = projectRepository.save(unsavedProject(user.getId()));
     final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
-    final String newStatusName = ASSIGNED.getValue();
+    final String newStatusName = ASSIGNED.getName();
 
     //when
     issueService.updateStatus(issue.getId(), newStatusName);

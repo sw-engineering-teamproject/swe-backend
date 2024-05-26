@@ -1,5 +1,6 @@
 package swe.issue.application;
 
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -69,5 +70,15 @@ public class IssueService {
     final Issue issue = issueRepository.readById(issueId);
     final IssuePriority newPriority = IssuePriority.from(priorityName);
     issue.updatePriority(newPriority);
+  }
+
+  public List<IssueStatus> getIssueStatuses() {
+    return Arrays.stream(IssueStatus.values())
+        .toList();
+  }
+
+  public List<IssuePriority> getIssuePriority() {
+    return Arrays.stream(IssuePriority.values())
+        .toList();
   }
 }

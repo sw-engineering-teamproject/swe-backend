@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import swe.dto.CommentAddRequest;
-import swe.dto.IssueDescriptionUpdateRequest;
-import swe.dto.IssuePriorityUpdateRequest;
-import swe.dto.IssueResponse;
-import swe.dto.IssueStatusUpdateRequest;
+import swe.dto.issue.CommentAddRequest;
+import swe.dto.issue.IssueDescriptionUpdateRequest;
+import swe.dto.issue.IssuePriorityNameResponse;
+import swe.dto.issue.IssuePriorityUpdateRequest;
+import swe.dto.issue.IssueResponse;
+import swe.dto.issue.IssueStatusNameResponse;
+import swe.dto.issue.IssueStatusUpdateRequest;
 import swe.issue.application.IssueService;
 import swe.issue.dto.IssueCreateRequest;
 import swe.user.dto.JwtMemberId;
@@ -87,5 +89,17 @@ public class IssueController {
   ) {
     issueService.updatePriority(issueId, issuePriorityUpdateRequest.priority());
     return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/issues/priority")
+  public ResponseEntity<List<IssuePriorityNameResponse>> getPriorityList() {
+    final var issuePriorities = issueService.getIssuePriority();
+    return ResponseEntity.ok(IssuePriorityNameResponse.createList(issuePriorities));
+  }
+
+  @GetMapping("/issues/status")
+  public ResponseEntity<List<IssueStatusNameResponse>> getStatusList() {
+    final var issueStatuses = issueService.getIssueStatuses();
+    return ResponseEntity.ok(IssueStatusNameResponse.createList(issueStatuses));
   }
 }
