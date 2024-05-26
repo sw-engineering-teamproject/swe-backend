@@ -6,7 +6,7 @@ public class ProjectFixture {
 
   public static final String TITLE = "title";
 
-  public static Project unsavedProject(final Long reporterId) {
+  public static Project id가_없는_Project(final Long reporterId) {
     return Project.builder()
         .title(TITLE)
         .reporterId(reporterId)
