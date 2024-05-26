@@ -22,6 +22,10 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     return findByIdWithComments(id).orElseThrow(() -> new IssueException(ISSUE_NOT_FOUND));
   }
 
+  default Issue readById(final Long id) {
+    return findById(id).orElseThrow(() -> new IssueException(ISSUE_NOT_FOUND));
+  }
+
   @Query("""
       select i
       from Issue i

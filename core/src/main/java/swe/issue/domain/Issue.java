@@ -52,12 +52,15 @@ public class Issue {
   @ManyToOne(fetch = LAZY)
   private User assignee;
 
+  @NotNull
   private LocalDateTime reportedDate;
 
   @Enumerated(value = EnumType.STRING)
+  @NotNull
   private IssueStatus status;
 
   @Enumerated(value = EnumType.STRING)
+  @NotNull
   private IssuePriority priority;
 
   @OneToMany(mappedBy = "issue", orphanRemoval = true, cascade = PERSIST)
@@ -110,5 +113,9 @@ public class Issue {
   public void addComment(final Long commenterId, final String content) {
     final Comment comment = new Comment(this, commenterId, content);
     comments.add(comment);
+  }
+
+  public void updateDescription(final String newDescription) {
+    this.description = newDescription;
   }
 }
