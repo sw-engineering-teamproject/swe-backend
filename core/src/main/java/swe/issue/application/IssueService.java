@@ -48,4 +48,10 @@ public class IssueService {
     final Issue issue = issueRepository.readByIdWithComments(issueId);
     issue.addComment(memberId, content);
   }
+
+  @Transactional
+  public void updateDescription(final Long issueId, final String newDescription) {
+    final Issue issue = issueRepository.readById(issueId);
+    issue.updateDescription(newDescription);
+  }
 }

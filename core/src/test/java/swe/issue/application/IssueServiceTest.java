@@ -133,4 +133,22 @@ class IssueServiceTest extends ServiceTest {
         .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
         .contains(expected);
   }
+
+  @Test
+  void 이슈의_설명을_업데이트한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(unsavedProject(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+    final String description = "새로운 설명";
+
+    //when
+    issueService.updateDescription(issue.getId(), description);
+
+    //then
+    final Issue updatedIssue = issueRepository.readById(issue.getId());
+
+    assertThat(updatedIssue.getDescription())
+        .isEqualTo(description);
+  }
 }
