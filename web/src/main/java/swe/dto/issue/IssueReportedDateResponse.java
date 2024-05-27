@@ -1,4 +1,4 @@
-package swe.dto;
+package swe.dto.issue;
 
 import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 import static java.util.Comparator.comparing;
