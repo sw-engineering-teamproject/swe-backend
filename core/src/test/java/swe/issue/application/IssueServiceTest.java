@@ -6,9 +6,13 @@ import static swe.fixture.IssueFixture.id가_없는_Issue;
 import static swe.fixture.ProjectFixture.id가_없는_Project;
 import static swe.fixture.UserFixture.id가_없는_유저;
 import static swe.fixture.UserFixture.id가_없는_유저2;
+import static swe.issue.domain.IssuePriority.BLOCKER;
 import static swe.issue.domain.IssuePriority.CRITICAL;
+import static swe.issue.domain.IssuePriority.MAJOR;
 import static swe.issue.domain.IssueStatus.ASSIGNED;
 import static swe.issue.domain.IssueStatus.FIXED;
+import static swe.issue.domain.IssueStatus.NEW;
+import static swe.issue.domain.IssueStatus.RESOLVED;
 import static swe.user.domain.UserRole.TESTER;
 
 import java.time.LocalDate;
@@ -20,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionTemplate;
 import swe.issue.domain.Comment;
 import swe.issue.domain.Issue;
+import swe.issue.domain.IssuePriority;
 import swe.issue.domain.IssueRepository;
+import swe.issue.domain.IssueStatus;
 import swe.issue.dto.IssueCreateRequest;
 import swe.project.domain.Project;
 import swe.project.domain.ProjectRepository;
@@ -318,6 +324,69 @@ class IssueServiceTest extends ServiceTest {
     final Map<LocalDate, Long> expected = Map.of(
         LocalDate.of(2023, 11, 1), 3L,
         LocalDate.of(2023, 12, 1), 1L
+    );
+
+    assertThat(actual)
+        .usingRecursiveComparison()
+        .isEqualTo(expected);
+  }
+
+  @Test
+  void 우선순위를_기준으로_이슈를_조회한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+
+    final Issue issue1 = id가_없는_Issue(user, project.getId());
+    issue1.updatePriority(CRITICAL);
+    final Issue issue2 = id가_없는_Issue(user, project.getId());
+    issue2.updatePriority(CRITICAL);
+    final Issue issue3 = id가_없는_Issue(user, project.getId());
+    final Issue issue4 = id가_없는_Issue(user, project.getId());
+    issue4.updatePriority(BLOCKER);
+
+    issueRepository.saveAll(List.of(issue1, issue2, issue3, issue4));
+
+    //when
+    final Map<IssuePriority, Long> actual
+        = issueService.getPriorityCount(project.getId());
+
+    //then
+    final Map<IssuePriority, Long> expected = Map.of(
+        CRITICAL, 2L,
+        BLOCKER, 1L,
+        MAJOR, 1L
+    );
+
+    assertThat(actual)
+        .usingRecursiveComparison()
+        .isEqualTo(expected);
+  }
+
+  @Test
+  void 이슈상태를_기준으로_이슈를_조회한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+
+    final Issue issue1 = id가_없는_Issue(user, project.getId());
+    issue1.updateStatus(RESOLVED);
+    final Issue issue2 = id가_없는_Issue(user, project.getId());
+    issue2.updateStatus(RESOLVED);
+    final Issue issue3 = id가_없는_Issue(user, project.getId());
+    final Issue issue4 = id가_없는_Issue(user, project.getId());
+    issue4.updateStatus(FIXED);
+
+    issueRepository.saveAll(List.of(issue1, issue2, issue3, issue4));
+
+    //when
+    final Map<IssueStatus, Long> actual = issueService.getStatusCount(project.getId());
+
+    //then
+    final Map<IssueStatus, Long> expected = Map.of(
+        RESOLVED, 2L,
+        FIXED, 1L,
+        NEW, 1L
     );
 
     assertThat(actual)

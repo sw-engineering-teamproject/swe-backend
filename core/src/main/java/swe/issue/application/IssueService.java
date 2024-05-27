@@ -136,4 +136,24 @@ public class IssueService {
     final LocalDate reportedDate = issue.getReportedDate().toLocalDate();
     return reportedDate.minusDays(reportedDate.getDayOfMonth()).plusDays(1);
   }
+
+  @Transactional(readOnly = true)
+  public Map<IssueStatus, Long> getStatusCount(final Long projectId) {
+    return issueRepository.findByProjectId(projectId).stream()
+        .collect(groupingBy(
+                Issue::getStatus,
+                Collectors.counting()
+            )
+        );
+  }
+
+  @Transactional(readOnly = true)
+  public Map<IssuePriority, Long> getPriorityCount(final Long projectId) {
+    return issueRepository.findByProjectId(projectId).stream()
+        .collect(groupingBy(
+                Issue::getPriority,
+                Collectors.counting()
+            )
+        );
+  }
 }
