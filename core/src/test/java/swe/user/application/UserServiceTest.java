@@ -2,8 +2,10 @@ package swe.user.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static swe.fixture.UserFixture.id가_없는_유저;
+import static swe.fixture.UserFixture.id가_없는_유저2;
 import static swe.user.domain.UserRole.TESTER;
 
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +83,21 @@ class UserServiceTest extends ServiceTest {
       assertThat(actual)
           .isFalse();
     }
+  }
+
+  @Test
+  void 유저_전체를_조회한다() {
+    //given
+    final User savedUser1 = userRepository.save(id가_없는_유저());
+    final User savedUser2 = userRepository.save(id가_없는_유저2());
+
+    //when
+    final List<User> actual = userService.findAllUsers();
+
+    //then
+    final List<User> expected = List.of(savedUser1, savedUser2);
+    assertThat(actual)
+        .usingRecursiveFieldByFieldElementComparator()
+        .containsExactlyInAnyOrderElementsOf(expected);
   }
 }

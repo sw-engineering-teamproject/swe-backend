@@ -34,6 +34,12 @@ public class UserService {
     return userRepository.existsByNickname(nickName);
   }
 
+  @Transactional(readOnly = true)
+  public List<User> findAllUsers() {
+    return userRepository.findAll();
+  }
+
+
   public List<UserRole> getAllUserRoles() {
     return Arrays.stream(UserRole.values())
         .toList();
