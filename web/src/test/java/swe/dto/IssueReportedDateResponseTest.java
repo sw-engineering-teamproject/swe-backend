@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
+import swe.dto.issue.IssueReportedDateResponse;
 
 class IssueReportedDateResponseTest {
 

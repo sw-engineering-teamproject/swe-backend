@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import swe.dto.IssueAssignRequest;
-import swe.dto.IssueReportedDateResponse;
 import swe.dto.issue.CommentAddRequest;
+import swe.dto.issue.IssueAssignRequest;
 import swe.dto.issue.IssueCreateResponse;
 import swe.dto.issue.IssueDescriptionUpdateRequest;
 import swe.dto.issue.IssueDetailResponse;
 import swe.dto.issue.IssuePriorityNameResponse;
 import swe.dto.issue.IssuePriorityUpdateRequest;
+import swe.dto.issue.IssueReportedDateResponse;
 import swe.dto.issue.IssueResponse;
 import swe.dto.issue.IssueStatusNameResponse;
 import swe.dto.issue.IssueStatusUpdateRequest;
@@ -78,10 +78,10 @@ public class IssueController {
 
   @PostMapping("/issues/{issueId}/status")
   public ResponseEntity<Void> updateStatus(
-      @PathVariable final Long issueId,
+      @PathVariable final Long issueId, final JwtMemberId jwtMemberId,
       @RequestBody final IssueStatusUpdateRequest issueStatusUpdateRequest
   ) {
-    issueService.updateStatus(issueId, issueStatusUpdateRequest.status());
+    issueService.updateStatus(jwtMemberId.memberId(), issueId, issueStatusUpdateRequest.status());
     return ResponseEntity.ok().build();
   }
 

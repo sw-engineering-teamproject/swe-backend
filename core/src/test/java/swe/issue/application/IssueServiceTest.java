@@ -8,6 +8,7 @@ import static swe.fixture.UserFixture.id가_없는_유저;
 import static swe.fixture.UserFixture.id가_없는_유저2;
 import static swe.issue.domain.IssuePriority.CRITICAL;
 import static swe.issue.domain.IssueStatus.ASSIGNED;
+import static swe.issue.domain.IssueStatus.FIXED;
 import static swe.user.domain.UserRole.TESTER;
 
 import java.time.LocalDate;
@@ -166,13 +167,36 @@ class IssueServiceTest extends ServiceTest {
     final String newStatusName = ASSIGNED.getName();
 
     //when
-    issueService.updateStatus(issue.getId(), newStatusName);
+    issueService.updateStatus(user.getId(), issue.getId(), newStatusName);
 
     //then
     final Issue updatedIssue = issueRepository.readById(issue.getId());
 
     assertThat(updatedIssue.getStatus())
         .isEqualTo(ASSIGNED);
+  }
+
+  @Test
+  void 이슈의상태를_업데이트할떄_Fixed를_업데이트하면_Fixer가_된다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+    final String newStatusName = FIXED.getName();
+
+    //when
+    issueService.updateStatus(user.getId(), issue.getId(), newStatusName);
+
+    //then
+    final Issue updatedIssue = issueRepository.readByIdWithAll(issue.getId());
+
+    assertAll(
+        () -> assertThat(updatedIssue.getStatus())
+            .isEqualTo(FIXED),
+        () -> assertThat(updatedIssue.getFixer().orElseThrow())
+            .usingRecursiveComparison()
+            .isEqualTo(user)
+    );
   }
 
   @Test
