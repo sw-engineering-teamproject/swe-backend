@@ -100,4 +100,18 @@ class UserServiceTest extends ServiceTest {
         .usingRecursiveFieldByFieldElementComparator()
         .containsExactlyInAnyOrderElementsOf(expected);
   }
+
+  @Test
+  void 유저를_nickname으로_조회한다() {
+    //given
+    final User savedUser = userRepository.save(id가_없는_유저());
+
+    //when
+    final User actual = userService.findUser(savedUser.getNickname());
+
+    //then
+    assertThat(actual)
+        .usingRecursiveComparison()
+        .isEqualTo(savedUser);
+  }
 }
