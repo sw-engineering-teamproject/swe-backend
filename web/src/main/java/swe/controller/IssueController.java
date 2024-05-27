@@ -17,7 +17,7 @@ import swe.dto.issue.IssueDescriptionUpdateRequest;
 import swe.dto.issue.IssueDetailResponse;
 import swe.dto.issue.IssuePriorityNameResponse;
 import swe.dto.issue.IssuePriorityUpdateRequest;
-import swe.dto.issue.IssueReportedDateResponse;
+import swe.dto.issue.IssueReportedResponse;
 import swe.dto.issue.IssueResponse;
 import swe.dto.issue.IssueStatusNameResponse;
 import swe.dto.issue.IssueStatusUpdateRequest;
@@ -121,18 +121,18 @@ public class IssueController {
   }
 
   @GetMapping("/projects/{projectId}/statistics/day")
-  public ResponseEntity<List<IssueReportedDateResponse>> viewDailyStatistics(
+  public ResponseEntity<List<IssueReportedResponse>> viewDailyStatistics(
       @PathVariable final Long projectId
   ) {
     final var statistics = issueService.getIssueCreateCountByDay(projectId);
-    return ResponseEntity.ok(IssueReportedDateResponse.createList(statistics));
+    return ResponseEntity.ok(IssueReportedResponse.createList(statistics));
   }
 
   @GetMapping("/projects/{projectId}/statistics/month")
-  public ResponseEntity<List<IssueReportedDateResponse>> viewMonthlyStatistics(
+  public ResponseEntity<List<IssueReportedResponse>> viewMonthlyStatistics(
       @PathVariable final Long projectId
   ) {
     final var statistics = issueService.getIssueCreateCountByMonth(projectId);
-    return ResponseEntity.ok(IssueReportedDateResponse.createList(statistics));
+    return ResponseEntity.ok(IssueReportedResponse.createList(statistics));
   }
 }
