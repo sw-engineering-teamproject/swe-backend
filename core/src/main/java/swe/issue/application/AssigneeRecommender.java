@@ -8,4 +8,6 @@ import swe.user.domain.User;
 public interface AssigneeRecommender {
 
   List<User> recommend(final Project project, final Issue issue);
+
+  void addNewIssuesToChroma(List<Issue> issues);
 }

@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
+import swe.dto.user.UserResponse;
 import swe.issue.domain.Comment;
 import swe.issue.domain.Issue;
-import swe.user.domain.User;
 
 @Builder
 public record IssueDetailResponse(
@@ -38,13 +38,6 @@ public record IssueDetailResponse(
         .priority(issue.getPriority().getName())
         .comments(CommentResponse.createList(issue.getComments()))
         .build();
-  }
-
-  record UserResponse(Long id, String name) {
-
-    public static UserResponse from(final User user) {
-      return new UserResponse(user.getId(), user.getNickname());
-    }
   }
 
   @Builder
