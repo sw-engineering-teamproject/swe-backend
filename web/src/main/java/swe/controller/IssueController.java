@@ -120,7 +120,7 @@ public class IssueController {
     return ResponseEntity.ok(IssueDetailResponse.from(issue));
   }
 
-  @GetMapping("/projects/{projectId}/statistics/month")
+  @GetMapping("/projects/{projectId}/statistics/day")
   public ResponseEntity<List<IssueReportedDateResponse>> viewDailyStatistics(
       @PathVariable final Long projectId
   ) {
