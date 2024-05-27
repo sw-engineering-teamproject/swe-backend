@@ -17,6 +17,7 @@ import static swe.user.domain.UserRole.TESTER;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -392,5 +393,62 @@ class IssueServiceTest extends ServiceTest {
     assertThat(actual)
         .usingRecursiveComparison()
         .isEqualTo(expected);
+  }
+
+  @Test
+  void 이슈_Assignee를_기준으로_조회한다() {
+    //given
+    final User user1 = userRepository.save(id가_없는_유저());
+    final User user2 = userRepository.save(id가_없는_유저2());
+    final Project project = projectRepository.save(id가_없는_Project(user1.getId()));
+
+    final Issue issue1 = id가_없는_Issue(user1, project.getId());
+    issue1.assignAssignee(user2);
+    final Issue issue2 = id가_없는_Issue(user1, project.getId());
+    issue2.assignAssignee(user1);
+    final Issue issue3 = id가_없는_Issue(user1, project.getId());
+    issue3.assignAssignee(user1);
+    final Issue issue4 = id가_없는_Issue(user1, project.getId());
+
+    issueRepository.saveAll(List.of(issue1, issue2, issue3, issue4));
+
+    //when
+    final Map<User, Long> actual = issueService.getAssigneeCount(project.getId());
+
+    //then
+    final Map<User, Long> expected = new HashMap<>();
+    expected.put(user1, 2L);
+    expected.put(user2, 1L);
+
+    assertThat(actual.entrySet())
+        .usingRecursiveFieldByFieldElementComparator()
+        .containsExactlyInAnyOrderElementsOf(expected.entrySet());
+  }
+
+  @Test
+  void 이슈_Reporter를_기준으로_이슈를_조회한다() {
+    //given
+    final User user1 = userRepository.save(id가_없는_유저());
+    final User user2 = userRepository.save(id가_없는_유저2());
+    final Project project = projectRepository.save(id가_없는_Project(user1.getId()));
+
+    final Issue issue1 = id가_없는_Issue(user1, project.getId());
+    final Issue issue2 = id가_없는_Issue(user1, project.getId());
+    final Issue issue3 = id가_없는_Issue(user1, project.getId());
+    final Issue issue4 = id가_없는_Issue(user2, project.getId());
+
+    issueRepository.saveAll(List.of(issue1, issue2, issue3, issue4));
+
+    //when
+    final Map<User, Long> actual = issueService.getReporterCount(project.getId());
+
+    //then
+    final Map<User, Long> expected = new HashMap<>();
+    expected.put(user1, 3L);
+    expected.put(user2, 1L);
+
+    assertThat(actual.entrySet())
+        .usingRecursiveFieldByFieldElementComparator()
+        .containsExactlyInAnyOrderElementsOf(expected.entrySet());
   }
 }

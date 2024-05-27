@@ -100,13 +100,6 @@ public class IssueService {
     issue.assignAssignee(newAssignee);
   }
 
-  @Transactional
-  public void fixUser(final Long issueId, final Long requesterId, final Long fixerId) {
-    final User newFixer = userRepository.readById(fixerId);
-    final User requester = userRepository.readById(requesterId);
-    final Issue issue = issueRepository.readById(issueId);
-  }
-
   @Transactional(readOnly = true)
   public Issue findIssueDetail(final Long issueId) {
     return issueRepository.readByIdWithAll(issueId);
@@ -152,6 +145,27 @@ public class IssueService {
     return issueRepository.findByProjectId(projectId).stream()
         .collect(groupingBy(
                 Issue::getPriority,
+                Collectors.counting()
+            )
+        );
+  }
+
+  @Transactional(readOnly = true)
+  public Map<User, Long> getAssigneeCount(final Long projectId) {
+    return issueRepository.findByProjectIdWithReporterAssignee(projectId).stream()
+        .filter(issue -> issue.getAssignee().isPresent())
+        .collect(groupingBy(
+                issue -> issue.getAssignee().get(),
+                Collectors.counting()
+            )
+        );
+  }
+
+  @Transactional(readOnly = true)
+  public Map<User, Long> getReporterCount(final Long projectId) {
+    return issueRepository.findByProjectIdWithReporterAssignee(projectId).stream()
+        .collect(groupingBy(
+                Issue::getReporter,
                 Collectors.counting()
             )
         );
