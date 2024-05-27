@@ -1,5 +1,6 @@
 package swe.controller;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import swe.dto.user.DuplicateNicknameRequest;
 import swe.dto.user.DuplicateNicknameResponse;
 import swe.dto.user.LoginResponse;
 import swe.dto.user.UserLoginRequest;
+import swe.dto.user.UserResponse;
 import swe.dto.user.UserRoleResponse;
 import swe.user.application.JwtProvider;
 import swe.user.application.UserService;
@@ -32,7 +34,13 @@ public class UserController {
   public ResponseEntity<LoginResponse> login(@RequestBody final UserLoginRequest request) {
     var user = userService.login(request.accountId(), request.password());
     final String accessToken = jwtProvider.createAccessTokenWith(user.getId());
-    return ResponseEntity.ok(new LoginResponse(accessToken));
+    return ResponseEntity.ok(new LoginResponse(accessToken, user.getNickname(), user.getId()));
+  }
+
+  @GetMapping("/users")
+  public ResponseEntity<List<UserResponse>> userList() {
+    final var users = userService.findAllUsers();
+    return ResponseEntity.ok(UserResponse.createList(users));
   }
 
   @PostMapping("/users/nickname/check")

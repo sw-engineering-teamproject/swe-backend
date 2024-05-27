@@ -1,7 +1,12 @@
 package swe.issue.application;
 
+import static java.util.stream.Collectors.groupingBy;
+
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,10 +65,15 @@ public class IssueService {
   }
 
   @Transactional
-  public void updateStatus(final Long issueId, final String statusName) {
+  public void updateStatus(final Long requesterId, final Long issueId, final String statusName) {
     final Issue issue = issueRepository.readById(issueId);
+    final User requester = userRepository.readById(requesterId);
     final IssueStatus newStatus = IssueStatus.from(statusName);
+    newStatus.validateUserRoleUpdateStatus(requester);
     issue.updateStatus(newStatus);
+    if (newStatus == IssueStatus.FIXED) {
+      issue.updateFixer(requester);
+    }
   }
 
   @Transactional
@@ -90,8 +100,40 @@ public class IssueService {
     issue.assignAssignee(newAssignee);
   }
 
+  @Transactional
+  public void fixUser(final Long issueId, final Long requesterId, final Long fixerId) {
+    final User newFixer = userRepository.readById(fixerId);
+    final User requester = userRepository.readById(requesterId);
+    final Issue issue = issueRepository.readById(issueId);
+  }
+
   @Transactional(readOnly = true)
   public Issue findIssueDetail(final Long issueId) {
     return issueRepository.readByIdWithAll(issueId);
+  }
+
+  @Transactional(readOnly = true)
+  public Map<LocalDate, Long> getIssueCreateCountByDay(final Long projectId) {
+    return issueRepository.findByProjectId(projectId).stream()
+        .collect(groupingBy(
+                issue -> issue.getReportedDate().toLocalDate(),
+                Collectors.counting()
+            )
+        );
+  }
+
+  @Transactional(readOnly = true)
+  public Map<LocalDate, Long> getIssueCreateCountByMonth(final Long projectId) {
+    return issueRepository.findByProjectId(projectId).stream()
+        .collect(groupingBy(
+                IssueService::removeDay,
+                Collectors.counting()
+            )
+        );
+  }
+
+  private static LocalDate removeDay(final Issue issue) {
+    final LocalDate reportedDate = issue.getReportedDate().toLocalDate();
+    return reportedDate.minusDays(reportedDate.getDayOfMonth()).plusDays(1);
   }
 }
