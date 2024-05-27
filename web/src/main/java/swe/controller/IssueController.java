@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import swe.dto.IssueAssignRequest;
+import swe.dto.IssueReportedDateResponse;
 import swe.dto.issue.CommentAddRequest;
 import swe.dto.issue.IssueCreateResponse;
 import swe.dto.issue.IssueDescriptionUpdateRequest;
@@ -117,5 +118,21 @@ public class IssueController {
   public ResponseEntity<IssueDetailResponse> getIssueDetail(@PathVariable final Long issueId) {
     final var issue = issueService.findIssueDetail(issueId);
     return ResponseEntity.ok(IssueDetailResponse.from(issue));
+  }
+
+  @GetMapping("/projects/{projectId}/statistics/month")
+  public ResponseEntity<List<IssueReportedDateResponse>> viewDailyStatistics(
+      @PathVariable final Long projectId
+  ) {
+    final var statistics = issueService.getIssueCreateCountByDay(projectId);
+    return ResponseEntity.ok(IssueReportedDateResponse.createList(statistics));
+  }
+
+  @GetMapping("/projects/{projectId}/statistics/month")
+  public ResponseEntity<List<IssueReportedDateResponse>> viewMonthlyStatistics(
+      @PathVariable final Long projectId
+  ) {
+    final var statistics = issueService.getIssueCreateCountByMonth(projectId);
+    return ResponseEntity.ok(IssueReportedDateResponse.createList(statistics));
   }
 }
