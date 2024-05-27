@@ -30,8 +30,13 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
-  public Boolean checkDuplicateNickname(final String nickName) {
-    return userRepository.existsByNickname(nickName);
+  public Boolean checkDuplicateNickname(final String nickname) {
+    return userRepository.existsByNickname(nickname);
+  }
+
+  @Transactional(readOnly = true)
+  public User findUser(final String nickname) {
+    return userRepository.readByNickname(nickname);
   }
 
   @Transactional(readOnly = true)
