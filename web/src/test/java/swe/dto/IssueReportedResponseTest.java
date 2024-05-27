@@ -21,7 +21,7 @@ class IssueReportedResponseTest {
     );
 
     //when
-    final List<IssueReportedResponse> actual = IssueReportedResponse.createList(statistics);
+    final List<IssueReportedResponse> actual = IssueReportedResponse.createListByLocalDate(statistics);
 
     //then
     final List<IssueReportedResponse> expected = List.of(

@@ -125,7 +125,7 @@ public class IssueController {
       @PathVariable final Long projectId
   ) {
     final var statistics = issueService.getIssueCreateCountByDay(projectId);
-    return ResponseEntity.ok(IssueReportedResponse.createList(statistics));
+    return ResponseEntity.ok(IssueReportedResponse.createListByLocalDate(statistics));
   }
 
   @GetMapping("/projects/{projectId}/statistics/month")
@@ -133,6 +133,22 @@ public class IssueController {
       @PathVariable final Long projectId
   ) {
     final var statistics = issueService.getIssueCreateCountByMonth(projectId);
-    return ResponseEntity.ok(IssueReportedResponse.createList(statistics));
+    return ResponseEntity.ok(IssueReportedResponse.createListByLocalDate(statistics));
+  }
+
+  @GetMapping("/projects/{projectId}/statistics/status")
+  public ResponseEntity<List<IssueReportedResponse>> viewStatusStatistics(
+      @PathVariable final Long projectId
+  ) {
+    final var statistics = issueService.getStatusCount(projectId);
+    return ResponseEntity.ok(IssueReportedResponse.createListByStatus(statistics));
+  }
+
+  @GetMapping("/projects/{projectId}/statistics/priority")
+  public ResponseEntity<List<IssueReportedResponse>> viewPriorityStatistics(
+      @PathVariable final Long projectId
+  ) {
+    final var statistics = issueService.getPriorityCount(projectId);
+    return ResponseEntity.ok(IssueReportedResponse.createListByPriority(statistics));
   }
 }
