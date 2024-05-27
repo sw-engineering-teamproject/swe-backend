@@ -11,7 +11,7 @@ public class UserFixture {
   public static User id가_없는_유저() {
     return User.builder()
         .nickname("닉네임")
-        .userRole(UserRole.PL)
+        .userRole(UserRole.ADMIN)
         .accountId(USER_ACCOUNT_ID)
         .password(PASSWORD)
         .build();
@@ -20,13 +20,13 @@ public class UserFixture {
   public static User id가_없는_유저2() {
     return User.builder()
         .nickname("닉네임")
-        .userRole(UserRole.PL)
+        .userRole(UserRole.ADMIN)
         .accountId("hong2")
         .password("password2")
         .build();
   }
 
   public static User id가_있는_유저() {
-    return new User(1L, "accountId", "password", "nickName", UserRole.PL);
+    return new User(1L, "accountId", "password", "nickName", UserRole.ADMIN);
   }
 }

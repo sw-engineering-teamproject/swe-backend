@@ -3,6 +3,7 @@ package swe.issue.domain;
 import static java.util.Arrays.stream;
 import static swe.issue.exception.IssueExceptionType.ISSUE_CHANGE_STATUS_FORBIDDEN;
 import static swe.issue.exception.IssueExceptionType.ISSUE_STATUS_NOT_FOUND;
+import static swe.user.domain.UserRole.ADMIN;
 import static swe.user.domain.UserRole.DEV;
 import static swe.user.domain.UserRole.PL;
 import static swe.user.domain.UserRole.TESTER;
@@ -18,11 +19,11 @@ import swe.user.domain.UserRole;
 public enum IssueStatus {
 
   NEW("new", stream(UserRole.values()).toList()),
-  ASSIGNED("assigned", List.of(PL)),
-  RESOLVED("resolved", List.of(TESTER)),
-  CLOSED("closed", List.of(PL)),
-  FIXED("fixed", List.of(DEV)),
-  REOPENED("reopened", List.of(PL));
+  ASSIGNED("assigned", List.of(PL, ADMIN)),
+  RESOLVED("resolved", List.of(TESTER, ADMIN)),
+  CLOSED("closed", List.of(PL, ADMIN)),
+  FIXED("fixed", List.of(DEV, ADMIN)),
+  REOPENED("reopened", List.of(PL, ADMIN));
 
   private final String name;
   private final List<UserRole> authorizeUserRoleUpdateStatus;
