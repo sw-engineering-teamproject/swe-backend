@@ -10,7 +10,9 @@ import static swe.issue.domain.IssuePriority.CRITICAL;
 import static swe.issue.domain.IssueStatus.ASSIGNED;
 import static swe.user.domain.UserRole.TESTER;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import net.bytebuddy.asm.Advice.Local;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -79,8 +81,8 @@ class IssueServiceTest extends ServiceTest {
 
     //then
     final List<Issue> expected = List.of(
-        new Issue("issue title", "new issue", project.getId(), user),
-        new Issue("issue title", "new issue", project.getId(), user)
+        new Issue("issue title", "new issue", project.getId(), user, LocalDateTime.now()),
+        new Issue("issue title", "new issue", project.getId(), user, LocalDateTime.now())
     );
 
     assertThat(actual)
@@ -109,7 +111,7 @@ class IssueServiceTest extends ServiceTest {
 
     //then
     final List<Issue> expected = List.of(
-        new Issue("issue title", "new issue", project.getId(), user1)
+        new Issue("issue title", "new issue", project.getId(), user1, LocalDateTime.now())
     );
 
     assertThat(actual)
@@ -224,7 +226,32 @@ class IssueServiceTest extends ServiceTest {
 
     //then
     final Issue expected = new Issue(issue.getTitle(), issue.getDescription(), issue.getProjectId(),
-        user);
+        user, LocalDateTime.now());
+    expected.assignAssignee(assignee);
+
+    assertThat(actual)
+        .usingRecursiveComparison()
+        .ignoringFields("id", "reportedDate")
+        .isEqualTo(expected);
+  }
+
+  @Test
+  void 이슈를_일자별로_생성수를_조회한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
+
+    final User assignee = userRepository.save(id가_없는_유저2());
+    issueService.assignUser(issue.getId(), assignee.getId());
+
+    //when
+    final Issue actual = issueService.findIssueDetail(issue.getId());
+
+    //then
+    final Issue expected = new Issue(issue.getTitle(), issue.getDescription(), issue.getProjectId(),
+        user,
+        LocalDateTime.now());
     expected.assignAssignee(assignee);
 
     assertThat(actual)

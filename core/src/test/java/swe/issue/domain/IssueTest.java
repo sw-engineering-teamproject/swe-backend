@@ -6,6 +6,7 @@ import static swe.fixture.IssueFixture.id가_없는_Issue;
 import static swe.fixture.UserFixture.id가_있는_유저;
 import static swe.issue.domain.Comment.createInitialProjectComment;
 
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import swe.user.domain.User;
@@ -21,7 +22,7 @@ class IssueTest {
     final Issue actual = Issue.createIssue("title", "description", 10L, reporter);
 
     //then
-    final Issue expected = new Issue("title", "description", 10L, reporter);
+    final Issue expected = new Issue("title", "description", 10L, reporter, LocalDateTime.now());
     final Comment expectedComment
         = createInitialProjectComment(expected, reporter, reporter.getNickname());
 
