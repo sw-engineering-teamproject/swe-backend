@@ -13,15 +13,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import swe.user.exception.UserException;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 @Table(name = "user_")
 @Getter
+@ToString
 public class User {
 
   @Id
@@ -69,5 +72,22 @@ public class User {
     if (!this.password.equals(password)) {
       throw new UserException(USER_PASSWORD_NOT_EQUAL);
     }
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    final User user = (User) o;
+    return Objects.equals(id, user.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(id);
   }
 }
