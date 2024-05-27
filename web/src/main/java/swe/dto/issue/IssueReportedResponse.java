@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import swe.issue.domain.IssuePriority;
 import swe.issue.domain.IssueStatus;
+import swe.user.domain.User;
 
 public record IssueReportedResponse(
     String column,
@@ -33,6 +34,13 @@ public record IssueReportedResponse(
   ) {
     return statistics.entrySet().stream()
         .map(entry -> new IssueReportedResponse(entry.getKey().getName(), entry.getValue()))
+        .toList();
+  }
+
+  public static List<IssueReportedResponse> createListByUser(final Map<User, Long> statistics) {
+    return statistics.entrySet().stream()
+        .sorted(Entry.comparingByValue())
+        .map(entry -> new IssueReportedResponse(entry.getKey().toString(), entry.getValue()))
         .toList();
   }
 }

@@ -151,4 +151,20 @@ public class IssueController {
     final var statistics = issueService.getPriorityCount(projectId);
     return ResponseEntity.ok(IssueReportedResponse.createListByPriority(statistics));
   }
+
+  @GetMapping("/projects/{projectId}/statistics/assignee")
+  public ResponseEntity<List<IssueReportedResponse>> viewAssigneeStatistics(
+      @PathVariable final Long projectId
+  ) {
+    final var statistics = issueService.getAssigneeCount(projectId);
+    return ResponseEntity.ok(IssueReportedResponse.createListByUser(statistics));
+  }
+
+  @GetMapping("/projects/{projectId}/statistics/reporter")
+  public ResponseEntity<List<IssueReportedResponse>> viewReporterStatistics(
+      @PathVariable final Long projectId
+  ) {
+    final var statistics = issueService.getReporterCount(projectId);
+    return ResponseEntity.ok(IssueReportedResponse.createListByUser(statistics));
+  }
 }
