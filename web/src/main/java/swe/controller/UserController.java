@@ -34,7 +34,7 @@ public class UserController {
   public ResponseEntity<LoginResponse> login(@RequestBody final UserLoginRequest request) {
     var user = userService.login(request.accountId(), request.password());
     final String accessToken = jwtProvider.createAccessTokenWith(user.getId());
-    return ResponseEntity.ok(new LoginResponse(accessToken));
+    return ResponseEntity.ok(new LoginResponse(accessToken, user.getNickname(), user.getId()));
   }
 
   @GetMapping("/users")

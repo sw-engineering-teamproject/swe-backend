@@ -39,7 +39,6 @@ public class UserService {
     return userRepository.findAll();
   }
 
-
   public List<UserRole> getAllUserRoles() {
     return Arrays.stream(UserRole.values())
         .toList();
