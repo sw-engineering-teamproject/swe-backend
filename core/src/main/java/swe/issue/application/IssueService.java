@@ -65,10 +65,15 @@ public class IssueService {
   }
 
   @Transactional
-  public void updateStatus(final Long issueId, final String statusName) {
+  public void updateStatus(final Long requesterId, final Long issueId, final String statusName) {
     final Issue issue = issueRepository.readById(issueId);
+    final User requester = userRepository.readById(requesterId);
     final IssueStatus newStatus = IssueStatus.from(statusName);
+    newStatus.validateUserRoleUpdateStatus(requester);
     issue.updateStatus(newStatus);
+    if (newStatus == IssueStatus.FIXED) {
+      issue.updateFixer(requester);
+    }
   }
 
   @Transactional
@@ -93,6 +98,13 @@ public class IssueService {
     final User newAssignee = userRepository.readById(assigneeId);
     final Issue issue = issueRepository.readById(issueId);
     issue.assignAssignee(newAssignee);
+  }
+
+  @Transactional
+  public void fixUser(final Long issueId, final Long requesterId, final Long fixerId) {
+    final User newFixer = userRepository.readById(fixerId);
+    final User requester = userRepository.readById(requesterId);
+    final Issue issue = issueRepository.readById(issueId);
   }
 
   @Transactional(readOnly = true)

@@ -134,4 +134,8 @@ public class Issue {
   public void updatePriority(final IssuePriority newIssuePriority) {
     this.priority = newIssuePriority;
   }
+
+  public void updateFixer(final User requester) {
+    this.fixer = requester;
+  }
 }
