@@ -1,7 +1,12 @@
 package swe.issue.application;
 
+import static java.util.stream.Collectors.groupingBy;
+
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,5 +98,30 @@ public class IssueService {
   @Transactional(readOnly = true)
   public Issue findIssueDetail(final Long issueId) {
     return issueRepository.readByIdWithAll(issueId);
+  }
+
+  @Transactional(readOnly = true)
+  public Map<LocalDate, Long> getIssueCreateCountByDay(final Long projectId) {
+    return issueRepository.findByProjectId(projectId).stream()
+        .collect(groupingBy(
+                issue -> issue.getReportedDate().toLocalDate(),
+                Collectors.counting()
+            )
+        );
+  }
+
+  @Transactional(readOnly = true)
+  public Map<LocalDate, Long> getIssueCreateCountByMonth(final Long projectId) {
+    return issueRepository.findByProjectId(projectId).stream()
+        .collect(groupingBy(
+                IssueService::removeDay,
+                Collectors.counting()
+            )
+        );
+  }
+
+  private static LocalDate removeDay(final Issue issue) {
+    final LocalDate reportedDate = issue.getReportedDate().toLocalDate();
+    return reportedDate.minusDays(reportedDate.getDayOfMonth()).plusDays(1);
   }
 }
