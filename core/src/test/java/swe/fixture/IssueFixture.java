@@ -1,5 +1,6 @@
 package swe.fixture;
 
+import java.time.LocalDateTime;
 import swe.issue.domain.Issue;
 import swe.user.domain.User;
 
@@ -11,6 +12,7 @@ public class IssueFixture {
         .description("description")
         .projectId(projectId)
         .reporter(reporter)
+        .reportedDate(LocalDateTime.now())
         .build();
   }
 }
