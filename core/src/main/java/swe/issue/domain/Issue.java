@@ -70,7 +70,8 @@ public class Issue {
 
   @Builder
   public Issue(
-      final String title, final String description, final Long projectId, final User reporter
+      final String title, final String description, final Long projectId, final User reporter,
+      final LocalDateTime reportedDate
   ) {
     this.title = title;
     this.description = description;
@@ -78,13 +79,14 @@ public class Issue {
     this.reporter = reporter;
     this.status = NEW;
     this.priority = MAJOR;
-    this.reportedDate = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.SECONDS);
+    this.reportedDate = reportedDate;
   }
 
   public static Issue createIssue(
       final String title, final String description, final Long projectId, final User reporter
   ) {
-    final Issue issue = new Issue(title, description, projectId, reporter);
+    final Issue issue = new Issue(title, description, projectId, reporter,
+        LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.SECONDS));
     issue.comments.add(
         createInitialProjectComment(issue, reporter, reporter.getNickname())
     );

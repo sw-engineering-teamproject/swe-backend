@@ -10,7 +10,10 @@ import static swe.issue.domain.IssuePriority.CRITICAL;
 import static swe.issue.domain.IssueStatus.ASSIGNED;
 import static swe.user.domain.UserRole.TESTER;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -79,8 +82,8 @@ class IssueServiceTest extends ServiceTest {
 
     //then
     final List<Issue> expected = List.of(
-        new Issue("issue title", "new issue", project.getId(), user),
-        new Issue("issue title", "new issue", project.getId(), user)
+        new Issue("issue title", "new issue", project.getId(), user, LocalDateTime.now()),
+        new Issue("issue title", "new issue", project.getId(), user, LocalDateTime.now())
     );
 
     assertThat(actual)
@@ -109,7 +112,7 @@ class IssueServiceTest extends ServiceTest {
 
     //then
     final List<Issue> expected = List.of(
-        new Issue("issue title", "new issue", project.getId(), user1)
+        new Issue("issue title", "new issue", project.getId(), user1, LocalDateTime.now())
     );
 
     assertThat(actual)
@@ -224,12 +227,77 @@ class IssueServiceTest extends ServiceTest {
 
     //then
     final Issue expected = new Issue(issue.getTitle(), issue.getDescription(), issue.getProjectId(),
-        user);
+        user, LocalDateTime.now());
     expected.assignAssignee(assignee);
 
     assertThat(actual)
         .usingRecursiveComparison()
         .ignoringFields("id", "reportedDate")
+        .isEqualTo(expected);
+  }
+
+  @Test
+  void 이슈를_일자별로_생성수를_조회한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final List<Issue> issues = List.of(
+        new Issue("title", "des", project.getId(), user,
+            LocalDateTime.of(2023, 11, 2, 10, 10)),
+        new Issue("title", "des", project.getId(), user,
+            LocalDateTime.of(2023, 11, 3, 10, 10)),
+        new Issue("title", "des", project.getId(), user,
+            LocalDateTime.of(2023, 11, 4, 10, 10)),
+        new Issue("title", "des", project.getId(), user,
+            LocalDateTime.of(2023, 11, 2, 10, 10))
+    );
+    issueRepository.saveAll(issues);
+
+    //when
+    final Map<LocalDate, Long> actual
+        = issueService.getIssueCreateCountByDay(project.getId());
+
+    //then
+    final Map<LocalDate, Long> expected = Map.of(
+        LocalDate.of(2023, 11, 2), 2L,
+        LocalDate.of(2023, 11, 3), 1L,
+        LocalDate.of(2023, 11, 4), 1L
+    );
+
+    assertThat(actual)
+        .usingRecursiveComparison()
+        .isEqualTo(expected);
+  }
+
+  @Test
+  void 이슈를_월별로_생성수를_조회한다() {
+    //given
+    final User user = userRepository.save(id가_없는_유저());
+    final Project project = projectRepository.save(id가_없는_Project(user.getId()));
+    final List<Issue> issues = List.of(
+        new Issue("title", "des", project.getId(), user,
+            LocalDateTime.of(2023, 12, 2, 10, 10)),
+        new Issue("title", "des", project.getId(), user,
+            LocalDateTime.of(2023, 11, 3, 10, 10)),
+        new Issue("title", "des", project.getId(), user,
+            LocalDateTime.of(2023, 11, 4, 10, 10)),
+        new Issue("title", "des", project.getId(), user,
+            LocalDateTime.of(2023, 11, 2, 10, 10))
+    );
+    issueRepository.saveAll(issues);
+
+    //when
+    final Map<LocalDate, Long> actual
+        = issueService.getIssueCreateCountByMonth(project.getId());
+
+    //then
+    final Map<LocalDate, Long> expected = Map.of(
+        LocalDate.of(2023, 11, 1), 3L,
+        LocalDate.of(2023, 12, 1), 1L
+    );
+
+    assertThat(actual)
+        .usingRecursiveComparison()
         .isEqualTo(expected);
   }
 }
