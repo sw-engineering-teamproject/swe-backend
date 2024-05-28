@@ -233,7 +233,7 @@ class IssueServiceTest extends ServiceTest {
     final User newAssignee = userRepository.save(id가_없는_유저2());
 
     //when
-    issueService.assignUser(issue.getId(), newAssignee.getId());
+    issueService.assignUser(user.getId(), issue.getId(), newAssignee.getId());
 
     //then
     final Issue updatedIssue = issueRepository.readById(issue.getId());
@@ -251,7 +251,7 @@ class IssueServiceTest extends ServiceTest {
     final Issue issue = issueRepository.save(id가_없는_Issue(user, project.getId()));
 
     final User assignee = userRepository.save(id가_없는_유저2());
-    issueService.assignUser(issue.getId(), assignee.getId());
+    issueService.assignUser(user.getId(), issue.getId(), assignee.getId());
 
     //when
     final Issue actual = issueService.findIssueDetail(issue.getId());

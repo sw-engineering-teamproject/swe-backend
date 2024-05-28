@@ -108,9 +108,10 @@ public class IssueController {
 
   @PostMapping("/issues/{issueId}/assignee")
   public ResponseEntity<Void> assignUser(
-      @PathVariable final Long issueId, @RequestBody final IssueAssignRequest issueAssignRequest
+      @PathVariable final Long issueId, @RequestBody final IssueAssignRequest issueAssignRequest,
+      final JwtMemberId jwtMemberId
   ) {
-    issueService.assignUser(issueId, issueAssignRequest.assigneeId());
+    issueService.assignUser(jwtMemberId.memberId(), issueId, issueAssignRequest.assigneeId());
     return ResponseEntity.ok().build();
   }
 
