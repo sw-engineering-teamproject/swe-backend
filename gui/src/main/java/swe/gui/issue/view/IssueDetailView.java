@@ -9,12 +9,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.swing.BorderFactory;
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -84,6 +84,7 @@ public class IssueDetailView {
         gbc.gridy = 2;
         List<User> userList = userService.findAllUsers();
         JComboBox<String> assignee = new JComboBox<>();
+        assignee.addItem("NULL");
         for(User user : userList){
             assignee.addItem(user.getNickname());
         }
@@ -147,7 +148,7 @@ public class IssueDetailView {
 
         // 댓글 입력 필드 및 버튼
         JTextField commentField = new JTextField(10);
-        JButton commentButton = new JButton("Add Comment");
+        JButton commentButton = new JButton("등록");
         gbc.gridy = 9;
         gbc.gridheight = 1;
         gbc.gridwidth = 4;
@@ -168,10 +169,11 @@ public class IssueDetailView {
         gbc.gridx = 0;
         gbc.gridy = 10;
         issuePanel.add(comments, gbc);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         for(Comment comment : issue.getComments()){
             comments.add(new JLabel(comment.getContent()));
             comments.add(new JLabel(comment.getCommenter().getNickname()));
-            comments.add(new JLabel(comment.getCreatedAt().toString()));
+            comments.add(new JLabel(comment.getCreatedAt().format(formatter)));
         }
         // 댓글 버튼 이벤트 핸들러
         commentButton.addActionListener(new ActionListener() {
@@ -183,7 +185,7 @@ public class IssueDetailView {
                     issueService.commentContent(SessionStorage.loginUser.getId(), SessionStorage.currentIssue.getId(), comment);
                     comments.add(commentLabel);
                     comments.add(new JLabel(SessionStorage.loginUser.getNickname()));
-                    comments.add(new JLabel(LocalDateTime.now().toString()));
+                    comments.add(new JLabel(LocalDateTime.now().format(formatter)));
                     comments.revalidate();
                     comments.repaint();
                     commentField.setText("");
@@ -244,6 +246,7 @@ public class IssueDetailView {
             public void actionPerformed(ActionEvent e) {
                 if(Objects.equals(status.getSelectedItem().toString(), "fixed")){
                     issueService.updateStatus(SessionStorage.loginUser.getId(), SessionStorage.currentIssue.getId(), "fixed");
+                    //만약 권한 없는 사람이 fixed를 누르면 변환 안되게
                     status.setEnabled(false);
                     fixer.setText(SessionStorage.loginUser.getNickname());
                 }

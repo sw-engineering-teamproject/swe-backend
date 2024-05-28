@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import swe.gui.SessionStorage;
 import swe.gui.issue.IssuePage;
-import swe.gui.project.ProjectPage;
 import swe.issue.application.IssueService;
 
 public class StatisticsPageView {

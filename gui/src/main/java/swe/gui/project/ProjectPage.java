@@ -14,7 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import org.springframework.context.ApplicationContext;
 import swe.gui.SessionStorage;
 import swe.gui.issue.IssuePage;
 import swe.project.application.ProjectService;

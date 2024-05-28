@@ -1,6 +1,5 @@
 package swe.gui;
 
-import org.springframework.context.ApplicationContext;
 import swe.issue.application.IssueService;
 import swe.issue.domain.Issue;
 import swe.project.application.ProjectService;

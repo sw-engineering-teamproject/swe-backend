@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import org.springframework.context.ApplicationContext;
 import swe.gui.SessionStorage;
 import swe.gui.project.ProjectPage;
 import swe.user.application.UserService;

@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import org.springframework.context.ApplicationContext;
 import swe.gui.SessionStorage;
 import swe.gui.issue.IssuePage;
 import swe.issue.application.IssueService;

@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import org.springframework.context.ApplicationContext;
 import swe.gui.SessionStorage;
 import swe.project.application.ProjectService;
 
