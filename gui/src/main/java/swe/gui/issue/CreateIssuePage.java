@@ -13,6 +13,7 @@ public class CreateIssuePage {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(500, 400);
 
+        frame.setLocationRelativeTo(null);
         JPanel panel = new JPanel();
         frame.add(panel);
         createIssuePageView.settingView(panel, frame);

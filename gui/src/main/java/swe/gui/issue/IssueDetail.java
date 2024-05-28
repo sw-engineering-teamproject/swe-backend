@@ -11,6 +11,7 @@ public class IssueDetail {
         JFrame frame = new JFrame("Issue");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1000, 500);
+        frame.setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
         frame.add(panel);

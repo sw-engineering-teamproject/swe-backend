@@ -1,13 +1,16 @@
 package swe.gui.issue.view;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -20,6 +23,7 @@ import org.springframework.context.ApplicationContext;
 import swe.gui.SessionStorage;
 import swe.gui.issue.CreateIssuePage;
 import swe.gui.issue.IssueDetail;
+import swe.gui.statistics.StatisticsPage;
 import swe.issue.application.IssueService;
 import swe.issue.domain.Issue;
 
@@ -59,6 +63,11 @@ public class IssuePageView {
         c.gridy = 0;
         panel.add(searchButton, c);
 
+        JButton statistics = new JButton("통계");
+        c.gridx = 4;
+        c.gridy = 0;
+        panel.add(statistics, c);
+
         // 결과 표시 영역 (JPanel)
         resultsPanel = new JPanel();
         resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
@@ -91,11 +100,17 @@ public class IssuePageView {
                 new CreateIssuePage();
             }
         });
+        statistics.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new StatisticsPage();
+            }
+        });
     }
 
     private void updateResultsPanel() {
-        resultsPanel.removeAll(); // 기존 결과를 지웁니다.
-
+        resultsPanel.removeAll(); // 기존 결과를 지움
         String searchText = searchField.getText();
         String selectedCriterion = (String) searchCriteriaComboBox.getSelectedItem();
         List<Issue> results = new ArrayList<>();
@@ -113,7 +128,7 @@ public class IssuePageView {
         } else {
             for (Issue issue : results) {
                 JButton issueButton = new JButton(issue.getTitle());
-                issueButton.setSize(1000, 100);
+                //issueButton.setSize(1000, 100);
                 issueButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -121,12 +136,14 @@ public class IssuePageView {
                         new IssueDetail();
                     }
                 });
+                issueButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, issueButton.getMinimumSize().height));
                 resultsPanel.add(issueButton);
             }
         }
-
+        resultsPanel.add(Box.createVerticalGlue());
         resultsPanel.revalidate(); // UI를 업데이트합니다.
         resultsPanel.repaint();   // UI를 다시 그립니다.
     }
+
 
 }

@@ -14,6 +14,7 @@ public class IssuePage {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
 
+        frame.setLocationRelativeTo(null);
         JPanel panel = new JPanel();
         frame.add(panel);
 

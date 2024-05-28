@@ -24,6 +24,7 @@ public class CreateProjectPage {
         JFrame frame = new JFrame("New Project");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(300, 200);
+        frame.setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
         frame.add(panel);

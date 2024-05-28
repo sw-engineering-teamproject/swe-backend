@@ -42,6 +42,7 @@ public class CreateIssuePageView {
 
         JTextArea descriptionArea = new JTextArea(4, 15);
         c.gridx = 1;
+        descriptionArea.setLineWrap(true);
         panel.add(descriptionArea, c);
 
         JButton submitBtn = new JButton("Submit");

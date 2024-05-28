@@ -1,11 +1,13 @@
 package swe.gui.project;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,6 +27,7 @@ public class ProjectPage {
 
         JFrame frame = new JFrame("Project Page");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
         frame.setSize(500, 400);
 
         JPanel panel = new JPanel();
@@ -76,9 +79,6 @@ public class ProjectPage {
     private void updateResultsPanel(JPanel projects, JFrame frame) {
         projects.removeAll(); // 기존 결과를 지움
         List<ProjectOverviewResponse> results = projectService.readAllProject();
-        GridBagConstraints gcb = new GridBagConstraints();
-        gcb.fill = GridBagConstraints.HORIZONTAL;
-        gcb.insets = new Insets(5, 5, 5, 5);
 
         if (results.isEmpty()) {
             JLabel noResultsLabel = new JLabel("No results found.");
@@ -86,7 +86,6 @@ public class ProjectPage {
         } else {
             for (ProjectOverviewResponse project : results) {
                 JButton projectButton = new JButton(project.title());
-                gcb.fill = GridBagConstraints.HORIZONTAL;
                 projectButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -95,10 +94,12 @@ public class ProjectPage {
                         new IssuePage();
                     }
                 });
-                projects.add(projectButton, gcb);
+                projectButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+                projects.add(projectButton);
             }
         }
 
+        projects.add(Box.createVerticalGlue());
         projects.revalidate(); // UI를 업데이트.
         projects.repaint();   // UI를 다시 그림.
     }

@@ -131,7 +131,7 @@ public class AuthPage {
         signupPanel.add(new JLabel("authority"), gbc);
 
         gbc.gridx = 1;
-        String[] authority = { "admin", "PL", "dev", "tester" };
+        String[] authority = { "PL", "dev", "tester" };
         JComboBox<String> role = new JComboBox<>(authority);
         role.setPreferredSize(new Dimension(150, 25));
         gbc.insets = new Insets(5, 0, 5, 0);
