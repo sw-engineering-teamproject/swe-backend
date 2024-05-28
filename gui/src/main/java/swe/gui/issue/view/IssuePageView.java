@@ -24,14 +24,17 @@ import swe.gui.issue.IssueDetail;
 import swe.gui.statistics.StatisticsPage;
 import swe.issue.application.IssueService;
 import swe.issue.domain.Issue;
+import swe.user.application.UserService;
 
 public class IssuePageView {
     private JPanel resultsPanel;
     private JComboBox<String> searchCriteriaComboBox; // 검색 기준 선택용
     private JTextField searchField; // 검색 텍스트 필드
     private IssueService issueService;
+    private UserService userService;
     public void settingView(JPanel panel, JFrame frame) {
         this.issueService = SessionStorage.issueService;
+        this.userService = SessionStorage.userService;
         panel.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
@@ -117,7 +120,9 @@ public class IssuePageView {
 
         }
         else {
-            results = issueService.filterIssues(SessionStorage.currentProject.id(), selectedCriterion, searchText);
+            //유저 못찾으면 오류나서 검색이 안됨
+            Long userId = userService.findUser(searchText).getId();
+            results = issueService.filterIssues(SessionStorage.currentProject.id(), selectedCriterion, userId.toString());
         }
         if (results.isEmpty()) {
             JLabel noResultsLabel = new JLabel("No results found.");
