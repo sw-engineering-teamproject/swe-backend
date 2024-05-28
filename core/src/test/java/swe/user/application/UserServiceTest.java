@@ -28,7 +28,7 @@ class UserServiceTest extends ServiceTest {
   void 유저를_회원가입하고_accessToken을_반환한다() {
     //given
     final UserRegisterRequest registerRequest
-        = new UserRegisterRequest("hong", TESTER, "홍혁준", "password");
+        = new UserRegisterRequest("hong", "tester", "홍혁준", "password");
     final User expected = registerRequest.toUser();
 
     //when
