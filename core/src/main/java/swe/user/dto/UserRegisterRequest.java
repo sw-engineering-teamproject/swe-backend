@@ -3,12 +3,13 @@ package swe.user.dto;
 import swe.user.domain.User;
 import swe.user.domain.UserRole;
 
-public record UserRegisterRequest(String accountId, UserRole role, String nickName, String password) {
+public record UserRegisterRequest(String accountId, String roleName, String nickName,
+                                  String password) {
 
-  public User toUser(){
+  public User toUser() {
     return User.builder()
         .accountId(accountId)
-        .userRole(role)
+        .userRole(UserRole.from(roleName))
         .nickname(nickName)
         .password(password)
         .build();
