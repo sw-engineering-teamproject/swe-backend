@@ -47,7 +47,7 @@ public class ProjectService {
   }
 
   private static void validateAuth(final User reporter) {
-    if (reporter.getUserRole() == ADMIN) {
+    if (reporter.getUserRole() != ADMIN) {
       throw new ProjectException(CREATE_PROJECT_FORBIDDEN);
     }
   }
