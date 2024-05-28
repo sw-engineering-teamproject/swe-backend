@@ -94,7 +94,7 @@ public class IssueService {
   }
 
   @Transactional
-  public void assignUser(final Long issueId, final Long assigneeId) {
+  public void assignUser(final Long userId, final Long issueId, final Long assigneeId) {
     final User newAssignee = userRepository.readById(assigneeId);
     final Issue issue = issueRepository.readById(issueId);
     issue.assignAssignee(newAssignee);
