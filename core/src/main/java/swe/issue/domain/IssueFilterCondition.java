@@ -16,7 +16,7 @@ public enum IssueFilterCondition {
       (issue, value) -> issue.isEqualReporterId(Long.valueOf(value))
   ),
   ISSUE_STATUS("issueStatus",
-      (issue, status) -> issue.isEqualStatus(IssueStatus.valueOf(status))
+      (issue, status) -> issue.isEqualStatus(IssueStatus.from(status))
   );
 
   private final String value;
