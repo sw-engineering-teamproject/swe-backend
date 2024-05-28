@@ -12,7 +12,6 @@ import swe.user.application.UserService;
 import swe.user.dto.UserRegisterRequest;
 
 @SpringBootApplication
-@RequiredArgsConstructor
 public class GuiApplication {
 
   public static void main(String[] args) {
