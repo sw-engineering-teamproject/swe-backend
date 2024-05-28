@@ -1,6 +1,7 @@
 package swe.issue.application;
 
 import static java.util.stream.Collectors.groupingBy;
+import static swe.issue.domain.IssueStatus.ASSIGNED;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -94,7 +95,9 @@ public class IssueService {
   }
 
   @Transactional
-  public void assignUser(final Long issueId, final Long assigneeId) {
+  public void assignUser(final Long requesterId, final Long issueId, final Long assigneeId) {
+    final User requester = userRepository.readById(requesterId);
+    ASSIGNED.validateUserRoleUpdateStatus(requester);
     final User newAssignee = userRepository.readById(assigneeId);
     final Issue issue = issueRepository.readById(issueId);
     issue.assignAssignee(newAssignee);
