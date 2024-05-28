@@ -9,6 +9,7 @@ import swe.gui.user.AuthPage;
 import swe.issue.application.IssueService;
 import swe.project.application.ProjectService;
 import swe.user.application.UserService;
+import swe.user.dto.UserRegisterRequest;
 
 @SpringBootApplication
 @RequiredArgsConstructor
@@ -20,6 +21,9 @@ public class GuiApplication {
     SessionStorage.userService = applicationContext.getBean(UserService.class);
     SessionStorage.projectService = applicationContext.getBean(ProjectService.class);
     SessionStorage.issueService = applicationContext.getBean(IssueService.class);
+    //admin 생성
+    UserRegisterRequest userRegisterRequest = new UserRegisterRequest("admin", "admin", "admin", "admin");
+    SessionStorage.userService.register(userRegisterRequest);
     System.setProperty("java.awt.headless", "false");
     new AuthPage();
   }

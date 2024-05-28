@@ -173,13 +173,7 @@ public class AuthPage {
                 String inputPassword = new String(password.getPassword());
                 String inputNickname = nickname.getText();
                 String inputRole = role.getSelectedItem().toString();
-                UserRole userRole = switch (inputRole) {
-                    case "admin" -> UserRole.ADMIN;
-                    case "PL" -> UserRole.PL;
-                    case "tester" -> UserRole.TESTER;
-                    default -> UserRole.DEV;
-                };
-                UserRegisterRequest userRegisterRequest = new UserRegisterRequest(inputUserId, userRole, inputNickname, inputPassword);
+                UserRegisterRequest userRegisterRequest = new UserRegisterRequest(inputUserId, inputRole, inputNickname, inputPassword);
                 if(!isDuplicate) {
                     userService.register(userRegisterRequest);
                     JOptionPane.showMessageDialog(

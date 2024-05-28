@@ -24,12 +24,14 @@ import swe.gui.issue.IssueDetail;
 import swe.gui.statistics.StatisticsPage;
 import swe.issue.application.IssueService;
 import swe.issue.domain.Issue;
+import swe.issue.domain.IssueStatus;
 import swe.user.application.UserService;
+import swe.user.domain.User;
 
 public class IssuePageView {
     private JPanel resultsPanel;
     private JComboBox<String> searchCriteriaComboBox; // 검색 기준 선택용
-    private JTextField searchField; // 검색 텍스트 필드
+    private JComboBox<String> searchField;
     private IssueService issueService;
     private UserService userService;
     public void settingView(JPanel panel, JFrame frame) {
@@ -52,20 +54,24 @@ public class IssuePageView {
         c.gridy = 0;
         panel.add(searchLabel, c);
 
-        searchField = new JTextField(30);
+        searchField = new JComboBox<>();
         c.gridx = 2;
         c.gridy = 0;
+        c.gridwidth = 2;
         c.insets = new Insets(5, 0, 5, 0);
+        c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(searchField, c);
-
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.NONE;
         // 검색 버튼
         JButton searchButton = new JButton("Search");
-        c.gridx = 3;
+        c.gridx = 4;
         c.gridy = 0;
+        c.insets = new Insets(5, 0, 5, 10);
         panel.add(searchButton, c);
 
         JButton statistics = new JButton("통계");
-        c.gridx = 4;
+        c.gridx = 5;
         c.gridy = 0;
         panel.add(statistics, c);
 
@@ -75,8 +81,9 @@ public class IssuePageView {
         JScrollPane scrollPane = new JScrollPane(resultsPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 4;
+        c.gridwidth = 3;
         c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 5, 0, 5);
         c.weightx = 1.0;
         c.weighty = 1.0;
         panel.add(scrollPane, c);
@@ -108,21 +115,46 @@ public class IssuePageView {
                 new StatisticsPage();
             }
         });
+        searchCriteriaComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                searchField.removeAllItems();
+                if(Objects.equals(searchCriteriaComboBox.getSelectedItem().toString(), "assignee") || Objects.equals(searchCriteriaComboBox.getSelectedItem().toString(), "reporter")){
+                    List<User> userList = userService.findAllUsers();
+                    for(User user : userList){
+                        searchField.addItem(user.getNickname());
+                    }
+                }
+                else if(Objects.equals(searchCriteriaComboBox.getSelectedItem().toString(), "issue status")){
+                    List<IssueStatus> issueStatusList = issueService.getIssueStatuses();
+                    for(IssueStatus issueStatus : issueStatusList){
+                        searchField.addItem(issueStatus.getName());
+                    }
+                }
+//                else {
+//                    searchField.removeAllItems();
+//                }
+
+            }
+        });
     }
 
     private void updateResultsPanel() {
         resultsPanel.removeAll(); // 기존 결과를 지움
-        String searchText = searchField.getText();
         String selectedCriterion = (String) searchCriteriaComboBox.getSelectedItem();
         List<Issue> results = new ArrayList<>();
         if(Objects.equals(selectedCriterion, "Home")) {
             results = issueService.findIssues(SessionStorage.currentProject.id());
 
         }
-        else {
-            //유저 못찾으면 오류나서 검색이 안됨
+        else if(Objects.equals(selectedCriterion, "reporter") || Objects.equals(selectedCriterion, "assignee")){
+            String searchText = searchField.getSelectedItem().toString();
             Long userId = userService.findUser(searchText).getId();
             results = issueService.filterIssues(SessionStorage.currentProject.id(), selectedCriterion, userId.toString());
+        }
+        else{
+            String searchText = searchField.getSelectedItem().toString();
+            results = issueService.filterIssues(SessionStorage.currentProject.id(), "issueStatus", searchText);
         }
         if (results.isEmpty()) {
             JLabel noResultsLabel = new JLabel("No results found.");

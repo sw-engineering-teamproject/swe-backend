@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Objects;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -49,7 +50,10 @@ public class ProjectPage {
         JButton createBtn = new JButton("new");
         gbc.gridx = 2;
         gbc.gridy = 0;
-        panel.add(createBtn, gbc);
+        if(Objects.equals(SessionStorage.loginUser.getUserRole().getName(), "admin")){
+            panel.add(createBtn, gbc);
+        }
+
 
         gbc.insets = new Insets(0, 3, 0, 3);
         // 결과 표시 영역 (JPanel)

@@ -88,6 +88,12 @@ public class IssueDetailView {
         for(User user : userList){
             assignee.addItem(user.getNickname());
         }
+        if(issue.getAssignee().isPresent()){
+            assignee.setSelectedItem(issue.getAssignee().get().getNickname());
+        }
+        else {
+            assignee.setSelectedItem("NULL");
+        }
         assignee.setPreferredSize(new Dimension(150, 25));
         issuePanel.add(assignee, gbc);
 
@@ -234,7 +240,7 @@ public class IssueDetailView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 User user = userService.findUser(assignee.getSelectedItem().toString());
-                issueService.assignUser(SessionStorage.currentIssue.getId(), user.getId());
+                issueService.assignUser(SessionStorage.loginUser.getId(), SessionStorage.currentIssue.getId(), user.getId());
                 status.setSelectedItem("assigned");
                 issuePanel.revalidate();
                 issuePanel.repaint();
