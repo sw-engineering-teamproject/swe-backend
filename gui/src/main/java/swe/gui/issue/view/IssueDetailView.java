@@ -83,9 +83,9 @@ public class IssueDetailView {
 
         gbc.gridy = 2;
         List<User> userList = userService.findAllUsers();
-        JComboBox<User> assignee = new JComboBox<>();
+        JComboBox<String> assignee = new JComboBox<>();
         for(User user : userList){
-            assignee.addItem(user);
+            assignee.addItem(user.getNickname());
         }
         assignee.setPreferredSize(new Dimension(150, 25));
         issuePanel.add(assignee, gbc);
@@ -221,7 +221,7 @@ public class IssueDetailView {
                     gbc.gridheight = 7;
                     gbc.fill = GridBagConstraints.BOTH;
                     contentLabel.setText(contentFix.getText());
-                    issueService.updateDescription(SessionStorage.loginUser.getId(), contentFix.getText());
+                    issueService.updateDescription(SessionStorage.currentIssue.getId(), contentFix.getText());
                     issuePanel.add(contentLabel, gbc);
                     issuePanel.revalidate();
                     issuePanel.repaint();
@@ -231,7 +231,7 @@ public class IssueDetailView {
         assignee.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                User user = (User) assignee.getSelectedItem();
+                User user = userService.findUser(assignee.getSelectedItem().toString());
                 issueService.assignUser(SessionStorage.currentIssue.getId(), user.getId());
                 status.setSelectedItem("assigned");
                 issuePanel.revalidate();
