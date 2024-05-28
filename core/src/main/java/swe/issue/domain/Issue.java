@@ -6,6 +6,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 import static swe.issue.domain.Comment.createInitialProjectComment;
 import static swe.issue.domain.IssuePriority.MAJOR;
+import static swe.issue.domain.IssueStatus.ASSIGNED;
 import static swe.issue.domain.IssueStatus.NEW;
 
 import jakarta.persistence.Entity;
@@ -116,6 +117,7 @@ public class Issue {
 
   public void assignAssignee(final User assignee) {
     this.assignee = assignee;
+    this.status = ASSIGNED;
   }
 
   public void addComment(final User commenter, final String content) {
