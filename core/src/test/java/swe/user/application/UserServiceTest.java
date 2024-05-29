@@ -3,7 +3,6 @@ package swe.user.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static swe.fixture.UserFixture.id가_없는_유저;
 import static swe.fixture.UserFixture.id가_없는_유저2;
-import static swe.user.domain.UserRole.TESTER;
 
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -25,7 +24,7 @@ class UserServiceTest extends ServiceTest {
   private JwtProvider jwtProvider;
 
   @Test
-  void 유저를_회원가입하고_accessToken을_반환한다() {
+  void 유저를_회원가입하고_User를_반환한다() {
     //given
     final UserRegisterRequest registerRequest
         = new UserRegisterRequest("hong", "tester", "홍혁준", "password");
