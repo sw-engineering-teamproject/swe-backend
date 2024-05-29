@@ -72,6 +72,41 @@ public class InformationRetrievalAssigneeRecommender implements AssigneeRecommen
 
   @Override
   public void addNewIssuesToVectorDB(final List<Issue> issues) {
+    for (Issue issue : issues) {
+      try {
+        URL url = new URL("http://0.0.0.0:8000/issue/");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setDoOutput(true);
 
+        String Title = issue.getTitle();
+        String Description = issue.getDescription();
+        String assigneeId = issue.getAssignee()
+            .map(user -> user.getId().toString())
+            .orElseThrow(() -> new NoSuchElementException("Assignee is not present"));
+        String fixerId = issue.getFixer()
+            .map(user -> user.getId().toString())
+            .orElseThrow(() -> new NoSuchElementException("Fixer is not present"));
+
+        String jsonInputString = String.format(
+            "{\"title\": \"%s\", \"description\": \"%s\", \"assignee_id\": \"%s\", \"fixer_id\": \"%s\"}",
+            Title, Description, assigneeId, fixerId);
+
+        try (OutputStream os = con.getOutputStream()) {
+          byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+          os.write(input, 0, input.length);
+        }
+
+        int responseCode = con.getResponseCode();
+        System.out.println("Response Code : " + responseCode);
+
+        if (responseCode != HttpURLConnection.HTTP_OK) {
+          System.out.println("Request to add issue failed: " + responseCode);
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
   }
 }

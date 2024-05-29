@@ -1,5 +1,7 @@
 package swe.issue.external;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -25,6 +27,25 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
 
   @Autowired
   private InformationRetrievalAssigneeRecommender informationRetrievalAssigneeRecommender;
+
+  @Test
+  void 크로마_디비에_새_이슈들을_추가한다(){
+    createInitData();
+    //given
+    final long issueId = 1L;
+
+    final Issue issue = issueRepository.findById(issueId).get();
+
+    //when
+    try {
+      informationRetrievalAssigneeRecommender.addNewIssuesToVectorDB(
+          List.of(issue));
+    }
+    //then
+    catch (Exception e){
+      Assertions.assertThat(e).isNull();
+    }
+  }
 
   @Test
   void 담당자_세_명을_추천한다() {
