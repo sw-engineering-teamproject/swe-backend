@@ -103,6 +103,7 @@ public class InformationRetrievalAssigneeRecommender implements AssigneeRecommen
 
         if (responseCode != HttpURLConnection.HTTP_OK) {
           System.out.println("Request to add issue failed: " + responseCode);
+          throw new RuntimeException("Request to add issue failed: " + responseCode);
         }
       } catch (Exception e) {
         e.printStackTrace();
