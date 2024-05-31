@@ -41,7 +41,7 @@ public class InformationRetrievalAssigneeRecommender implements AssigneeRecommen
     }
     try {
       URL url = new URL(
-          "http://0.0.0.0:8000/assignee/?title=" + title + "&description=" + description);
+          "https://swe2.dongwoo.win/assignee/?title=" + title + "&description=" + description);
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("GET");
       con.setRequestProperty("Accept", "application/json");
