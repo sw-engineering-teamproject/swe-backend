@@ -21,6 +21,7 @@ import swe.dto.issue.IssueReportedResponse;
 import swe.dto.issue.IssueResponse;
 import swe.dto.issue.IssueStatusNameResponse;
 import swe.dto.issue.IssueStatusUpdateRequest;
+import swe.dto.user.UserResponse;
 import swe.issue.application.IssueService;
 import swe.issue.dto.IssueCreateRequest;
 import swe.user.dto.JwtMemberId;
@@ -98,6 +99,12 @@ public class IssueController {
   public ResponseEntity<List<IssuePriorityNameResponse>> getPriorityList() {
     final var issuePriorities = issueService.getIssuePriority();
     return ResponseEntity.ok(IssuePriorityNameResponse.createList(issuePriorities));
+  }
+
+  @GetMapping("/Issues/{issueId}/recommend")
+  public ResponseEntity<List<UserResponse>> recommendAssignee(@PathVariable final Long issueId) {
+    final var users = issueService.recommendIssue(issueId);
+    return ResponseEntity.ok(UserResponse.createList(users));
   }
 
   @GetMapping("/issues/status")

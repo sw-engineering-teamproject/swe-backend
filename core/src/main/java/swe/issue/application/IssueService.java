@@ -107,6 +107,12 @@ public class IssueService {
   }
 
   @Transactional(readOnly = true)
+  public List<User> recommendIssue(final Long issueId) {
+    final Issue issue = issueRepository.readById(issueId);
+    return assigneeRecommender.recommend(issue.getProjectId(), issue);
+  }
+
+  @Transactional(readOnly = true)
   public Issue findIssueDetail(final Long issueId) {
     return issueRepository.readByIdWithAll(issueId);
   }
