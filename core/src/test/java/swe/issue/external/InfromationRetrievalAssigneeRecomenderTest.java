@@ -11,16 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import swe.issue.domain.Issue;
 import swe.issue.domain.IssueRepository;
-import swe.project.domain.Project;
-import swe.project.domain.ProjectRepository;
 import swe.support.ServiceTest;
 
 class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
-  @Autowired
-  private ProjectRepository projectRepository;
   @Autowired
   private IssueRepository issueRepository;
 
@@ -29,7 +25,7 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
   private InformationRetrievalAssigneeRecommender informationRetrievalAssigneeRecommender;
 
   @Test
-  void 크로마_디비에_새_이슈들을_추가한다(){
+  void 크로마_디비에_새_이슈들을_추가한다() {
     createInitData();
     //given
     final long issueId = 1L;
@@ -42,7 +38,7 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
           List.of(issue));
     }
     //then
-    catch (Exception e){
+    catch (Exception e) {
       Assertions.assertThat(e).isNull();
     }
   }
@@ -51,11 +47,11 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
   void 담당자_세_명을_추천한다() {
     createInitData();
     //given
-    final Project project = projectRepository.readById(1L);
     final long issueId = 1L;
 
     //when
-    final var recommendedUsers = informationRetrievalAssigneeRecommender.recommend(project, issueRepository.findById(issueId).get());
+    final var recommendedUsers = informationRetrievalAssigneeRecommender.recommend(1L,
+        issueRepository.findById(issueId).get());
 
     //then
     assertThat(recommendedUsers).hasSize(3);
@@ -67,7 +63,8 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
 
     try {
       ClassLoader classLoader = getClass().getClassLoader();
-      insertDataSql = new String(Files.readAllBytes(Paths.get(classLoader.getResource(filePath).toURI())));
+      insertDataSql = new String(
+          Files.readAllBytes(Paths.get(classLoader.getResource(filePath).toURI())));
     } catch (Exception e) {
       Assertions.assertThat(e).isNull();
     }
