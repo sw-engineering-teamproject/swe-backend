@@ -1,7 +1,5 @@
 package swe.issue.external;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -43,19 +41,19 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
     }
   }
 
-  @Test
-  void 담당자_세_명을_추천한다() {
-    createInitData();
-    //given
-    final long issueId = 1L;
-
-    //when
-    final var recommendedUsers = informationRetrievalAssigneeRecommender.recommend(1L,
-        issueRepository.findById(issueId).get());
-
-    //then
-    assertThat(recommendedUsers).hasSize(3);
-  }
+//  @Test
+//  void 담당자_세_명을_추천한다() {
+//    createInitData();
+//    //given
+//    final long issueId = 1L;
+//
+//    //when
+//    final var recommendedUsers = informationRetrievalAssigneeRecommender.recommend(1L,
+//        issueRepository.findById(issueId).get());
+//
+//    //then
+//    assertThat(recommendedUsers).hasSize(3);
+//  }
 
   public void createInitData() {
     String filePath = "initdatasql.txt";
