@@ -28,7 +28,7 @@ public class InformationRetrievalAssigneeRecommender implements AssigneeRecommen
   private UserRepository userRepository;
 
   @Override
-  public List<User> recommend(final Project project, final Issue issue) {
+  public List<User> recommend(final Long projectId, final Issue issue) {
     List<User> recommendedUsers = new ArrayList<>();
     String title = issue.getTitle();
     String description = issue.getDescription();
