@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static swe.fixture.IssueFixture.id가_없는_Issue;
 import static swe.fixture.UserFixture.id가_있는_유저;
-import static swe.issue.domain.Comment.createInitialProjectComment;
+import static swe.issue.domain.Comment.createInitialIssueComment;
 
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Nested;
@@ -24,7 +24,7 @@ class IssueTest {
     //then
     final Issue expected = new Issue("title", "description", 10L, reporter, LocalDateTime.now());
     final Comment expectedComment
-        = createInitialProjectComment(expected, reporter, reporter.getNickname());
+        = createInitialIssueComment(expected, reporter, reporter.getNickname());
 
     assertAll(
         () -> assertThat(actual)
