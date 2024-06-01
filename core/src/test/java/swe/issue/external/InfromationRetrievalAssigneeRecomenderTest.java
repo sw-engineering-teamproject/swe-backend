@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -47,7 +46,7 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
   void 담당자_세_명을_추천한다() {
     createInitData();
     //given
-    final long issueId = 1L;
+    final long issueId = 30001L;
 
     //when
     final var recommendedUsers = informationRetrievalAssigneeRecommender.recommend(1L,
