@@ -2,6 +2,7 @@ package swe.issue.application;
 
 import static java.util.stream.Collectors.groupingBy;
 import static swe.issue.domain.IssueStatus.ASSIGNED;
+import static swe.issue.domain.IssueStatus.FIXED;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ public class IssueService {
   private final IssueRepository issueRepository;
   private final UserRepository userRepository;
   private final ProjectRepository projectRepository;
+  private final AssigneeRecommender assigneeRecommender;
 
   @Transactional
   public Long createIssue(final Long reporterId, final IssueCreateRequest request) {
@@ -72,8 +74,9 @@ public class IssueService {
     final IssueStatus newStatus = IssueStatus.from(statusName);
     newStatus.validateUserRoleUpdateStatus(requester);
     issue.updateStatus(newStatus);
-    if (newStatus == IssueStatus.FIXED) {
+    if (newStatus == FIXED) {
       issue.updateFixer(requester);
+      assigneeRecommender.addDataToRecommender(List.of(issue));
     }
   }
 
@@ -101,6 +104,12 @@ public class IssueService {
     final User newAssignee = userRepository.readById(assigneeId);
     final Issue issue = issueRepository.readById(issueId);
     issue.assignAssignee(newAssignee);
+  }
+
+  @Transactional(readOnly = true)
+  public List<User> recommendIssue(final Long issueId) {
+    final Issue issue = issueRepository.readById(issueId);
+    return assigneeRecommender.recommend(issue.getProjectId(), issue);
   }
 
   @Transactional(readOnly = true)

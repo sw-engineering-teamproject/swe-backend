@@ -21,6 +21,7 @@ import swe.dto.issue.IssueReportedResponse;
 import swe.dto.issue.IssueResponse;
 import swe.dto.issue.IssueStatusNameResponse;
 import swe.dto.issue.IssueStatusUpdateRequest;
+import swe.dto.user.UserResponse;
 import swe.issue.application.IssueService;
 import swe.issue.dto.IssueCreateRequest;
 import swe.user.dto.JwtMemberId;
@@ -35,7 +36,7 @@ public class IssueController {
   public ResponseEntity<IssueCreateResponse> createIssue(
       final JwtMemberId jwtMemberId, @RequestBody final IssueCreateRequest request
   ) {
-    final Long issueId = issueService.createIssue(jwtMemberId.memberId(), request);
+    final Long issueId = issueService.createIssue(jwtMemberId.userId(), request);
     return ResponseEntity.status(HttpStatus.CREATED).body(new IssueCreateResponse(issueId));
   }
 
@@ -63,7 +64,7 @@ public class IssueController {
       @PathVariable final Long issueId, final JwtMemberId jwtMemberId,
       @RequestBody final CommentAddRequest commentAddRequest
   ) {
-    issueService.commentContent(jwtMemberId.memberId(), issueId, commentAddRequest.content());
+    issueService.commentContent(jwtMemberId.userId(), issueId, commentAddRequest.content());
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
@@ -81,7 +82,7 @@ public class IssueController {
       @PathVariable final Long issueId, final JwtMemberId jwtMemberId,
       @RequestBody final IssueStatusUpdateRequest issueStatusUpdateRequest
   ) {
-    issueService.updateStatus(jwtMemberId.memberId(), issueId, issueStatusUpdateRequest.status());
+    issueService.updateStatus(jwtMemberId.userId(), issueId, issueStatusUpdateRequest.status());
     return ResponseEntity.ok().build();
   }
 
@@ -100,6 +101,12 @@ public class IssueController {
     return ResponseEntity.ok(IssuePriorityNameResponse.createList(issuePriorities));
   }
 
+  @GetMapping("/Issues/{issueId}/recommend")
+  public ResponseEntity<List<UserResponse>> recommendAssignee(@PathVariable final Long issueId) {
+    final var users = issueService.recommendIssue(issueId);
+    return ResponseEntity.ok(UserResponse.createList(users));
+  }
+
   @GetMapping("/issues/status")
   public ResponseEntity<List<IssueStatusNameResponse>> getStatusList() {
     final var issueStatuses = issueService.getIssueStatuses();
@@ -111,7 +118,7 @@ public class IssueController {
       @PathVariable final Long issueId, @RequestBody final IssueAssignRequest issueAssignRequest,
       final JwtMemberId jwtMemberId
   ) {
-    issueService.assignUser(jwtMemberId.memberId(), issueId, issueAssignRequest.assigneeId());
+    issueService.assignUser(jwtMemberId.userId(), issueId, issueAssignRequest.assigneeId());
     return ResponseEntity.ok().build();
   }
 

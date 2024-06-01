@@ -1,5 +1,5 @@
 package swe.user.dto;
 
-public record JwtMemberId(Long memberId) {
+public record JwtMemberId(Long userId) {
 
 }

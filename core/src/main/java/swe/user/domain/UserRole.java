@@ -20,7 +20,7 @@ public enum UserRole {
 
   public static UserRole from(final String userRoleName) {
     return stream(values())
-        .filter(status -> Objects.equals(status.name, userRoleName))
+        .filter(useRole -> Objects.equals(useRole.name, userRoleName))
         .findAny()
         .orElseThrow(() -> new UserException(USER_ROLE_NOT_FOUND));
   }

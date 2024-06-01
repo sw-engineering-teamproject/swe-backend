@@ -23,7 +23,7 @@ public class ProjectController {
   public ResponseEntity<Void> createProject(
       @RequestBody final ProjectCreateRequest request, final JwtMemberId jwtMemberId
   ) {
-    final Long projectId = projectService.createProject(request.title(), jwtMemberId.memberId());
+    final Long projectId = projectService.createProject(request.title(), jwtMemberId.userId());
     return ResponseEntity.created(URI.create("/projects/" + projectId)).build();
   }
 

@@ -52,7 +52,7 @@ public class Comment {
     this.createdAt = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.SECONDS);
   }
 
-  static Comment createInitialProjectComment(
+  static Comment createInitialIssueComment(
       final Issue issue, final User commenter, final String reporterName
   ) {
     return new Comment(issue, commenter, String.format(INITIAL_PROJECT_COMMENT, reporterName));

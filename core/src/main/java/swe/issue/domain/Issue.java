@@ -4,7 +4,7 @@ import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
-import static swe.issue.domain.Comment.createInitialProjectComment;
+import static swe.issue.domain.Comment.createInitialIssueComment;
 import static swe.issue.domain.IssuePriority.MAJOR;
 import static swe.issue.domain.IssueStatus.ASSIGNED;
 import static swe.issue.domain.IssueStatus.NEW;
@@ -89,7 +89,7 @@ public class Issue {
     final Issue issue = new Issue(title, description, projectId, reporter,
         LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.SECONDS));
     issue.comments.add(
-        createInitialProjectComment(issue, reporter, reporter.getNickname())
+        createInitialIssueComment(issue, reporter, reporter.getNickname())
     );
     return issue;
   }

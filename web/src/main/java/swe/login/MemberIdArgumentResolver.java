@@ -30,7 +30,7 @@ public class MemberIdArgumentResolver implements HandlerMethodArgumentResolver {
     final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
     final String token = AuthorizationExtractor.extract(request);
 
-    final Long memberId = jwtProvider.parseMemberId(token);
+    final Long memberId = jwtProvider.parseUserId(token);
 
     return new JwtMemberId(memberId);
   }
