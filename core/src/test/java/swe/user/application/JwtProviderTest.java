@@ -17,7 +17,7 @@ class JwtProviderTest {
     final String jwt = jwtProvider.createAccessTokenWith(memberId);
 
     //then
-    final Long paredMemberId = jwtProvider.parseMemberId(jwt);
+    final Long paredMemberId = jwtProvider.parseUserId(jwt);
     assertThat(paredMemberId)
         .isEqualTo(memberId);
   }
@@ -29,7 +29,7 @@ class JwtProviderTest {
     final String jwt = jwtProvider.createAccessTokenWith(memberId);
 
     //when
-    final Long paredMemberId = jwtProvider.parseMemberId(jwt);
+    final Long paredMemberId = jwtProvider.parseUserId(jwt);
 
     //then
     assertThat(paredMemberId)

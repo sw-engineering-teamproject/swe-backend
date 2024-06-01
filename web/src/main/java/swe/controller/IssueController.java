@@ -36,7 +36,7 @@ public class IssueController {
   public ResponseEntity<IssueCreateResponse> createIssue(
       final JwtMemberId jwtMemberId, @RequestBody final IssueCreateRequest request
   ) {
-    final Long issueId = issueService.createIssue(jwtMemberId.memberId(), request);
+    final Long issueId = issueService.createIssue(jwtMemberId.userId(), request);
     return ResponseEntity.status(HttpStatus.CREATED).body(new IssueCreateResponse(issueId));
   }
 
@@ -64,7 +64,7 @@ public class IssueController {
       @PathVariable final Long issueId, final JwtMemberId jwtMemberId,
       @RequestBody final CommentAddRequest commentAddRequest
   ) {
-    issueService.commentContent(jwtMemberId.memberId(), issueId, commentAddRequest.content());
+    issueService.commentContent(jwtMemberId.userId(), issueId, commentAddRequest.content());
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 
@@ -82,7 +82,7 @@ public class IssueController {
       @PathVariable final Long issueId, final JwtMemberId jwtMemberId,
       @RequestBody final IssueStatusUpdateRequest issueStatusUpdateRequest
   ) {
-    issueService.updateStatus(jwtMemberId.memberId(), issueId, issueStatusUpdateRequest.status());
+    issueService.updateStatus(jwtMemberId.userId(), issueId, issueStatusUpdateRequest.status());
     return ResponseEntity.ok().build();
   }
 
@@ -118,7 +118,7 @@ public class IssueController {
       @PathVariable final Long issueId, @RequestBody final IssueAssignRequest issueAssignRequest,
       final JwtMemberId jwtMemberId
   ) {
-    issueService.assignUser(jwtMemberId.memberId(), issueId, issueAssignRequest.assigneeId());
+    issueService.assignUser(jwtMemberId.userId(), issueId, issueAssignRequest.assigneeId());
     return ResponseEntity.ok().build();
   }
 

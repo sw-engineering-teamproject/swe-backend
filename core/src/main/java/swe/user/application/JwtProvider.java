@@ -16,11 +16,11 @@ public class JwtProvider {
   private static final String encodedSecretKey = "RQYjotA4VyWLZHmvtwMNzM7LTs1JIo3PNBmPKrPyxlw=";
   private static final String USER_ID_IDENTIFIER = "userId";
 
-  public String createAccessTokenWith(final Long memberId) {
+  public String createAccessTokenWith(final Long userId) {
     final Date now = new Date();
     final Date expiration
         = new Date(now.getTime() + Duration.ofDays(DURATION_DAY).toMillis());
-    final Map<String, Object> claims = Map.of(USER_ID_IDENTIFIER, memberId);
+    final Map<String, Object> claims = Map.of(USER_ID_IDENTIFIER, userId);
 
     return Jwts.builder()
         .issuer(TOKEN_ISSUER)
@@ -31,7 +31,7 @@ public class JwtProvider {
         .compact();
   }
 
-  public Long parseMemberId(final String jwt) {
+  public Long parseUserId(final String jwt) {
     final Integer userId = (Integer) Jwts.parser()
         .verifyWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(encodedSecretKey)))
         .build()
