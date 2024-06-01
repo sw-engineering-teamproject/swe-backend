@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import swe.gui.SessionStorage;
 import swe.gui.issue.CreateIssuePage;
 import swe.gui.issue.IssueDetail;
@@ -162,7 +163,9 @@ public class IssuePageView {
 
         } else {
             for (Issue issue : results) {
-                JButton issueButton = new JButton(issue.getTitle());
+                String buttonText = String.format("%-11s  ||  %s     [%s]", issue.getReporter().getNickname(), issue.getTitle(), issue.getStatus());
+                JButton issueButton = new JButton(buttonText);
+                issueButton.setHorizontalAlignment(SwingConstants.LEFT);
                 //issueButton.setSize(1000, 100);
                 issueButton.addActionListener(new ActionListener() {
                     @Override
