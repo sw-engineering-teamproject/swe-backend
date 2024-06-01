@@ -76,7 +76,7 @@ public class IssueService {
     issue.updateStatus(newStatus);
     if (newStatus == FIXED) {
       issue.updateFixer(requester);
-      assigneeRecommender.addNewIssuesToVectorDB(List.of(issue));
+      assigneeRecommender.addDataToRecommender(List.of(issue));
     }
   }
 

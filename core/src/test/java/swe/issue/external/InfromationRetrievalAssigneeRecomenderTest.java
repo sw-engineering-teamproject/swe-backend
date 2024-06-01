@@ -33,7 +33,7 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
 
     //when
     try {
-      informationRetrievalAssigneeRecommender.addNewIssuesToVectorDB(
+      informationRetrievalAssigneeRecommender.addDataToRecommender(
           List.of(issue));
     }
     //then

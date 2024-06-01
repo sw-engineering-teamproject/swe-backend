@@ -71,7 +71,7 @@ public class InformationRetrievalAssigneeRecommender implements AssigneeRecommen
   }
 
   @Override
-  public void addNewIssuesToVectorDB(final List<Issue> issues) {
+  public void addDataToRecommender(final List<Issue> issues) {
     for (Issue issue : issues) {
       try {
         URL url = new URL("http://0.0.0.0:8000/issue/");
