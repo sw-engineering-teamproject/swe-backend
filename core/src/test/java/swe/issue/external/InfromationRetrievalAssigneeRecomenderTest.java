@@ -24,7 +24,7 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
   private InformationRetrievalAssigneeRecommender informationRetrievalAssigneeRecommender;
 
   @Test
-  void 크로마_디비에_새_이슈들을_추가한다() {
+  void 디비에_새_이슈들을_추가한다() {
     createInitData();
     //given
     final long issueId = 30001L;
