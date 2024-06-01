@@ -61,8 +61,16 @@ public class IssueDetailView {
         gbc.gridy = 2;
         gbc.gridwidth = 5;
         gbc.gridheight = 7;
-        JLabel contentLabel = new JLabel(issue.getDescription());
+//        JLabel contentLabel = new JLabel(issue.getDescription());
+//        contentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+//        gbc.fill = GridBagConstraints.BOTH;
+//        issuePanel.add(contentLabel, gbc);
+//        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JTextArea contentLabel = new JTextArea(issue.getDescription());
         contentLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        contentLabel.setLineWrap(true);
+        contentLabel.setWrapStyleWord(true);
+        contentLabel.setEditable(false);
         gbc.fill = GridBagConstraints.BOTH;
         issuePanel.add(contentLabel, gbc);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -82,7 +90,7 @@ public class IssueDetailView {
         issuePanel.add(asigneeLabel, gbc);
 
         gbc.gridy = 2;
-        List<User> userList = userService.findAllUsers();
+        List<User> userList = issueService.recommendIssue(SessionStorage.currentIssue.getId());
         JComboBox<String> assignee = new JComboBox<>();
         assignee.addItem("NULL");
         for(User user : userList){
