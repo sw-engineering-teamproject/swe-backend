@@ -1,6 +1,7 @@
 package swe.dto.issue;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,7 +40,7 @@ public record IssueReportedResponse(
 
   public static List<IssueReportedResponse> createListByUser(final Map<User, Long> statistics) {
     return statistics.entrySet().stream()
-        .sorted(Entry.comparingByValue())
+        .sorted(Entry.comparingByValue(Collections.reverseOrder()))
         .map(entry -> new IssueReportedResponse(entry.getKey().toString(), entry.getValue()))
         .toList();
   }
