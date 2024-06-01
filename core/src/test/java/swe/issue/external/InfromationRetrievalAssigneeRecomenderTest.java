@@ -27,7 +27,7 @@ class InfromationRetrievalAssigneeRecomenderTest extends ServiceTest {
   void 크로마_디비에_새_이슈들을_추가한다() {
     createInitData();
     //given
-    final long issueId = 1L;
+    final long issueId = 30001L;
 
     final Issue issue = issueRepository.findById(issueId).get();
 
