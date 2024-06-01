@@ -1,6 +1,5 @@
 package swe;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -21,7 +20,8 @@ public class GuiApplication {
     SessionStorage.projectService = applicationContext.getBean(ProjectService.class);
     SessionStorage.issueService = applicationContext.getBean(IssueService.class);
     //admin 생성
-    UserRegisterRequest userRegisterRequest = new UserRegisterRequest("admin", "admin", "admin", "admin");
+    UserRegisterRequest userRegisterRequest = new UserRegisterRequest("admin", "admin", "admin",
+        "admin");
     SessionStorage.userService.register(userRegisterRequest);
     System.setProperty("java.awt.headless", "false");
     new AuthPage();
