@@ -28,15 +28,15 @@ public enum IssueFilterCondition {
     this.value = value;
     this.filterFunction = filterFunction;
   }
+  
+  public boolean filterIssue(final Issue issue, final String conditionValue) {
+    return filterFunction.apply(issue, conditionValue);
+  }
 
   public static IssueFilterCondition from(final String value) {
     return Arrays.stream(values())
         .filter(condition -> Objects.equals(condition.value, value))
         .findAny()
         .orElseThrow(() -> new IssueException(ISSUE_FILTER_CONDITION_NOT_FOUND));
-  }
-
-  public boolean filterIssue(final Issue issue, final String conditionValue) {
-    return filterFunction.apply(issue, conditionValue);
   }
 }

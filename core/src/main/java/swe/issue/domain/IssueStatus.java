@@ -33,16 +33,16 @@ public enum IssueStatus {
     this.authorizeUserRoleUpdateStatus = authorizeUserRoleUpdateStatus;
   }
 
+  public void validateUserRoleUpdateStatus(final User user) {
+    if (!authorizeUserRoleUpdateStatus.contains(user.getUserRole())) {
+      throw new IssueException(ISSUE_CHANGE_STATUS_FORBIDDEN);
+    }
+  }
+
   public static IssueStatus from(final String issueStatusName) {
     return stream(values())
         .filter(status -> Objects.equals(status.name, issueStatusName))
         .findAny()
         .orElseThrow(() -> new IssueException(ISSUE_STATUS_NOT_FOUND));
-  }
-
-  public void validateUserRoleUpdateStatus(final User user) {
-    if (!authorizeUserRoleUpdateStatus.contains(user.getUserRole())) {
-      throw new IssueException(ISSUE_CHANGE_STATUS_FORBIDDEN);
-    }
   }
 }
