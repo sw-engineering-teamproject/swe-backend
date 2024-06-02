@@ -11,28 +11,27 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import swe.issue.application.AssigneeRecommender;
 import swe.issue.domain.Issue;
-import swe.project.domain.Project;
 import swe.user.domain.User;
 import swe.user.domain.UserRepository;
 
 @Component
+@RequiredArgsConstructor
 public class InformationRetrievalAssigneeRecommender implements AssigneeRecommender {
 
-  @Autowired
-  private UserRepository userRepository;
+  private final UserRepository userRepository;
 
   @Override
   public List<User> recommend(final Long projectId, final Issue issue) {
     List<User> recommendedUsers = new ArrayList<>();
     String title = issue.getTitle();
     String description = issue.getDescription();
-    try{
+    try {
       title = URLEncoder.encode(issue.getTitle(), StandardCharsets.UTF_8.toString());
       description = URLEncoder.encode(issue.getDescription(),
           StandardCharsets.UTF_8.toString());
