@@ -1,5 +1,5 @@
 INSERT INTO user_ (account_id, nickname, password, user_role)
-VALUES ('admin', 'admin', 'admin', 'admin');
+VALUES ('admin', 'admin', 'admin', 'ADMIN');
 
 INSERT INTO user_ (id, account_id, nickname, password, user_role)
 VALUES (30001, 'ADMIN', 'ADMIN', 'admin123', 'ADMIN'),
